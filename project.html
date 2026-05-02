@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtual Lab — One Dimensional Heat Conduction</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     HEADER  (hidden on login/register pages)
+════════════════════════════════════════════════════════════ -->
+<header class="site-header" id="main-header" style="display:none;">
+  <div class="header-left">
+    <div class="header-icon">🔥</div>
+    <div>
+      <h1>Virtual Lab</h1>
+      <p>One Dimensional Heat Conduction</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <i class="fas fa-user-circle" style="font-size:18px;"></i>
+    <span class="welcome-name">Welcome, Student</span>
+    <button class="btn-logout" onclick="doLogout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: LOGIN
+════════════════════════════════════════════════════════════ -->
+<div id="page-login" class="page">
+  <div class="auth-bg">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="icon-circle">🔥</div>
+        <h2>Student Login</h2>
+        <p>One Dimensional Heat Conduction Virtual Lab</p>
+      </div>
+
+      <div class="form-group">
+        <label>Roll Number</label>
+        <input id="login-roll" type="text" placeholder="e.g. SE2024001"
+               onkeydown="onKey(event, doLogin)" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="login-pass" type="password" placeholder="Enter password"
+               onkeydown="onKey(event, doLogin)" />
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="doLogin()">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+      <div id="login-msg" class="alert"></div>
+
+      <p style="text-align:center;margin-top:16px;font-size:14px;color:#6c7a89;">
+        No account?
+        <a href="#" onclick="showPage('page-register')">Register here</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: REGISTER
+════════════════════════════════════════════════════════════ -->
+<div id="page-register" class="page">
+  <div class="auth-bg">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="icon-circle">📝</div>
+        <h2>Student Registration</h2>
+        <p>Create your virtual lab account</p>
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input id="reg-name" type="text" placeholder="Your full name" />
+      </div>
+      <div class="form-group">
+        <label>Roll Number</label>
+        <input id="reg-roll" type="text" placeholder="e.g. SE2024001" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="reg-pass" type="password" placeholder="Minimum 4 characters" />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input id="reg-confirm" type="password" placeholder="Re-enter password" />
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="doRegister()">
+        <i class="fas fa-user-plus"></i> Register
+      </button>
+      <div id="reg-msg" class="alert"></div>
+
+      <p style="text-align:center;margin-top:16px;font-size:14px;color:#6c7a89;">
+        Already registered?
+        <a href="#" onclick="showPage('page-login')">Login here</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     INNER PAGES wrapper (all share nav)
+════════════════════════════════════════════════════════════ -->
+
+<!-- PAGE: DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn active" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+
+    <!-- Profile card -->
+    <div class="card">
+      <div class="card-title"><span>👤</span> Student Profile</div>
+      <div class="profile-grid">
+        <div class="profile-item">
+          <div class="lbl">Student Name</div>
+          <div class="val" id="db-name">—</div>
+        </div>
+        <div class="profile-item">
+          <div class="lbl">Roll Number</div>
+          <div class="val" id="db-roll">—</div>
+        </div>
+        <div class="profile-item">
+          <div class="lbl">Login Status</div>
+          <div class="val"><span class="badge badge-green">✔ Logged In</span></div>
+        </div>
+        <div class="profile-item">
+          <div class="lbl">Feedback</div>
+          <div class="val" id="db-fb">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marks card -->
+    <div class="card">
+      <div class="card-title"><span>📊</span> Marks &amp; Results</div>
+      <div class="profile-grid">
+        <div class="profile-item">
+          <div class="lbl">Pretest Marks</div>
+          <div class="val" id="db-pretest">—</div>
+        </div>
+        <div class="profile-item">
+          <div class="lbl">Posttest Marks</div>
+          <div class="val" id="db-posttest">—</div>
+        </div>
+        <div class="profile-item full">
+          <div class="lbl">Simulation Result</div>
+          <div class="val" id="db-sim" style="font-size:15px;font-weight:500;">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div class="card">
+      <div class="card-title"><span>🚀</span> Quick Start</div>
+      <div class="dash-cards">
+        <div class="dash-card" onclick="guardedShow('page-aim')">
+          <div class="dc-icon">🎯</div>
+          <h3>Aim</h3>
+          <p>Experiment objectives</p>
+        </div>
+        <div class="dash-card" onclick="guardedShow('page-theory')">
+          <div class="dc-icon">📖</div>
+          <h3>Theory</h3>
+          <p>Concepts &amp; formulas</p>
+        </div>
+        <div class="dash-card" onclick="guardedShow('page-pretest')">
+          <div class="dc-icon">📝</div>
+          <h3>Pretest</h3>
+          <p>Before experiment</p>
+        </div>
+        <div class="dash-card" onclick="guardedShow('page-simulation')">
+          <div class="dc-icon">🧪</div>
+          <h3>Simulation</h3>
+          <p>4 challenges</p>
+        </div>
+        <div class="dash-card" onclick="guardedShow('page-posttest')">
+          <div class="dc-icon">✅</div>
+          <h3>Posttest</h3>
+          <p>After experiment</p>
+        </div>
+        <div class="dash-card" onclick="guardedShow('page-feedback')">
+          <div class="dc-icon">💬</div>
+          <h3>Feedback</h3>
+          <p>Share your experience</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: AIM
+════════════════════════════════════════════════════════════ -->
+<div id="page-aim" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn active" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>🎯</span> Aim of the Experiment</div>
+      <div class="theory-box">
+        <h4>🔬 Experiment Objective</h4>
+        <p>The aim of this virtual lab is to study <strong>one dimensional steady-state heat conduction</strong>
+           through a solid wall or rod and to calculate parameters such as heat flux, rate of heat flow,
+           thermal conductivity, and temperature at a particular point.</p>
+
+        <h4>🎓 Learning Outcomes</h4>
+        <p>By completing this lab, you will be able to:</p>
+        <ul>
+          <li>Understand the concept of one dimensional heat flow.</li>
+          <li>Apply Fourier's law of heat conduction to real problems.</li>
+          <li>Calculate heat flux and rate of heat transfer.</li>
+          <li>Determine thermal conductivity from given data.</li>
+          <li>Find temperature at any location in a wall under steady-state conditions.</li>
+        </ul>
+
+        <h4>🧰 Virtual Apparatus</h4>
+        <ul>
+          <li>Metallic rod with uniform cross-section</li>
+          <li>Heater at one end, heat sink (cooler) at the other end</li>
+          <li>Thermocouples to measure temperature at multiple points</li>
+          <li>Insulation around the rod to ensure one dimensional flow</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: THEORY
+════════════════════════════════════════════════════════════ -->
+<div id="page-theory" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn active" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>📖</span> Theory — Heat Conduction Concepts</div>
+      <div class="theory-box">
+
+        <h4>🔥 What is Heat Conduction?</h4>
+        <p>Heat conduction is the transfer of thermal energy through a material
+           <strong>without any bulk movement of the material itself</strong>.
+           It happens because energetic molecules transfer energy to neighbouring
+           less-energetic molecules.</p>
+
+        <h4>📏 One Dimensional Heat Flow</h4>
+        <p>When heat flows <strong>only in one direction</strong> (e.g., through the
+           thickness of a wall or along the length of a rod), it is called one
+           dimensional conduction. Temperature varies only along that direction.</p>
+
+        <h4>⚖️ Steady-State Conduction</h4>
+        <p>In <strong>steady-state</strong>, the temperature at every point inside
+           the material does <strong>not change with time</strong>. Heat flowing in
+           equals heat flowing out. For a uniform rod with no heat generation,
+           the temperature profile is <strong>linear</strong>.</p>
+
+        <h4>📐 Fourier's Law</h4>
+        <p>The rate of heat transfer is proportional to the temperature gradient
+           and the cross-sectional area:</p>
+        <div class="formula">q = k (T₁ − T₂) / L &nbsp;&nbsp;[Heat Flux, W/m²]</div>
+        <div class="formula">Q = k A (T₁ − T₂) / L &nbsp;&nbsp;[Heat Flow Rate, W]</div>
+
+        <h4>🌡️ Temperature at a Point</h4>
+        <p>For a uniform wall/rod with ends at T₁ (hot) and T₂ (cold),
+           temperature at position x from the hot end:</p>
+        <div class="formula">T(x) = T₁ − [(T₁ − T₂) × x / L]</div>
+
+        <h4>📋 Important Terms</h4>
+        <ul>
+          <li><strong>k</strong> — Thermal conductivity (W/m·K): ability to conduct heat</li>
+          <li><strong>q</strong> — Heat flux (W/m²): heat transferred per unit area</li>
+          <li><strong>Q</strong> — Heat flow rate (W): total heat transferred per second</li>
+          <li><strong>L</strong> — Thickness or length of the wall/rod (m)</li>
+          <li><strong>A</strong> — Cross-sectional area (m²)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: PRETEST
+════════════════════════════════════════════════════════════ -->
+<div id="page-pretest" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn active" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>📝</span> Pretest — Before the Experiment</div>
+      <p style="color:#6c7a89;font-size:14px;margin-bottom:20px;">
+        Answer all 5 questions. Correct answers are shown after submission. Your score is saved to your profile.
+      </p>
+
+      <div class="mcq-block">
+        <div class="q-text">Q1. Heat conduction mainly occurs due to:</div>
+        <label class="mcq-option"><input type="radio" name="pt1" value="a"> Bulk movement of fluid</label>
+        <label class="mcq-option"><input type="radio" name="pt1" value="b"> Temperature difference causing molecular energy transfer</label>
+        <label class="mcq-option"><input type="radio" name="pt1" value="c"> Electromagnetic radiation</label>
+        <label class="mcq-option"><input type="radio" name="pt1" value="d"> Chemical reactions</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q2. The SI unit of thermal conductivity is:</div>
+        <label class="mcq-option"><input type="radio" name="pt2" value="a"> W/m·K</label>
+        <label class="mcq-option"><input type="radio" name="pt2" value="b"> J/kg</label>
+        <label class="mcq-option"><input type="radio" name="pt2" value="c"> N/m</label>
+        <label class="mcq-option"><input type="radio" name="pt2" value="d"> kg/m³</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q3. In one dimensional heat flow, heat travels in:</div>
+        <label class="mcq-option"><input type="radio" name="pt3" value="a"> One direction only</label>
+        <label class="mcq-option"><input type="radio" name="pt3" value="b"> Two directions simultaneously</label>
+        <label class="mcq-option"><input type="radio" name="pt3" value="c"> Circular paths</label>
+        <label class="mcq-option"><input type="radio" name="pt3" value="d"> All three directions equally</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q4. Fourier's law relates heat transfer rate to:</div>
+        <label class="mcq-option"><input type="radio" name="pt4" value="a"> Pressure gradient</label>
+        <label class="mcq-option"><input type="radio" name="pt4" value="b"> Velocity gradient</label>
+        <label class="mcq-option"><input type="radio" name="pt4" value="c"> Temperature gradient</label>
+        <label class="mcq-option"><input type="radio" name="pt4" value="d"> Density difference</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q5. In steady-state conduction, temperature at any point:</div>
+        <label class="mcq-option"><input type="radio" name="pt5" value="a"> Increases with time</label>
+        <label class="mcq-option"><input type="radio" name="pt5" value="b"> Oscillates</label>
+        <label class="mcq-option"><input type="radio" name="pt5" value="c"> Does not change with time</label>
+        <label class="mcq-option"><input type="radio" name="pt5" value="d"> Drops to zero</label>
+      </div>
+
+      <button class="btn btn-primary" id="pre-submit-btn" onclick="submitPretest()">
+        <i class="fas fa-paper-plane"></i> Submit Pretest
+      </button>
+      <div id="pre-msg" class="alert"></div>
+
+      <div id="pre-result" class="score-result">
+        <div class="big" id="pre-score"></div>
+        <div class="sub"  id="pre-sub"></div>
+        <button class="btn btn-primary" style="margin-top:14px;"
+                onclick="guardedShow('page-simulation')">
+          Continue to Simulation →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: SIMULATION
+════════════════════════════════════════════════════════════ -->
+<div id="page-simulation" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn active" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🧪</span> Interactive Heat Conduction Challenges</div>
+
+      <!-- Score bar -->
+      <div class="score-bar">
+        <div class="stat">
+          <div class="num" id="sim-score-val">0</div>
+          <div class="lbl">Score</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="sim-done-val">0/4</div>
+          <div class="lbl">Completed</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="sim-cur-name" style="font-size:15px;">—</div>
+          <div class="lbl">Current Task</div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="prog-wrap">
+        <label>Challenge Progress</label>
+        <div class="prog-bar">
+          <div class="prog-fill" id="sim-progress"></div>
+        </div>
+      </div>
+
+      <!-- Challenge cards -->
+      <div class="challenge-cards">
+        <div class="ch-card" id="card-heatFlux" onclick="openChallenge('heatFlux')">
+          <div class="ch-icon">⚡</div>
+          <h3>Heat Flux</h3>
+          <p>Calculate q = k(T₁−T₂)/L</p>
+          <div class="done-tag">✔ Completed</div>
+        </div>
+        <div class="ch-card" id="card-heatRate" onclick="openChallenge('heatRate')">
+          <div class="ch-icon">🔥</div>
+          <h3>Rate of Heat Flow</h3>
+          <p>Calculate Q = kA(T₁−T₂)/L</p>
+          <div class="done-tag">✔ Completed</div>
+        </div>
+        <div class="ch-card" id="card-conductivity" onclick="openChallenge('conductivity')">
+          <div class="ch-icon">🧱</div>
+          <h3>Thermal Conductivity</h3>
+          <p>Find k = QL/A(T₁−T₂)</p>
+          <div class="done-tag">✔ Completed</div>
+        </div>
+        <div class="ch-card" id="card-tempPoint" onclick="openChallenge('tempPoint')">
+          <div class="ch-icon">📍</div>
+          <h3>Temperature at a Point</h3>
+          <p>Find T(x) = T₁−(T₁−T₂)x/L</p>
+          <div class="done-tag">✔ Completed</div>
+        </div>
+      </div>
+
+      <!-- Formula hint -->
+      <div class="hint-box">
+        <strong>📐 Formula Reference:</strong><br>
+        Heat Flux: <code>q = k(T₁−T₂)/L</code> &nbsp;|&nbsp;
+        Heat Rate: <code>Q = kA(T₁−T₂)/L</code> &nbsp;|&nbsp;
+        Conductivity: <code>k = QL/A(T₁−T₂)</code> &nbsp;|&nbsp;
+        Temp at x: <code>T(x) = T₁ − (T₁−T₂)·x/L</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: POSTTEST
+════════════════════════════════════════════════════════════ -->
+<div id="page-posttest" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn active" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>✅</span> Posttest — After the Experiment</div>
+      <p style="color:#6c7a89;font-size:14px;margin-bottom:20px;">
+        Answer all 5 questions after completing the simulation. Correct answers shown after submission.
+      </p>
+
+      <div class="mcq-block">
+        <div class="q-text">Q1. In steady-state conduction, temperature at any point:</div>
+        <label class="mcq-option"><input type="radio" name="po1" value="a"> Increases with time</label>
+        <label class="mcq-option"><input type="radio" name="po1" value="b"> Remains constant with time</label>
+        <label class="mcq-option"><input type="radio" name="po1" value="c"> Drops to zero</label>
+        <label class="mcq-option"><input type="radio" name="po1" value="d"> Oscillates rapidly</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q2. For a uniform rod with constant k, the temperature profile is:</div>
+        <label class="mcq-option"><input type="radio" name="po2" value="a"> Exponential</label>
+        <label class="mcq-option"><input type="radio" name="po2" value="b"> Parabolic</label>
+        <label class="mcq-option"><input type="radio" name="po2" value="c"> Linear</label>
+        <label class="mcq-option"><input type="radio" name="po2" value="d"> Random</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q3. If thickness L increases (other values same), heat transfer rate Q:</div>
+        <label class="mcq-option"><input type="radio" name="po3" value="a"> Increases</label>
+        <label class="mcq-option"><input type="radio" name="po3" value="b"> Decreases</label>
+        <label class="mcq-option"><input type="radio" name="po3" value="c"> Stays same</label>
+        <label class="mcq-option"><input type="radio" name="po3" value="d"> Becomes infinite</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q4. Which material has the highest thermal conductivity?</div>
+        <label class="mcq-option"><input type="radio" name="po4" value="a"> Brick</label>
+        <label class="mcq-option"><input type="radio" name="po4" value="b"> Wood</label>
+        <label class="mcq-option"><input type="radio" name="po4" value="c"> Copper</label>
+        <label class="mcq-option"><input type="radio" name="po4" value="d"> Glass</label>
+      </div>
+
+      <div class="mcq-block">
+        <div class="q-text">Q5. Heat flux (q) is heat transfer per unit:</div>
+        <label class="mcq-option"><input type="radio" name="po5" value="a"> Volume</label>
+        <label class="mcq-option"><input type="radio" name="po5" value="b"> Mass</label>
+        <label class="mcq-option"><input type="radio" name="po5" value="c"> Area</label>
+        <label class="mcq-option"><input type="radio" name="po5" value="d"> Length</label>
+      </div>
+
+      <button class="btn btn-primary" id="post-submit-btn" onclick="submitPosttest()">
+        <i class="fas fa-paper-plane"></i> Submit Posttest
+      </button>
+      <div id="post-msg" class="alert"></div>
+
+      <div id="post-result" class="score-result">
+        <div class="big" id="post-score"></div>
+        <div class="sub"  id="post-sub"></div>
+        <button class="btn btn-primary" style="margin-top:14px;"
+                onclick="guardedShow('page-feedback')">
+          Continue to Feedback →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: REFERENCES
+════════════════════════════════════════════════════════════ -->
+<div id="page-references" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn active" data-page="page-references">📚 References</button>
+      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>📚</span> References</div>
+
+      <div class="ref-item">
+        <div class="ri">📗</div>
+        <div>
+          <strong>Heat and Mass Transfer</strong>
+          <span>R.K. Rajput — 5th Edition</span>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="ri">📘</div>
+        <div>
+          <strong>A Textbook of Heat Transfer</strong>
+          <span>S.P. Sukhatme — 4th Edition</span>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="ri">📙</div>
+        <div>
+          <strong>Fundamentals of Heat and Mass Transfer</strong>
+          <span>Incropera &amp; DeWitt — 7th Edition</span>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="ri">🌐</div>
+        <div>
+          <strong>NPTEL Heat Transfer Lectures</strong>
+          <span>Free video lectures by IIT professors</span><br>
+          <a href="https://nptel.ac.in/" target="_blank">nptel.ac.in ↗</a>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="ri">🌐</div>
+        <div>
+          <strong>MIT OpenCourseWare</strong>
+          <span>Free lecture notes and problem sets</span><br>
+          <a href="https://ocw.mit.edu/" target="_blank">ocw.mit.edu ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     PAGE: FEEDBACK
+════════════════════════════════════════════════════════════ -->
+<div id="page-feedback" class="page">
+  <div class="wrapper">
+    <div class="top-nav">
+      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
+      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
+      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
+      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
+      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
+      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
+      <button class="nav-btn" data-page="page-references">📚 References</button>
+      <button class="nav-btn active" data-page="page-feedback">💬 Feedback</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>💬</span> Feedback</div>
+
+      <div id="fb-form-area">
+        <p style="color:#6c7a89;font-size:14px;margin-bottom:20px;">
+          Share your experience. Your feedback is saved to your profile.
+        </p>
+
+        <div class="form-group">
+          <label>Overall Rating <span style="color:red;">*</span></label>
+          <div class="stars" id="fb-stars">
+            <i class="fas fa-star" data-v="1"></i>
+            <i class="fas fa-star" data-v="2"></i>
+            <i class="fas fa-star" data-v="3"></i>
+            <i class="fas fa-star" data-v="4"></i>
+            <i class="fas fa-star" data-v="5"></i>
+          </div>
+          <div id="fb-rating-label" style="font-size:13px;color:#6c7a89;">Click a star to rate</div>
+        </div>
+
+        <div class="form-group">
+          <label>How was the Simulation?</label>
+          <select id="fb-sim-rating">
+            <option value="">— Select —</option>
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Average</option>
+            <option>Needs Improvement</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Comments / Suggestions</label>
+          <textarea id="fb-comments" rows="4" placeholder="Write your thoughts..."></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitFeedback()">
+          <i class="fas fa-paper-plane"></i> Submit Feedback
+        </button>
+        <div id="fb-msg" class="alert"></div>
+      </div>
+
+      <!-- Success message -->
+      <div id="fb-success" style="display:none;text-align:center;padding:24px;">
+        <div style="font-size:40px;margin-bottom:10px;">🎉</div>
+        <div style="font-size:20px;font-weight:700;color:#1e8449;">Thank you for your feedback!</div>
+        <div style="font-size:14px;color:#555;margin-top:6px;">Your response is saved to your profile.</div>
+        <button class="btn btn-primary" style="margin-top:16px;"
+                onclick="refreshDashboard(); guardedShow('page-dashboard')">
+          Go to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SIMULATION MODALS
+════════════════════════════════════════════════════════════ -->
+
+<!-- Input modal -->
+<div class="modal-bg" id="sim-input-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('sim-input-modal')">×</button>
+    <h3 id="sim-modal-title">Challenge</h3>
+    <p class="modal-desc" id="sim-modal-desc">Enter the known values below.</p>
+    <div id="sim-modal-inputs"></div>
+    <div class="modal-row">
+      <button class="btn btn-primary" onclick="simGoToAnswer()">Continue →</button>
+      <button class="btn btn-secondary" onclick="closeModal('sim-input-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Answer modal -->
+<div class="modal-bg" id="sim-answer-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('sim-answer-modal')">×</button>
+    <h3>Your Turn — Calculate &amp; Answer</h3>
+    <p class="modal-desc">Apply the formula and enter your result below.</p>
+    <div class="form-group">
+      <label id="sim-ans-label">Your Answer</label>
+      <input type="number" id="sim-ans-input" placeholder="Enter calculated value" step="any"
+             onkeydown="onKey(event, simCheckAnswer)" />
+    </div>
+    <div class="modal-row">
+      <button class="btn btn-primary" onclick="simCheckAnswer()">
+        <i class="fas fa-check"></i> Check Answer
+      </button>
+      <button class="btn btn-secondary" onclick="simShowHint()">💡 Hint</button>
+      <button class="btn btn-secondary" onclick="closeModal('sim-answer-modal')">Cancel</button>
+    </div>
+    <div id="sim-ans-msg" class="alert"></div>
+    <div id="sim-hint-box" class="hint-box" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     Script — show/hide header based on page
+════════════════════════════════════════════════════════════ -->
+<script src="app.js"></script>
+<script>
+  // Show header only on inner pages (not login/register)
+  const innerPages = ['page-dashboard','page-aim','page-theory',
+                      'page-pretest','page-simulation','page-posttest',
+                      'page-references','page-feedback'];
+
+  const originalShow = showPage;
+  window.showPage = function(id) {
+    originalShow(id);
+    document.getElementById('main-header').style.display =
+      innerPages.includes(id) ? 'flex' : 'none';
+  };
+
+  // Re-apply after DOMContentLoaded (app.js calls showPage internally)
+  document.addEventListener('DOMContentLoaded', () => {
+    const current = document.querySelector('.page.active');
+    if (current) {
+      document.getElementById('main-header').style.display =
+        innerPages.includes(current.id) ? 'flex' : 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
