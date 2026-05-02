@@ -3,749 +3,1189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virtual Lab — One Dimensional Heat Conduction</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <title>Virtual Labs - One Dimensional Heat Conduction</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+
+    body { background:linear-gradient(135deg,#eef5ff,#f9fbff); color:#333; line-height:1.6; }
+
+    .container { max-width:1200px; margin:0 auto; padding:0 20px; }
+
+    /* ── HEADER ── */
+    header {
+      background:linear-gradient(135deg,#1f2d3d,#14202c);
+      color:white; padding:0;
+      box-shadow:0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    /* College bar */
+    .college-bar {
+      background:linear-gradient(135deg,#0d1b2a,#162030);
+      padding:8px 24px;
+      display:flex; align-items:center; gap:14px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .college-bar img {
+      width:48px; height:48px; border-radius:10px;
+      object-fit:contain; background:#fff; padding:4px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.3);
+    }
+
+    .college-bar .clg-text .clg-name {
+      font-size:15px; font-weight:700; color:#fff; letter-spacing:0.3px;
+    }
+
+    .college-bar .clg-text .clg-sub {
+      font-size:11px; color:#90aec6;
+    }
+
+    /* Main header row */
+    .header-container {
+      display:flex; justify-content:space-between;
+      align-items:center; padding:12px 24px; gap:16px;
+    }
+
+    .logo-section { display:flex; align-items:center; gap:18px; }
+
+    .logo-box {
+      width:50px; height:50px; border-radius:12px;
+      background:linear-gradient(135deg,#3498db,#1abc9c);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 14px rgba(52,152,219,0.4); font-size:24px;
+    }
+
+    .title-group h1 { font-size:24px; font-weight:700; }
+    .title-group p  { font-size:12px; color:#d8e7f5; }
+
+    /* Profile button */
+    .user-section { display:flex; align-items:center; gap:12px; }
+
+    .user-btn {
+      display:flex; align-items:center; gap:10px;
+      background:rgba(255,255,255,0.1);
+      border:1.5px solid rgba(255,255,255,0.2);
+      color:#fff; padding:8px 16px; border-radius:50px;
+      cursor:pointer; transition:0.25s; font-size:14px;
+      position:relative;
+    }
+    .user-btn:hover { background:rgba(255,255,255,0.2); }
+    .user-btn i { font-size:22px; color:#5dade2; }
+
+    /* Profile popup */
+    .profile-popup {
+      display:none; position:absolute;
+      top:calc(100% + 12px); right:0;
+      background:#fff; border-radius:16px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.18);
+      width:300px; z-index:500;
+      animation:popIn 0.22s ease;
+      border:1px solid #e0eaf5;
+    }
+
+    .profile-popup.open { display:block; }
+
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.93) translateY(-6px); }
+      to   { opacity:1; transform:scale(1)    translateY(0); }
+    }
+
+    .profile-popup .pp-head {
+      background:linear-gradient(135deg,#1f2d3d,#2c4060);
+      color:#fff; padding:20px; border-radius:16px 16px 0 0;
+      text-align:center;
+    }
+
+    .pp-avatar {
+      width:64px; height:64px; border-radius:50%;
+      background:linear-gradient(135deg,#3498db,#1abc9c);
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size:28px; margin-bottom:10px;
+      box-shadow:0 4px 12px rgba(52,152,219,0.4);
+    }
+
+    .pp-head h3 { font-size:17px; font-weight:700; }
+    .pp-head p  { font-size:12px; color:#90c4e8; margin-top:2px; }
+
+    .pp-body { padding:16px; }
+
+    .pp-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 0; border-bottom:1px solid #eef3f8; font-size:14px;
+    }
+    .pp-row:last-child { border:none; }
+    .pp-row .pp-label { color:#7f8c8d; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; }
+    .pp-row .pp-val   { font-weight:700; color:#1f2d3d; font-size:15px; }
+
+    .pp-badge {
+      display:inline-block; padding:3px 10px; border-radius:20px;
+      font-size:12px; font-weight:700;
+      background:#d4edda; color:#155724;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      background:#fff; border-radius:16px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.06);
+      padding:28px; min-height:500px; margin-top:26px;
+    }
+
+    .content-header { margin-bottom:26px; padding-bottom:14px; border-bottom:1px solid #e5edf5; }
+    .content-header h2 { font-size:28px; color:#1f2d3d; }
+    .content-header p  { color:#6c7a89; margin-top:6px; }
+
+    /* ── SECTION CARDS ── */
+    .aim-sections { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:18px; }
+
+    .section-card {
+      background:linear-gradient(180deg,#f8fbff,#eef6ff);
+      border-radius:16px; padding:22px 16px;
+      text-align:center; cursor:pointer;
+      border:2px solid transparent; transition:0.3s ease;
+      box-shadow:0 6px 16px rgba(52,152,219,0.07);
+    }
+    .section-card:hover { transform:translateY(-6px); border-color:#3498db; box-shadow:0 12px 24px rgba(52,152,219,0.15); }
+    .section-card i    { font-size:32px; color:#3498db; margin-bottom:12px; }
+    .section-card h3   { font-size:17px; color:#1f2d3d; margin-bottom:5px; }
+    .section-card p    { font-size:13px; color:#6c7a89; }
+
+    footer { margin-top:32px; padding:20px 0 36px; text-align:center; color:#6c7a89; font-size:14px; }
+
+    /* ── PAGES ── */
+    .card-page { display:none; animation:fadeInPage 0.3s ease; }
+    .card-page.active-page { display:block; }
+    #main-dashboard.hidden { display:none; }
+
+    @keyframes fadeInPage {
+      from { opacity:0; transform:translateY(10px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(to right,#1f2d3d,#2f4157);
+      color:#fff; border:none; padding:10px 20px;
+      font-size:14px; font-weight:600; border-radius:8px;
+      cursor:pointer; margin-bottom:22px; transition:0.25s;
+    }
+    .back-btn:hover { transform:translateX(-3px); box-shadow:0 6px 14px rgba(31,45,61,0.2); }
+
+    .card-page-header {
+      display:flex; align-items:center; gap:14px;
+      padding-bottom:14px; margin-bottom:20px;
+      border-bottom:2px solid #eaf3fb;
+    }
+    .card-page-header i  { font-size:32px; color:#3498db; }
+    .card-page-header h2 { font-size:24px; color:#1f2d3d; }
+    .card-page-header p  { font-size:13px; color:#6c7a89; }
+
+    .page-content-box {
+      background:#f9fbfe; border-left:5px solid #3498db;
+      border-radius:12px; padding:22px; line-height:1.8;
+    }
+    .page-content-box h4 { color:#1f2d3d; margin-bottom:8px; font-size:18px; margin-top:18px; }
+    .page-content-box h4:first-child { margin-top:0; }
+    .page-content-box p, .page-content-box li { color:#4e5d6c; font-size:14px; }
+    .page-content-box ul { margin-left:20px; }
+
+    /* ── VIDEO ── */
+    .video-wrap {
+      margin:20px 0; border-radius:12px; overflow:hidden;
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
+      position:relative; padding-top:56.25%;
+      background:#000;
+    }
+    .video-wrap iframe {
+      position:absolute; inset:0; width:100%; height:100%; border:0;
+    }
+    .video-label {
+      font-size:13px; color:#6c7a89; margin-top:8px;
+      display:flex; align-items:center; gap:6px;
+    }
+    .video-label i { color:#e74c3c; }
+
+    /* ── MCQ ── */
+    .mcq-question {
+      background:#fff; border:1px solid #dce8f5;
+      border-radius:12px; padding:18px; margin-bottom:16px;
+      box-shadow:0 3px 8px rgba(0,0,0,0.03);
+    }
+    .mcq-question p { font-weight:600; margin-bottom:10px; color:#1f2d3d; }
+    .mcq-option { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:0.2s; font-size:14px; }
+    .mcq-option:hover { background:#eef7ff; }
+    .mcq-option input { accent-color:#3498db; }
+
+    .submit-btn {
+      background:linear-gradient(to right,#3498db,#2e86c1);
+      color:#fff; border:none; padding:12px 26px;
+      font-size:15px; font-weight:600; border-radius:8px;
+      cursor:pointer; transition:0.25s;
+    }
+    .submit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(52,152,219,0.25); }
+
+    /* ── SIMULATION ── */
+    .sim-topbar { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+
+    .top-stat {
+      background:linear-gradient(180deg,#f5fbff,#edf7ff);
+      border-radius:14px; padding:16px; text-align:center;
+      border:1px solid #d7e8f7; box-shadow:0 6px 16px rgba(52,152,219,0.07);
+    }
+    .top-stat h3 { font-size:13px; color:#6c7a89; margin-bottom:6px; }
+    .top-stat p  { font-size:26px; font-weight:700; color:#1f2d3d; }
+
+    .progress-wrap { margin-bottom:22px; }
+    .progress-wrap label { font-weight:600; color:#1f2d3d; display:block; margin-bottom:8px; }
+    .progress-bar { width:100%; height:16px; background:#e6eff7; border-radius:999px; overflow:hidden; }
+    .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#3498db,#1abc9c); transition:width 0.4s ease; border-radius:999px; }
+
+    .sim-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; margin-bottom:20px; }
+
+    .sim-card {
+      background:#fff; border-radius:16px; padding:20px;
+      border:1px solid #dbe9f5; box-shadow:0 8px 20px rgba(0,0,0,0.04);
+      transition:0.3s ease; position:relative; overflow:hidden;
+    }
+    .sim-card::before { content:""; position:absolute; top:0; left:0; width:100%; height:5px; background:linear-gradient(90deg,#3498db,#1abc9c); }
+    .sim-card:hover   { transform:translateY(-5px); box-shadow:0 14px 26px rgba(52,152,219,0.13); }
+    .sim-card i       { font-size:30px; color:#3498db; margin-bottom:12px; }
+    .sim-card h3      { color:#1f2d3d; font-size:17px; margin-bottom:6px; }
+    .sim-card p       { font-size:13px; color:#6c7a89; min-height:52px; margin-bottom:14px; }
+    .sim-card button  { background:linear-gradient(to right,#3498db,#2e86c1); color:#fff; border:none; padding:9px 14px; border-radius:8px; cursor:pointer; font-weight:600; width:100%; font-size:14px; }
+    .sim-card.done-card::after { content:"✔ Done"; position:absolute; top:14px; right:14px; background:#d4edda; color:#155724; font-size:11px; font-weight:700; padding:2px 10px; border-radius:20px; }
+
+    /* ── LIVE SIMULATION ── */
+    .live-sim-box {
+      background:#f0f7ff; border:1px solid #c8dff5;
+      border-radius:14px; padding:22px; margin-bottom:20px;
+    }
+    .live-sim-box h4 { font-size:17px; color:#1f2d3d; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .live-sim-box h4 i { color:#3498db; }
+
+    .slider-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+
+    .slider-group label {
+      display:flex; justify-content:space-between;
+      font-size:13px; font-weight:600; color:#1f2d3d;
+      margin-bottom:6px;
+    }
+    .slider-group label span { color:#3498db; font-family:monospace; }
+
+    input[type=range] {
+      width:100%; -webkit-appearance:none;
+      height:6px; border-radius:3px; outline:none; cursor:pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance:none; width:18px; height:18px;
+      border-radius:50%; background:#3498db;
+      box-shadow:0 2px 6px rgba(52,152,219,0.4); cursor:pointer;
+    }
+
+    /* Rod canvas */
+    .rod-section { margin-top:14px; }
+    .rod-section label { font-size:13px; font-weight:600; color:#1f2d3d; display:block; margin-bottom:8px; }
+
+    #rodCanvas {
+      width:100%; height:80px; border-radius:12px;
+      display:block; box-shadow:0 4px 14px rgba(0,0,0,0.1);
+    }
+
+    .rod-ends { display:flex; justify-content:space-between; margin-top:4px; font-size:12px; font-weight:600; }
+    .rod-ends .hot  { color:#e74c3c; }
+    .rod-ends .cold { color:#3498db; }
+
+    .live-result-row {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:12px; margin-top:16px;
+    }
+    .live-result-item {
+      background:#fff; border-radius:10px; padding:12px;
+      text-align:center; border:1px solid #d0e8f5;
+    }
+    .live-result-item .lri-val { font-size:20px; font-weight:800; color:#1f2d3d; font-family:monospace; }
+    .live-result-item .lri-lbl { font-size:11px; color:#7f8c8d; margin-top:3px; }
+
+    .formula-box {
+      margin-top:18px; background:#f9fbff;
+      border:1px dashed #bcd7ec; border-radius:12px; padding:16px;
+    }
+    .formula-box h4 { color:#1f2d3d; margin-bottom:8px; }
+    .formula-box p  { color:#5e6d7b; margin-bottom:6px; font-size:14px; }
+
+    /* ── CONTRIBUTORS ── */
+    .contributors-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:16px; margin-top:8px; }
+
+    .contributor-card {
+      background:linear-gradient(180deg,#f8fbff,#eef6ff);
+      border-radius:14px; padding:24px 16px; text-align:center;
+      border:1px solid #d7e8f7; transition:0.3s;
+    }
+    .contributor-card:hover { transform:translateY(-4px); box-shadow:0 10px 22px rgba(52,152,219,0.13); border-color:#3498db; }
+
+    .con-avatar {
+      width:60px; height:60px; border-radius:50%;
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size:26px; margin-bottom:12px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    .contributor-card h4 { font-size:15px; color:#1f2d3d; margin-bottom:4px; font-weight:700; }
+    .contributor-card p  { font-size:12px; color:#6c7a89; }
+
+    /* ── REFERENCES ── */
+    .ref-list { list-style:none; padding:0; }
+    .ref-list li { padding:13px 0; border-bottom:1px solid #e8edf3; color:#4e5d6c; display:flex; gap:12px; align-items:flex-start; }
+    .ref-list i  { color:#3498db; margin-top:3px; }
+
+    /* ── FEEDBACK ── */
+    .feedback-form label { display:block; font-weight:600; margin-bottom:6px; color:#1f2d3d; }
+    .feedback-form input,
+    .feedback-form select,
+    .feedback-form textarea {
+      width:100%; padding:10px 12px; border:1px solid #cad9e6;
+      border-radius:8px; margin-bottom:14px; font-size:14px;
+      font-family:inherit; outline:none; transition:border 0.2s;
+    }
+    .feedback-form input:focus,
+    .feedback-form select:focus,
+    .feedback-form textarea:focus { border-color:#3498db; box-shadow:0 0 0 3px rgba(52,152,219,0.12); }
+
+    .star-rating { display:flex; gap:8px; margin-bottom:14px; }
+    .star-rating i { font-size:28px; color:#c8c8c8; cursor:pointer; transition:0.2s; }
+    .star-rating i.active { color:#f39c12; }
+
+    /* ── MODALS ── */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:999; align-items:center; justify-content:center; padding:20px; }
+    .modal.show { display:flex; }
+
+    .modal-box {
+      width:100%; max-width:520px; background:#fff;
+      border-radius:18px; padding:26px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.22);
+      animation:popIn 0.25s ease; position:relative;
+    }
+    .modal-box h3 { color:#1f2d3d; margin-bottom:8px; font-size:22px; }
+    .modal-box p  { color:#627180; margin-bottom:14px; font-size:14px; }
+
+    .close-btn { position:absolute; top:13px; right:15px; background:none; border:none; font-size:22px; cursor:pointer; color:#7d8b99; }
+    .close-btn:hover { color:#e74c3c; }
+
+    .input-group { margin-bottom:13px; }
+    .input-group label { display:block; font-weight:600; color:#1f2d3d; margin-bottom:5px; font-size:14px; }
+    .input-group input { width:100%; padding:10px 12px; border:1px solid #cad9e6; border-radius:8px; font-size:14px; outline:none; }
+    .input-group input:focus { border-color:#3498db; box-shadow:0 0 0 3px rgba(52,152,219,0.12); }
+
+    .modal-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    .primary-btn   { background:linear-gradient(to right,#3498db,#2e86c1); color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
+    .secondary-btn { background:#eef4f8; color:#1f2d3d; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
+
+    .result-banner { margin-top:14px; padding:12px 14px; border-radius:10px; font-weight:600; display:none; font-size:14px; }
+    .result-success { background:#eafaf1; color:#1e8449; border:1px solid #b8e6ca; }
+    .result-error   { background:#fff3f1; color:#c0392b; border:1px solid #f2c3bc; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) { .sim-topbar { grid-template-columns:1fr; } .slider-row { grid-template-columns:1fr; } .live-result-row { grid-template-columns:1fr 1fr; } }
+    @media (max-width:768px) { .header-container { flex-direction:column; gap:14px; text-align:center; } .logo-section { flex-direction:column; } .aim-sections,.sim-cards { grid-template-columns:1fr 1fr; } .contributors-grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width:500px) { .aim-sections,.sim-cards,.contributors-grid { grid-template-columns:1fr; } .live-result-row { grid-template-columns:1fr; } }
+  </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════════════════
-     HEADER  (hidden on login/register pages)
-════════════════════════════════════════════════════════════ -->
-<header class="site-header" id="main-header" style="display:none;">
-  <div class="header-left">
-    <div class="header-icon">🔥</div>
-    <div>
-      <h1>Virtual Lab</h1>
-      <p>One Dimensional Heat Conduction</p>
+<!-- ════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════ -->
+<header>
+
+  <!-- College bar -->
+  <div class="college-bar">
+    <img
+      src="https://raw.githubusercontent.com/dineshkute90/virtual_lab_LAUC/main/pccoe.png"
+      alt="PCCOE Logo"
+      onerror="this.src='https://via.placeholder.com/48x48/3498db/ffffff?text=P'"
+    />
+    <div class="clg-text">
+      <div class="clg-name">Pimpri Chinchwad College of Engineering, Pune</div>
+      <div class="clg-sub">Department of Applied Sciences &amp; Humanities &nbsp;|&nbsp; Affiliated to SPPU</div>
     </div>
   </div>
-  <div class="header-right">
-    <i class="fas fa-user-circle" style="font-size:18px;"></i>
-    <span class="welcome-name">Welcome, Student</span>
-    <button class="btn-logout" onclick="doLogout()">
-      <i class="fas fa-sign-out-alt"></i> Logout
-    </button>
+
+  <!-- Main header -->
+  <div class="container header-container">
+    <div class="logo-section">
+      <div class="logo-box">🔥</div>
+      <div class="title-group">
+        <h1>Virtual Labs</h1>
+        <p>One Dimensional Heat Conduction Interactive Project</p>
+      </div>
+    </div>
+
+    <!-- Profile button -->
+    <div class="user-section" style="position:relative;">
+      <div class="user-btn" onclick="toggleProfile(event)">
+        <i class="fas fa-user-circle"></i>
+        <span>Welcome, Student</span>
+        <i class="fas fa-chevron-down" style="font-size:12px;color:#90c4e8;"></i>
+      </div>
+
+      <!-- Profile popup -->
+      <div class="profile-popup" id="profilePopup">
+        <div class="pp-head">
+          <div class="pp-avatar">👨‍🎓</div>
+          <h3>Student Profile</h3>
+          <p>Virtual Lab Portal</p>
+        </div>
+        <div class="pp-body">
+          <div class="pp-row">
+            <span class="pp-label">Status</span>
+            <span class="pp-badge">✔ Active Session</span>
+          </div>
+          <div class="pp-row">
+            <span class="pp-label">Score</span>
+            <span class="pp-val" id="pp-score">0 / 40</span>
+          </div>
+          <div class="pp-row">
+            <span class="pp-label">Completed</span>
+            <span class="pp-val" id="pp-completed">0 / 4 Challenges</span>
+          </div>
+          <div class="pp-row">
+            <span class="pp-label">Pretest</span>
+            <span class="pp-val" id="pp-pretest">Not taken</span>
+          </div>
+          <div class="pp-row">
+            <span class="pp-label">Posttest</span>
+            <span class="pp-val" id="pp-posttest">Not taken</span>
+          </div>
+          <div class="pp-row">
+            <span class="pp-label">Institute</span>
+            <span style="font-size:12px;color:#1f2d3d;font-weight:600;">PCCOE, Pune</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
-<!-- ════════════════════════════════════════════════════════
-     PAGE: LOGIN
-════════════════════════════════════════════════════════════ -->
-<div id="page-login" class="page">
-  <div class="auth-bg">
-    <div class="auth-card">
-      <div class="auth-logo">
-        <div class="icon-circle">🔥</div>
-        <h2>Student Login</h2>
-        <p>One Dimensional Heat Conduction Virtual Lab</p>
+<!-- ════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════ -->
+<main class="container" style="padding-top:26px;padding-bottom:10px;">
+
+  <!-- DASHBOARD -->
+  <div id="main-dashboard">
+    <div class="content">
+      <div class="content-header">
+        <h2>A Virtual Lab on One Dimensional Heat Conduction</h2>
+        <p>Interactive simulation with calculation challenge, scoring, and learning flow</p>
       </div>
-
-      <div class="form-group">
-        <label>Roll Number</label>
-        <input id="login-roll" type="text" placeholder="e.g. SE2024001"
-               onkeydown="onKey(event, doLogin)" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input id="login-pass" type="password" placeholder="Enter password"
-               onkeydown="onKey(event, doLogin)" />
-      </div>
-
-      <button class="btn btn-primary btn-block" onclick="doLogin()">
-        <i class="fas fa-sign-in-alt"></i> Login
-      </button>
-      <div id="login-msg" class="alert"></div>
-
-      <p style="text-align:center;margin-top:16px;font-size:14px;color:#6c7a89;">
-        No account?
-        <a href="#" onclick="showPage('page-register')">Register here</a>
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════
-     PAGE: REGISTER
-════════════════════════════════════════════════════════════ -->
-<div id="page-register" class="page">
-  <div class="auth-bg">
-    <div class="auth-card">
-      <div class="auth-logo">
-        <div class="icon-circle">📝</div>
-        <h2>Student Registration</h2>
-        <p>Create your virtual lab account</p>
-      </div>
-
-      <div class="form-group">
-        <label>Full Name</label>
-        <input id="reg-name" type="text" placeholder="Your full name" />
-      </div>
-      <div class="form-group">
-        <label>Roll Number</label>
-        <input id="reg-roll" type="text" placeholder="e.g. SE2024001" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input id="reg-pass" type="password" placeholder="Minimum 4 characters" />
-      </div>
-      <div class="form-group">
-        <label>Confirm Password</label>
-        <input id="reg-confirm" type="password" placeholder="Re-enter password" />
-      </div>
-
-      <button class="btn btn-primary btn-block" onclick="doRegister()">
-        <i class="fas fa-user-plus"></i> Register
-      </button>
-      <div id="reg-msg" class="alert"></div>
-
-      <p style="text-align:center;margin-top:16px;font-size:14px;color:#6c7a89;">
-        Already registered?
-        <a href="#" onclick="showPage('page-login')">Login here</a>
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════
-     INNER PAGES wrapper (all share nav)
-════════════════════════════════════════════════════════════ -->
-
-<!-- PAGE: DASHBOARD -->
-<div id="page-dashboard" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn active" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
-    </div>
-
-    <!-- Profile card -->
-    <div class="card">
-      <div class="card-title"><span>👤</span> Student Profile</div>
-      <div class="profile-grid">
-        <div class="profile-item">
-          <div class="lbl">Student Name</div>
-          <div class="val" id="db-name">—</div>
-        </div>
-        <div class="profile-item">
-          <div class="lbl">Roll Number</div>
-          <div class="val" id="db-roll">—</div>
-        </div>
-        <div class="profile-item">
-          <div class="lbl">Login Status</div>
-          <div class="val"><span class="badge badge-green">✔ Logged In</span></div>
-        </div>
-        <div class="profile-item">
-          <div class="lbl">Feedback</div>
-          <div class="val" id="db-fb">—</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Marks card -->
-    <div class="card">
-      <div class="card-title"><span>📊</span> Marks &amp; Results</div>
-      <div class="profile-grid">
-        <div class="profile-item">
-          <div class="lbl">Pretest Marks</div>
-          <div class="val" id="db-pretest">—</div>
-        </div>
-        <div class="profile-item">
-          <div class="lbl">Posttest Marks</div>
-          <div class="val" id="db-posttest">—</div>
-        </div>
-        <div class="profile-item full">
-          <div class="lbl">Simulation Result</div>
-          <div class="val" id="db-sim" style="font-size:15px;font-weight:500;">—</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick links -->
-    <div class="card">
-      <div class="card-title"><span>🚀</span> Quick Start</div>
-      <div class="dash-cards">
-        <div class="dash-card" onclick="guardedShow('page-aim')">
-          <div class="dc-icon">🎯</div>
-          <h3>Aim</h3>
-          <p>Experiment objectives</p>
-        </div>
-        <div class="dash-card" onclick="guardedShow('page-theory')">
-          <div class="dc-icon">📖</div>
-          <h3>Theory</h3>
-          <p>Concepts &amp; formulas</p>
-        </div>
-        <div class="dash-card" onclick="guardedShow('page-pretest')">
-          <div class="dc-icon">📝</div>
-          <h3>Pretest</h3>
-          <p>Before experiment</p>
-        </div>
-        <div class="dash-card" onclick="guardedShow('page-simulation')">
-          <div class="dc-icon">🧪</div>
-          <h3>Simulation</h3>
-          <p>4 challenges</p>
-        </div>
-        <div class="dash-card" onclick="guardedShow('page-posttest')">
-          <div class="dc-icon">✅</div>
-          <h3>Posttest</h3>
-          <p>After experiment</p>
-        </div>
-        <div class="dash-card" onclick="guardedShow('page-feedback')">
-          <div class="dc-icon">💬</div>
-          <h3>Feedback</h3>
-          <p>Share your experience</p>
-        </div>
+      <div class="aim-sections">
+        <div class="section-card" data-target="page-aim">        <i class="fas fa-bullseye"></i>       <h3>Aim</h3>        <p>Objective of the experiment</p>    </div>
+        <div class="section-card" data-target="page-theory">     <i class="fas fa-book"></i>            <h3>Theory</h3>      <p>Heat conduction concepts</p>       </div>
+        <div class="section-card" data-target="page-pretest">    <i class="fas fa-question-circle"></i> <h3>Pretest</h3>     <p>Before starting the lab</p>        </div>
+        <div class="section-card" data-target="page-simulation"> <i class="fas fa-flask"></i>           <h3>Simulation</h3>  <p>Interactive heat challenge</p>      </div>
+        <div class="section-card" data-target="page-posttest">   <i class="fas fa-clipboard-check"></i> <h3>Posttest</h3>    <p>After completing the lab</p>       </div>
+        <div class="section-card" data-target="page-references"> <i class="fas fa-book-open"></i>       <h3>References</h3>  <p>Books and online resources</p>      </div>
+        <div class="section-card" data-target="page-contributors"><i class="fas fa-users"></i>          <h3>Contributors</h3><p>Project team members</p>            </div>
+        <div class="section-card" data-target="page-feedback">   <i class="fas fa-comment-alt"></i>    <h3>Feedback</h3>    <p>Share your experience</p>          </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════════════════════════════
-     PAGE: AIM
-════════════════════════════════════════════════════════════ -->
-<div id="page-aim" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn active" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+  <!-- ── AIM ── -->
+  <div id="page-aim" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-bullseye"></i>
+      <div><h2>Aim</h2><p>Objective of the experiment</p></div>
     </div>
-    <div class="card">
-      <div class="card-title"><span>🎯</span> Aim of the Experiment</div>
-      <div class="theory-box">
-        <h4>🔬 Experiment Objective</h4>
-        <p>The aim of this virtual lab is to study <strong>one dimensional steady-state heat conduction</strong>
-           through a solid wall or rod and to calculate parameters such as heat flux, rate of heat flow,
-           thermal conductivity, and temperature at a particular point.</p>
+    <div class="page-content-box">
+      <h4>Experiment Objective</h4>
+      <p>The aim of this virtual lab experiment is to study one dimensional heat conduction through a solid wall or rod and to calculate important parameters such as heat flux, rate of heat flow, thermal conductivity, and temperature at a particular point.</p>
+      <h4>By completing this lab, students will be able to:</h4>
+      <ul>
+        <li>Understand the concept of one dimensional heat flow.</li>
+        <li>Apply Fourier's law of heat conduction.</li>
+        <li>Calculate heat flux and rate of heat transfer.</li>
+        <li>Determine thermal conductivity from known values.</li>
+        <li>Find temperature at any location in a wall under steady-state conditions.</li>
+      </ul>
+    </div>
+  </div>
 
-        <h4>🎓 Learning Outcomes</h4>
-        <p>By completing this lab, you will be able to:</p>
-        <ul>
-          <li>Understand the concept of one dimensional heat flow.</li>
-          <li>Apply Fourier's law of heat conduction to real problems.</li>
-          <li>Calculate heat flux and rate of heat transfer.</li>
-          <li>Determine thermal conductivity from given data.</li>
-          <li>Find temperature at any location in a wall under steady-state conditions.</li>
-        </ul>
+  <!-- ── THEORY ── -->
+  <div id="page-theory" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-book"></i>
+      <div><h2>Theory</h2><p>Background concepts, formulas and video</p></div>
+    </div>
+    <div class="page-content-box">
+      <h4>One Dimensional Heat Conduction</h4>
+      <p>When heat transfer takes place only in one direction, the process is called one dimensional heat conduction. It usually occurs through the thickness of a wall or along the length of a rod.</p>
 
-        <h4>🧰 Virtual Apparatus</h4>
-        <ul>
-          <li>Metallic rod with uniform cross-section</li>
-          <li>Heater at one end, heat sink (cooler) at the other end</li>
-          <li>Thermocouples to measure temperature at multiple points</li>
-          <li>Insulation around the rod to ensure one dimensional flow</li>
-        </ul>
+      <h4>Fourier's Law</h4>
+      <p>Fourier's law states that the rate of heat transfer is proportional to thermal conductivity, cross-sectional area, and temperature gradient.</p>
+      <p><strong>Heat Flux:</strong> q = k (T₁ − T₂) / L</p>
+      <p><strong>Rate of Heat Flow:</strong> Q = k A (T₁ − T₂) / L</p>
+
+      <h4>Temperature Distribution</h4>
+      <p>For a plane wall under steady-state conditions with constant thermal conductivity and no heat generation, temperature varies linearly with distance.</p>
+      <p><strong>Temperature at a point x:</strong> T(x) = T₁ − [(T₁ − T₂) x / L]</p>
+
+      <h4>Important Terms</h4>
+      <ul>
+        <li><strong>Thermal conductivity (k):</strong> ability of a material to conduct heat.</li>
+        <li><strong>Heat flux (q):</strong> heat transferred per unit area.</li>
+        <li><strong>Heat flow rate (Q):</strong> total heat transferred per second.</li>
+        <li><strong>Steady-state conduction:</strong> temperature at each point does not change with time.</li>
+      </ul>
+
+      <!-- Animated YouTube video -->
+      <h4 style="margin-top:22px;"><i class="fas fa-play-circle" style="color:#e74c3c;"></i> Animated Explanation Video</h4>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube.com/embed/iShMoxFEPSk?rel=0&modestbranding=1"
+          title="Heat Conduction Animation"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="video-label">
+        <i class="fab fa-youtube"></i>
+        One Dimensional Heat Conduction — Animated explanation of Fourier's Law and temperature distribution
       </div>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════════════════════════════
-     PAGE: THEORY
-════════════════════════════════════════════════════════════ -->
-<div id="page-theory" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn active" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+  <!-- ── PRETEST ── -->
+  <div id="page-pretest" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-question-circle"></i>
+      <div><h2>Pretest</h2><p>Answer before starting the simulation</p></div>
     </div>
-    <div class="card">
-      <div class="card-title"><span>📖</span> Theory — Heat Conduction Concepts</div>
-      <div class="theory-box">
 
-        <h4>🔥 What is Heat Conduction?</h4>
-        <p>Heat conduction is the transfer of thermal energy through a material
-           <strong>without any bulk movement of the material itself</strong>.
-           It happens because energetic molecules transfer energy to neighbouring
-           less-energetic molecules.</p>
-
-        <h4>📏 One Dimensional Heat Flow</h4>
-        <p>When heat flows <strong>only in one direction</strong> (e.g., through the
-           thickness of a wall or along the length of a rod), it is called one
-           dimensional conduction. Temperature varies only along that direction.</p>
-
-        <h4>⚖️ Steady-State Conduction</h4>
-        <p>In <strong>steady-state</strong>, the temperature at every point inside
-           the material does <strong>not change with time</strong>. Heat flowing in
-           equals heat flowing out. For a uniform rod with no heat generation,
-           the temperature profile is <strong>linear</strong>.</p>
-
-        <h4>📐 Fourier's Law</h4>
-        <p>The rate of heat transfer is proportional to the temperature gradient
-           and the cross-sectional area:</p>
-        <div class="formula">q = k (T₁ − T₂) / L &nbsp;&nbsp;[Heat Flux, W/m²]</div>
-        <div class="formula">Q = k A (T₁ − T₂) / L &nbsp;&nbsp;[Heat Flow Rate, W]</div>
-
-        <h4>🌡️ Temperature at a Point</h4>
-        <p>For a uniform wall/rod with ends at T₁ (hot) and T₂ (cold),
-           temperature at position x from the hot end:</p>
-        <div class="formula">T(x) = T₁ − [(T₁ − T₂) × x / L]</div>
-
-        <h4>📋 Important Terms</h4>
-        <ul>
-          <li><strong>k</strong> — Thermal conductivity (W/m·K): ability to conduct heat</li>
-          <li><strong>q</strong> — Heat flux (W/m²): heat transferred per unit area</li>
-          <li><strong>Q</strong> — Heat flow rate (W): total heat transferred per second</li>
-          <li><strong>L</strong> — Thickness or length of the wall/rod (m)</li>
-          <li><strong>A</strong> — Cross-sectional area (m²)</li>
-        </ul>
-      </div>
+    <div class="mcq-question">
+      <p>Q1. Heat conduction through a wall mainly occurs due to:</p>
+      <label class="mcq-option"><input type="radio" name="q1"> Temperature difference</label>
+      <label class="mcq-option"><input type="radio" name="q1"> Bulk fluid flow</label>
+      <label class="mcq-option"><input type="radio" name="q1"> Rotation</label>
+      <label class="mcq-option"><input type="radio" name="q1"> Chemical reaction</label>
     </div>
+    <div class="mcq-question">
+      <p>Q2. The SI unit of thermal conductivity is:</p>
+      <label class="mcq-option"><input type="radio" name="q2"> W/m·K</label>
+      <label class="mcq-option"><input type="radio" name="q2"> J/kg</label>
+      <label class="mcq-option"><input type="radio" name="q2"> N·m</label>
+      <label class="mcq-option"><input type="radio" name="q2"> kg/m³</label>
+    </div>
+    <div class="mcq-question">
+      <p>Q3. In one dimensional conduction, heat flows in:</p>
+      <label class="mcq-option"><input type="radio" name="q3"> One direction</label>
+      <label class="mcq-option"><input type="radio" name="q3"> Three directions</label>
+      <label class="mcq-option"><input type="radio" name="q3"> Circular direction</label>
+      <label class="mcq-option"><input type="radio" name="q3"> No direction</label>
+    </div>
+
+    <button class="submit-btn" onclick="submitTest('Pretest')">Submit Pretest</button>
   </div>
-</div>
 
-<!-- ════════════════════════════════════════════════════════
-     PAGE: PRETEST
-════════════════════════════════════════════════════════════ -->
-<div id="page-pretest" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn active" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+  <!-- ── SIMULATION ── -->
+  <div id="page-simulation" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-flask"></i>
+      <div><h2>Interactive Heat Conduction Challenge</h2><p>Live rod simulation + calculation challenges</p></div>
     </div>
-    <div class="card">
-      <div class="card-title"><span>📝</span> Pretest — Before the Experiment</div>
-      <p style="color:#6c7a89;font-size:14px;margin-bottom:20px;">
-        Answer all 5 questions. Correct answers are shown after submission. Your score is saved to your profile.
+
+    <!-- Score bar -->
+    <div class="sim-topbar">
+      <div class="top-stat"><h3>Score</h3><p id="scoreValue">0</p></div>
+      <div class="top-stat"><h3>Completed</h3><p id="completedValue">0 / 4</p></div>
+      <div class="top-stat"><h3>Current Challenge</h3><p id="challengeName" style="font-size:18px;">None</p></div>
+    </div>
+
+    <div class="progress-wrap">
+      <label>Progress</label>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <!-- ── LIVE INTERACTIVE SIMULATION ── -->
+    <div class="live-sim-box">
+      <h4><i class="fas fa-temperature-high"></i> Live Rod Temperature Simulator</h4>
+      <p style="font-size:13px;color:#6c7a89;margin-bottom:14px;">
+        Move the sliders to change temperatures and length. The rod colour and values update live in real time.
       </p>
 
-      <div class="mcq-block">
-        <div class="q-text">Q1. Heat conduction mainly occurs due to:</div>
-        <label class="mcq-option"><input type="radio" name="pt1" value="a"> Bulk movement of fluid</label>
-        <label class="mcq-option"><input type="radio" name="pt1" value="b"> Temperature difference causing molecular energy transfer</label>
-        <label class="mcq-option"><input type="radio" name="pt1" value="c"> Electromagnetic radiation</label>
-        <label class="mcq-option"><input type="radio" name="pt1" value="d"> Chemical reactions</label>
+      <div class="slider-row">
+        <div class="slider-group">
+          <label>Hot End Temperature T₁ <span id="lbl-t1">100 °C</span></label>
+          <input type="range" id="sl-t1" min="50" max="500" value="100"
+                 style="background:linear-gradient(90deg,#e74c3c 0%,#f39c12 100%);"
+                 oninput="updateLiveSim()">
+        </div>
+        <div class="slider-group">
+          <label>Cold End Temperature T₂ <span id="lbl-t2">30 °C</span></label>
+          <input type="range" id="sl-t2" min="0" max="100" value="30"
+                 style="background:linear-gradient(90deg,#3498db 0%,#1abc9c 100%);"
+                 oninput="updateLiveSim()">
+        </div>
+        <div class="slider-group">
+          <label>Rod Length L <span id="lbl-L">1.0 m</span></label>
+          <input type="range" id="sl-L" min="1" max="10" value="10" step="1"
+                 style="background:linear-gradient(90deg,#9b59b6 0%,#8e44ad 100%);"
+                 oninput="updateLiveSim()">
+        </div>
+        <div class="slider-group">
+          <label>Thermal Conductivity k <span id="lbl-k">50 W/m·K</span></label>
+          <input type="range" id="sl-k" min="1" max="400" value="50"
+                 style="background:linear-gradient(90deg,#27ae60 0%,#1abc9c 100%);"
+                 oninput="updateLiveSim()">
+        </div>
       </div>
 
-      <div class="mcq-block">
-        <div class="q-text">Q2. The SI unit of thermal conductivity is:</div>
-        <label class="mcq-option"><input type="radio" name="pt2" value="a"> W/m·K</label>
-        <label class="mcq-option"><input type="radio" name="pt2" value="b"> J/kg</label>
-        <label class="mcq-option"><input type="radio" name="pt2" value="c"> N/m</label>
-        <label class="mcq-option"><input type="radio" name="pt2" value="d"> kg/m³</label>
+      <!-- Rod canvas -->
+      <div class="rod-section">
+        <label>Temperature Distribution along Rod</label>
+        <canvas id="rodCanvas" height="80"></canvas>
+        <div class="rod-ends">
+          <span class="hot">🔥 Hot End: <span id="re-t1">100°C</span></span>
+          <span style="color:#888;font-size:11px;">← Heat flows this way →</span>
+          <span class="cold">❄ Cold End: <span id="re-t2">30°C</span></span>
+        </div>
       </div>
 
-      <div class="mcq-block">
-        <div class="q-text">Q3. In one dimensional heat flow, heat travels in:</div>
-        <label class="mcq-option"><input type="radio" name="pt3" value="a"> One direction only</label>
-        <label class="mcq-option"><input type="radio" name="pt3" value="b"> Two directions simultaneously</label>
-        <label class="mcq-option"><input type="radio" name="pt3" value="c"> Circular paths</label>
-        <label class="mcq-option"><input type="radio" name="pt3" value="d"> All three directions equally</label>
+      <!-- Live results -->
+      <div class="live-result-row">
+        <div class="live-result-item">
+          <div class="lri-val" id="lr-flux">—</div>
+          <div class="lri-lbl">Heat Flux q (W/m²)</div>
+        </div>
+        <div class="live-result-item">
+          <div class="lri-val" id="lr-rate">—</div>
+          <div class="lri-lbl">Heat Rate Q (W) at A=0.01m²</div>
+        </div>
+        <div class="live-result-item">
+          <div class="lri-val" id="lr-tmid">—</div>
+          <div class="lri-lbl">Temp at Midpoint (°C)</div>
+        </div>
       </div>
+    </div>
 
-      <div class="mcq-block">
-        <div class="q-text">Q4. Fourier's law relates heat transfer rate to:</div>
-        <label class="mcq-option"><input type="radio" name="pt4" value="a"> Pressure gradient</label>
-        <label class="mcq-option"><input type="radio" name="pt4" value="b"> Velocity gradient</label>
-        <label class="mcq-option"><input type="radio" name="pt4" value="c"> Temperature gradient</label>
-        <label class="mcq-option"><input type="radio" name="pt4" value="d"> Density difference</label>
+    <!-- Challenge cards -->
+    <h4 style="font-size:17px;color:#1f2d3d;margin-bottom:14px;"><i class="fas fa-trophy" style="color:#f39c12;"></i> Calculation Challenges</h4>
+    <div class="sim-cards">
+      <div class="sim-card" id="card-heatFlux">
+        <i class="fas fa-bolt"></i>
+        <h3>Heat Flux</h3>
+        <p>Calculate heat transferred per unit area using k, temperatures, and thickness.</p>
+        <button onclick="openChallenge('heatFlux')">Start Challenge</button>
       </div>
-
-      <div class="mcq-block">
-        <div class="q-text">Q5. In steady-state conduction, temperature at any point:</div>
-        <label class="mcq-option"><input type="radio" name="pt5" value="a"> Increases with time</label>
-        <label class="mcq-option"><input type="radio" name="pt5" value="b"> Oscillates</label>
-        <label class="mcq-option"><input type="radio" name="pt5" value="c"> Does not change with time</label>
-        <label class="mcq-option"><input type="radio" name="pt5" value="d"> Drops to zero</label>
+      <div class="sim-card" id="card-heatRate">
+        <i class="fas fa-fire"></i>
+        <h3>Rate of Heat Flow</h3>
+        <p>Find total heat transfer rate using area, k, and temperature difference.</p>
+        <button onclick="openChallenge('heatRate')">Start Challenge</button>
       </div>
-
-      <button class="btn btn-primary" id="pre-submit-btn" onclick="submitPretest()">
-        <i class="fas fa-paper-plane"></i> Submit Pretest
-      </button>
-      <div id="pre-msg" class="alert"></div>
-
-      <div id="pre-result" class="score-result">
-        <div class="big" id="pre-score"></div>
-        <div class="sub"  id="pre-sub"></div>
-        <button class="btn btn-primary" style="margin-top:14px;"
-                onclick="guardedShow('page-simulation')">
-          Continue to Simulation →
-        </button>
+      <div class="sim-card" id="card-conductivity">
+        <i class="fas fa-cubes"></i>
+        <h3>Thermal Conductivity</h3>
+        <p>Determine thermal conductivity from known heat transfer data and geometry.</p>
+        <button onclick="openChallenge('conductivity')">Start Challenge</button>
       </div>
+      <div class="sim-card" id="card-tempPoint">
+        <i class="fas fa-map-marker-alt"></i>
+        <h3>Temperature at a Point</h3>
+        <p>Find temperature at a particular location along a wall under steady-state.</p>
+        <button onclick="openChallenge('tempPoint')">Start Challenge</button>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <h4>📐 Hint Panel — Formulas</h4>
+      <p><strong>Heat Flux:</strong> q = k(T₁ − T₂)/L</p>
+      <p><strong>Heat Flow Rate:</strong> Q = kA(T₁ − T₂)/L</p>
+      <p><strong>Thermal Conductivity:</strong> k = QL / A(T₁ − T₂)</p>
+      <p><strong>Temperature at point x:</strong> T(x) = T₁ − [(T₁ − T₂)x/L]</p>
+      <p style="color:#888;font-size:12px;margin-top:8px;">Tip: your answer is accepted within 1% tolerance to allow for rounding.</p>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════════════════════════════
-     PAGE: SIMULATION
-════════════════════════════════════════════════════════════ -->
-<div id="page-simulation" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn active" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
+  <!-- ── POSTTEST ── -->
+  <div id="page-posttest" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-clipboard-check"></i>
+      <div><h2>Posttest</h2><p>Answer after completing the simulation</p></div>
     </div>
 
-    <div class="card">
-      <div class="card-title"><span>🧪</span> Interactive Heat Conduction Challenges</div>
+    <div class="mcq-question">
+      <p>Q1. Heat flow rate depends on:</p>
+      <label class="mcq-option"><input type="radio" name="pq1"> Area and temperature gradient</label>
+      <label class="mcq-option"><input type="radio" name="pq1"> Color of wall only</label>
+      <label class="mcq-option"><input type="radio" name="pq1"> Mass only</label>
+      <label class="mcq-option"><input type="radio" name="pq1"> Volume only</label>
+    </div>
+    <div class="mcq-question">
+      <p>Q2. In steady-state conduction, the temperature at a point:</p>
+      <label class="mcq-option"><input type="radio" name="pq2"> Changes with time</label>
+      <label class="mcq-option"><input type="radio" name="pq2"> Remains constant with time</label>
+      <label class="mcq-option"><input type="radio" name="pq2"> Becomes zero</label>
+      <label class="mcq-option"><input type="radio" name="pq2"> Oscillates rapidly</label>
+    </div>
+    <div class="mcq-question">
+      <p>Q3. If thickness increases, heat transfer rate generally:</p>
+      <label class="mcq-option"><input type="radio" name="pq3"> Decreases</label>
+      <label class="mcq-option"><input type="radio" name="pq3"> Increases</label>
+      <label class="mcq-option"><input type="radio" name="pq3"> Remains exactly same</label>
+      <label class="mcq-option"><input type="radio" name="pq3"> Becomes infinite</label>
+    </div>
 
-      <!-- Score bar -->
-      <div class="score-bar">
-        <div class="stat">
-          <div class="num" id="sim-score-val">0</div>
-          <div class="lbl">Score</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="sim-done-val">0/4</div>
-          <div class="lbl">Completed</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="sim-cur-name" style="font-size:15px;">—</div>
-          <div class="lbl">Current Task</div>
-        </div>
+    <button class="submit-btn" onclick="submitTest('Posttest')">Submit Posttest</button>
+  </div>
+
+  <!-- ── REFERENCES ── -->
+  <div id="page-references" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-book-open"></i>
+      <div><h2>References</h2><p>Books and online learning sources</p></div>
+    </div>
+    <ul class="ref-list">
+      <li><i class="fas fa-book"></i><div><strong>Heat and Mass Transfer</strong> — R.K. Rajput</div></li>
+      <li><i class="fas fa-book"></i><div><strong>A Textbook of Heat Transfer</strong> — S.P. Sukhatme</div></li>
+      <li><i class="fas fa-book"></i><div><strong>Fundamentals of Heat and Mass Transfer</strong> — Incropera and DeWitt</div></li>
+      <li><i class="fas fa-globe"></i><div><strong>NPTEL</strong> — <a href="https://nptel.ac.in/" target="_blank">nptel.ac.in</a></div></li>
+      <li><i class="fas fa-globe"></i><div><strong>MIT OpenCourseWare</strong> — <a href="https://ocw.mit.edu/" target="_blank">ocw.mit.edu</a></div></li>
+    </ul>
+  </div>
+
+  <!-- ── CONTRIBUTORS ── -->
+  <div id="page-contributors" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-users"></i>
+      <div><h2>Contributors</h2><p>Project team members</p></div>
+    </div>
+
+    <div class="contributors-grid">
+      <div class="contributor-card">
+        <div class="con-avatar" style="background:linear-gradient(135deg,#3498db,#1abc9c);">👨‍🏫</div>
+        <h4>Prof. Guide Name</h4>
+        <p>Project Guide</p>
+      </div>
+      <div class="contributor-card">
+        <div class="con-avatar" style="background:linear-gradient(135deg,#e74c3c,#f39c12);">👨‍💻</div>
+        <h4>Your Name</h4>
+        <p>Lead Developer</p>
+      </div>
+      <div class="contributor-card">
+        <div class="con-avatar" style="background:linear-gradient(135deg,#9b59b6,#8e44ad);">👨‍🎨</div>
+        <h4>Team Member</h4>
+        <p>UI / Documentation</p>
+      </div>
+      <div class="contributor-card">
+        <div class="con-avatar" style="background:linear-gradient(135deg,#27ae60,#1abc9c);">👩‍💻</div>
+        <h4>Team Member</h4>
+        <p>Simulation &amp; Logic</p>
+      </div>
+    </div>
+
+    <p style="margin-top:22px;color:#6c7a89;font-size:14px;">
+      <i class="fas fa-university" style="color:#3498db;"></i>
+      &nbsp; Department of Applied Sciences &amp; Humanities,
+      Pimpri Chinchwad College of Engineering, Pune.
+    </p>
+  </div>
+
+  <!-- ── FEEDBACK ── -->
+  <div id="page-feedback" class="content card-page">
+    <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <div class="card-page-header">
+      <i class="fas fa-comment-alt"></i>
+      <div><h2>Feedback</h2><p>Share your lab experience</p></div>
+    </div>
+    <div class="feedback-form">
+      <label>Your Name</label>
+      <input type="text" id="fb-name" placeholder="Enter your name">
+
+      <label>Your Rating</label>
+      <div class="star-rating" id="starRating">
+        <i class="fas fa-star" data-val="1"></i>
+        <i class="fas fa-star" data-val="2"></i>
+        <i class="fas fa-star" data-val="3"></i>
+        <i class="fas fa-star" data-val="4"></i>
+        <i class="fas fa-star" data-val="5"></i>
       </div>
 
-      <!-- Progress bar -->
-      <div class="prog-wrap">
-        <label>Challenge Progress</label>
-        <div class="prog-bar">
-          <div class="prog-fill" id="sim-progress"></div>
-        </div>
-      </div>
+      <label>How was the simulation?</label>
+      <select id="fb-sim">
+        <option>-- Select --</option>
+        <option>Excellent</option>
+        <option>Good</option>
+        <option>Average</option>
+        <option>Needs Improvement</option>
+      </select>
 
-      <!-- Challenge cards -->
-      <div class="challenge-cards">
-        <div class="ch-card" id="card-heatFlux" onclick="openChallenge('heatFlux')">
-          <div class="ch-icon">⚡</div>
-          <h3>Heat Flux</h3>
-          <p>Calculate q = k(T₁−T₂)/L</p>
-          <div class="done-tag">✔ Completed</div>
-        </div>
-        <div class="ch-card" id="card-heatRate" onclick="openChallenge('heatRate')">
-          <div class="ch-icon">🔥</div>
-          <h3>Rate of Heat Flow</h3>
-          <p>Calculate Q = kA(T₁−T₂)/L</p>
-          <div class="done-tag">✔ Completed</div>
-        </div>
-        <div class="ch-card" id="card-conductivity" onclick="openChallenge('conductivity')">
-          <div class="ch-icon">🧱</div>
-          <h3>Thermal Conductivity</h3>
-          <p>Find k = QL/A(T₁−T₂)</p>
-          <div class="done-tag">✔ Completed</div>
-        </div>
-        <div class="ch-card" id="card-tempPoint" onclick="openChallenge('tempPoint')">
-          <div class="ch-icon">📍</div>
-          <h3>Temperature at a Point</h3>
-          <p>Find T(x) = T₁−(T₁−T₂)x/L</p>
-          <div class="done-tag">✔ Completed</div>
-        </div>
-      </div>
+      <label>Comments</label>
+      <textarea id="fb-comments" rows="4" placeholder="Write your feedback..."></textarea>
 
-      <!-- Formula hint -->
-      <div class="hint-box">
-        <strong>📐 Formula Reference:</strong><br>
-        Heat Flux: <code>q = k(T₁−T₂)/L</code> &nbsp;|&nbsp;
-        Heat Rate: <code>Q = kA(T₁−T₂)/L</code> &nbsp;|&nbsp;
-        Conductivity: <code>k = QL/A(T₁−T₂)</code> &nbsp;|&nbsp;
-        Temp at x: <code>T(x) = T₁ − (T₁−T₂)·x/L</code>
-      </div>
+      <button class="submit-btn" onclick="submitFeedback()">Submit Feedback</button>
     </div>
   </div>
-</div>
 
-<!-- ════════════════════════════════════════════════════════
-     PAGE: POSTTEST
-════════════════════════════════════════════════════════════ -->
-<div id="page-posttest" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn active" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
-    </div>
-    <div class="card">
-      <div class="card-title"><span>✅</span> Posttest — After the Experiment</div>
-      <p style="color:#6c7a89;font-size:14px;margin-bottom:20px;">
-        Answer all 5 questions after completing the simulation. Correct answers shown after submission.
-      </p>
+</main>
 
-      <div class="mcq-block">
-        <div class="q-text">Q1. In steady-state conduction, temperature at any point:</div>
-        <label class="mcq-option"><input type="radio" name="po1" value="a"> Increases with time</label>
-        <label class="mcq-option"><input type="radio" name="po1" value="b"> Remains constant with time</label>
-        <label class="mcq-option"><input type="radio" name="po1" value="c"> Drops to zero</label>
-        <label class="mcq-option"><input type="radio" name="po1" value="d"> Oscillates rapidly</label>
-      </div>
+<footer class="container">
+  <p>Virtual Labs Project — One Dimensional Heat Conduction &nbsp;|&nbsp; PCCOE, Pune</p>
+</footer>
 
-      <div class="mcq-block">
-        <div class="q-text">Q2. For a uniform rod with constant k, the temperature profile is:</div>
-        <label class="mcq-option"><input type="radio" name="po2" value="a"> Exponential</label>
-        <label class="mcq-option"><input type="radio" name="po2" value="b"> Parabolic</label>
-        <label class="mcq-option"><input type="radio" name="po2" value="c"> Linear</label>
-        <label class="mcq-option"><input type="radio" name="po2" value="d"> Random</label>
-      </div>
-
-      <div class="mcq-block">
-        <div class="q-text">Q3. If thickness L increases (other values same), heat transfer rate Q:</div>
-        <label class="mcq-option"><input type="radio" name="po3" value="a"> Increases</label>
-        <label class="mcq-option"><input type="radio" name="po3" value="b"> Decreases</label>
-        <label class="mcq-option"><input type="radio" name="po3" value="c"> Stays same</label>
-        <label class="mcq-option"><input type="radio" name="po3" value="d"> Becomes infinite</label>
-      </div>
-
-      <div class="mcq-block">
-        <div class="q-text">Q4. Which material has the highest thermal conductivity?</div>
-        <label class="mcq-option"><input type="radio" name="po4" value="a"> Brick</label>
-        <label class="mcq-option"><input type="radio" name="po4" value="b"> Wood</label>
-        <label class="mcq-option"><input type="radio" name="po4" value="c"> Copper</label>
-        <label class="mcq-option"><input type="radio" name="po4" value="d"> Glass</label>
-      </div>
-
-      <div class="mcq-block">
-        <div class="q-text">Q5. Heat flux (q) is heat transfer per unit:</div>
-        <label class="mcq-option"><input type="radio" name="po5" value="a"> Volume</label>
-        <label class="mcq-option"><input type="radio" name="po5" value="b"> Mass</label>
-        <label class="mcq-option"><input type="radio" name="po5" value="c"> Area</label>
-        <label class="mcq-option"><input type="radio" name="po5" value="d"> Length</label>
-      </div>
-
-      <button class="btn btn-primary" id="post-submit-btn" onclick="submitPosttest()">
-        <i class="fas fa-paper-plane"></i> Submit Posttest
-      </button>
-      <div id="post-msg" class="alert"></div>
-
-      <div id="post-result" class="score-result">
-        <div class="big" id="post-score"></div>
-        <div class="sub"  id="post-sub"></div>
-        <button class="btn btn-primary" style="margin-top:14px;"
-                onclick="guardedShow('page-feedback')">
-          Continue to Feedback →
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════
-     PAGE: REFERENCES
-════════════════════════════════════════════════════════════ -->
-<div id="page-references" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn active" data-page="page-references">📚 References</button>
-      <button class="nav-btn" data-page="page-feedback">💬 Feedback</button>
-    </div>
-    <div class="card">
-      <div class="card-title"><span>📚</span> References</div>
-
-      <div class="ref-item">
-        <div class="ri">📗</div>
-        <div>
-          <strong>Heat and Mass Transfer</strong>
-          <span>R.K. Rajput — 5th Edition</span>
-        </div>
-      </div>
-      <div class="ref-item">
-        <div class="ri">📘</div>
-        <div>
-          <strong>A Textbook of Heat Transfer</strong>
-          <span>S.P. Sukhatme — 4th Edition</span>
-        </div>
-      </div>
-      <div class="ref-item">
-        <div class="ri">📙</div>
-        <div>
-          <strong>Fundamentals of Heat and Mass Transfer</strong>
-          <span>Incropera &amp; DeWitt — 7th Edition</span>
-        </div>
-      </div>
-      <div class="ref-item">
-        <div class="ri">🌐</div>
-        <div>
-          <strong>NPTEL Heat Transfer Lectures</strong>
-          <span>Free video lectures by IIT professors</span><br>
-          <a href="https://nptel.ac.in/" target="_blank">nptel.ac.in ↗</a>
-        </div>
-      </div>
-      <div class="ref-item">
-        <div class="ri">🌐</div>
-        <div>
-          <strong>MIT OpenCourseWare</strong>
-          <span>Free lecture notes and problem sets</span><br>
-          <a href="https://ocw.mit.edu/" target="_blank">ocw.mit.edu ↗</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════
-     PAGE: FEEDBACK
-════════════════════════════════════════════════════════════ -->
-<div id="page-feedback" class="page">
-  <div class="wrapper">
-    <div class="top-nav">
-      <button class="nav-btn" data-page="page-dashboard">🏠 Dashboard</button>
-      <button class="nav-btn" data-page="page-aim">🎯 Aim</button>
-      <button class="nav-btn" data-page="page-theory">📖 Theory</button>
-      <button class="nav-btn" data-page="page-pretest">📝 Pretest</button>
-      <button class="nav-btn" data-page="page-simulation">🧪 Simulation</button>
-      <button class="nav-btn" data-page="page-posttest">✅ Posttest</button>
-      <button class="nav-btn" data-page="page-references">📚 References</button>
-      <button class="nav-btn active" data-page="page-feedback">💬 Feedback</button>
-    </div>
-    <div class="card">
-      <div class="card-title"><span>💬</span> Feedback</div>
-
-      <div id="fb-form-area">
-        <p style="color:#6c7a89;font-size:14px;margin-bottom:20px;">
-          Share your experience. Your feedback is saved to your profile.
-        </p>
-
-        <div class="form-group">
-          <label>Overall Rating <span style="color:red;">*</span></label>
-          <div class="stars" id="fb-stars">
-            <i class="fas fa-star" data-v="1"></i>
-            <i class="fas fa-star" data-v="2"></i>
-            <i class="fas fa-star" data-v="3"></i>
-            <i class="fas fa-star" data-v="4"></i>
-            <i class="fas fa-star" data-v="5"></i>
-          </div>
-          <div id="fb-rating-label" style="font-size:13px;color:#6c7a89;">Click a star to rate</div>
-        </div>
-
-        <div class="form-group">
-          <label>How was the Simulation?</label>
-          <select id="fb-sim-rating">
-            <option value="">— Select —</option>
-            <option>Excellent</option>
-            <option>Good</option>
-            <option>Average</option>
-            <option>Needs Improvement</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Comments / Suggestions</label>
-          <textarea id="fb-comments" rows="4" placeholder="Write your thoughts..."></textarea>
-        </div>
-
-        <button class="btn btn-primary" onclick="submitFeedback()">
-          <i class="fas fa-paper-plane"></i> Submit Feedback
-        </button>
-        <div id="fb-msg" class="alert"></div>
-      </div>
-
-      <!-- Success message -->
-      <div id="fb-success" style="display:none;text-align:center;padding:24px;">
-        <div style="font-size:40px;margin-bottom:10px;">🎉</div>
-        <div style="font-size:20px;font-weight:700;color:#1e8449;">Thank you for your feedback!</div>
-        <div style="font-size:14px;color:#555;margin-top:6px;">Your response is saved to your profile.</div>
-        <button class="btn btn-primary" style="margin-top:16px;"
-                onclick="refreshDashboard(); guardedShow('page-dashboard')">
-          Go to Dashboard
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════
-     SIMULATION MODALS
-════════════════════════════════════════════════════════════ -->
-
-<!-- Input modal -->
-<div class="modal-bg" id="sim-input-modal">
+<!-- ════════════════════════════════════════════════
+     INPUT MODAL
+════════════════════════════════════════════════ -->
+<div class="modal" id="inputModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('sim-input-modal')">×</button>
-    <h3 id="sim-modal-title">Challenge</h3>
-    <p class="modal-desc" id="sim-modal-desc">Enter the known values below.</p>
-    <div id="sim-modal-inputs"></div>
-    <div class="modal-row">
-      <button class="btn btn-primary" onclick="simGoToAnswer()">Continue →</button>
-      <button class="btn btn-secondary" onclick="closeModal('sim-input-modal')">Cancel</button>
+    <button class="close-btn" onclick="closeModal('inputModal')">&times;</button>
+    <h3 id="inputModalTitle">Challenge Inputs</h3>
+    <p id="inputModalDesc">Enter known values below.</p>
+    <div id="dynamicInputs"></div>
+    <div class="modal-actions">
+      <button class="primary-btn" onclick="prepareAnswerStep()">Continue →</button>
+      <button class="secondary-btn" onclick="closeModal('inputModal')">Cancel</button>
     </div>
   </div>
 </div>
 
-<!-- Answer modal -->
-<div class="modal-bg" id="sim-answer-modal">
+<!-- ════════════════════════════════════════════════
+     ANSWER MODAL
+════════════════════════════════════════════════ -->
+<div class="modal" id="answerModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('sim-answer-modal')">×</button>
-    <h3>Your Turn — Calculate &amp; Answer</h3>
-    <p class="modal-desc">Apply the formula and enter your result below.</p>
-    <div class="form-group">
-      <label id="sim-ans-label">Your Answer</label>
-      <input type="number" id="sim-ans-input" placeholder="Enter calculated value" step="any"
-             onkeydown="onKey(event, simCheckAnswer)" />
+    <button class="close-btn" onclick="closeModal('answerModal')">&times;</button>
+    <h3>Your Turn — Calculate &amp; Enter Answer</h3>
+    <p id="answerDesc">Apply the formula shown in the Hint Panel and enter your result.</p>
+    <div class="input-group">
+      <label id="answerLabel">Your Answer</label>
+      <input type="number" id="studentAnswer" placeholder="Enter your calculated answer" step="any">
     </div>
-    <div class="modal-row">
-      <button class="btn btn-primary" onclick="simCheckAnswer()">
-        <i class="fas fa-check"></i> Check Answer
-      </button>
-      <button class="btn btn-secondary" onclick="simShowHint()">💡 Hint</button>
-      <button class="btn btn-secondary" onclick="closeModal('sim-answer-modal')">Cancel</button>
+    <div class="modal-actions">
+      <button class="primary-btn" onclick="checkStudentAnswer()"><i class="fas fa-check"></i> Check Answer</button>
+      <button class="secondary-btn" onclick="closeModal('answerModal')">Cancel</button>
     </div>
-    <div id="sim-ans-msg" class="alert"></div>
-    <div id="sim-hint-box" class="hint-box" style="display:none;"></div>
+    <div id="resultBanner" class="result-banner"></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     Script — show/hide header based on page
-════════════════════════════════════════════════════════════ -->
-<script src="app.js"></script>
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
 <script>
-  // Show header only on inner pages (not login/register)
-  const innerPages = ['page-dashboard','page-aim','page-theory',
-                      'page-pretest','page-simulation','page-posttest',
-                      'page-references','page-feedback'];
+// ── State ───────────────────────────────────────────────────
+let selectedRating  = 0;
+let score           = 0;
+let completedChallenges = [];
+let currentChallenge    = '';
+let correctAnswer       = 0;
+let pretestDone = false;
+let posttestDone = false;
 
-  const originalShow = showPage;
-  window.showPage = function(id) {
-    originalShow(id);
-    document.getElementById('main-header').style.display =
-      innerPages.includes(id) ? 'flex' : 'none';
-  };
+// ── Challenge config ────────────────────────────────────────
+const challengeConfig = {
+  heatFlux: {
+    title:'Heat Flux Challenge', desc:'Use: q = k(T₁ − T₂) / L',
+    fields:[
+      {id:'k', label:'Thermal Conductivity k (W/m·K)'},
+      {id:'t1',label:'Hot Side Temperature T₁ (°C)'},
+      {id:'t2',label:'Cold Side Temperature T₂ (°C)'},
+      {id:'L', label:'Thickness L (m)'},
+    ],
+    calc: v => (v.k*(v.t1-v.t2))/v.L,
+    unit:'W/m²'
+  },
+  heatRate: {
+    title:'Rate of Heat Flow Challenge', desc:'Use: Q = kA(T₁ − T₂) / L',
+    fields:[
+      {id:'k', label:'Thermal Conductivity k (W/m·K)'},
+      {id:'A', label:'Area A (m²)'},
+      {id:'t1',label:'Hot Side Temperature T₁ (°C)'},
+      {id:'t2',label:'Cold Side Temperature T₂ (°C)'},
+      {id:'L', label:'Thickness L (m)'},
+    ],
+    calc: v => (v.k*v.A*(v.t1-v.t2))/v.L,
+    unit:'W'
+  },
+  conductivity: {
+    title:'Thermal Conductivity Challenge', desc:'Use: k = QL / A(T₁ − T₂)',
+    fields:[
+      {id:'Q', label:'Heat Flow Rate Q (W)'},
+      {id:'A', label:'Area A (m²)'},
+      {id:'t1',label:'Hot Side Temperature T₁ (°C)'},
+      {id:'t2',label:'Cold Side Temperature T₂ (°C)'},
+      {id:'L', label:'Thickness L (m)'},
+    ],
+    calc: v => (v.Q*v.L)/(v.A*(v.t1-v.t2)),
+    unit:'W/m·K'
+  },
+  tempPoint: {
+    title:'Temperature at a Point Challenge', desc:'Use: T(x) = T₁ − [(T₁ − T₂)x/L]',
+    fields:[
+      {id:'t1',label:'Left Temperature T₁ (°C)'},
+      {id:'t2',label:'Right Temperature T₂ (°C)'},
+      {id:'x', label:'Distance x from hot end (m)'},
+      {id:'L', label:'Total Length L (m)'},
+    ],
+    calc: v => v.t1 - ((v.t1-v.t2)*v.x/v.L),
+    unit:'°C'
+  },
+};
 
-  // Re-apply after DOMContentLoaded (app.js calls showPage internally)
-  document.addEventListener('DOMContentLoaded', () => {
-    const current = document.querySelector('.page.active');
-    if (current) {
-      document.getElementById('main-header').style.display =
-        innerPages.includes(current.id) ? 'flex' : 'none';
+// ── Page navigation ─────────────────────────────────────────
+function openPage(id) {
+  document.getElementById('main-dashboard').classList.add('hidden');
+  document.querySelectorAll('.card-page').forEach(p => p.classList.remove('active-page'));
+  const pg = document.getElementById(id);
+  if (pg) { pg.classList.add('active-page'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+function goBack() {
+  document.querySelectorAll('.card-page').forEach(p => p.classList.remove('active-page'));
+  document.getElementById('main-dashboard').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelectorAll('.section-card').forEach(card => {
+  card.addEventListener('click', () => openPage(card.getAttribute('data-target')));
+});
+
+// ── Profile popup ───────────────────────────────────────────
+function toggleProfile(e) {
+  e.stopPropagation();
+  document.getElementById('profilePopup').classList.toggle('open');
+}
+
+document.addEventListener('click', () => {
+  document.getElementById('profilePopup').classList.remove('open');
+});
+
+function updateProfilePopup() {
+  document.getElementById('pp-score').textContent     = `${score} / 40`;
+  document.getElementById('pp-completed').textContent = `${completedChallenges.length} / 4 Challenges`;
+  document.getElementById('pp-pretest').textContent   = pretestDone  ? 'Submitted ✔' : 'Not taken';
+  document.getElementById('pp-posttest').textContent  = posttestDone ? 'Submitted ✔' : 'Not taken';
+}
+
+// ── Live rod simulation ─────────────────────────────────────
+function tempToColor(t, tMin, tMax) {
+  const n = Math.max(0, Math.min(1, (t - tMin) / (tMax - tMin || 1)));
+  const r = Math.round(220*n + 30);
+  const g = Math.round(80*(1-Math.abs(n-0.5)*2));
+  const b = Math.round(220*(1-n) + 20);
+  return `rgb(${r},${g},${b})`;
+}
+
+function updateLiveSim() {
+  const t1 = parseFloat(document.getElementById('sl-t1').value);
+  const t2 = parseFloat(document.getElementById('sl-t2').value);
+  const L  = parseFloat(document.getElementById('sl-L').value) / 10;
+  const k  = parseFloat(document.getElementById('sl-k').value);
+
+  document.getElementById('lbl-t1').textContent = `${t1} °C`;
+  document.getElementById('lbl-t2').textContent = `${t2} °C`;
+  document.getElementById('lbl-L').textContent  = `${L.toFixed(1)} m`;
+  document.getElementById('lbl-k').textContent  = `${k} W/m·K`;
+  document.getElementById('re-t1').textContent  = `${t1}°C`;
+  document.getElementById('re-t2').textContent  = `${t2}°C`;
+
+  // Calculations
+  const A    = 0.01;
+  const flux = (k * (t1 - t2)) / L;
+  const rate = flux * A;
+  const tmid = t1 - ((t1 - t2) * 0.5);
+
+  document.getElementById('lr-flux').textContent = flux.toFixed(1);
+  document.getElementById('lr-rate').textContent = rate.toFixed(2);
+  document.getElementById('lr-tmid').textContent = tmid.toFixed(1);
+
+  // Draw rod on canvas
+  drawRod(t1, t2);
+}
+
+function drawRod(t1, t2) {
+  const canvas = document.getElementById('rodCanvas');
+  if (!canvas) return;
+  const ctx    = canvas.getContext('2d');
+  const W      = canvas.offsetWidth;
+  const H      = canvas.height;
+  canvas.width = W;
+
+  const segments = 120;
+  const sw = W / segments;
+  const tMin = Math.min(t1, t2);
+  const tMax = Math.max(t1, t2);
+
+  for (let i = 0; i < segments; i++) {
+    const t = t1 + (t2 - t1) * (i / (segments - 1));
+    ctx.fillStyle = tempToColor(t, tMin, tMax);
+    ctx.fillRect(i * sw, 0, sw + 1, H);
+  }
+
+  // Temperature labels on rod
+  ctx.font = 'bold 12px Segoe UI';
+  ctx.textAlign = 'center';
+  for (let i = 0; i <= 4; i++) {
+    const x = (W / 4) * i;
+    const t = t1 + (t2 - t1) * (i / 4);
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillRect(x - 22, H/2 - 10, 44, 20);
+    ctx.fillStyle = '#1f2d3d';
+    ctx.fillText(`${t.toFixed(0)}°C`, x, H/2 + 4);
+  }
+}
+
+// Init live simulation on page load
+window.addEventListener('load', () => {
+  updateLiveSim();
+  // redraw rod if simulation page is opened
+  const obs = new MutationObserver(() => {
+    if (document.getElementById('page-simulation').classList.contains('active-page')) {
+      setTimeout(updateLiveSim, 50);
     }
   });
+  obs.observe(document.getElementById('page-simulation'), {attributes:true});
+});
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('page-simulation').classList.contains('active-page')) {
+    updateLiveSim();
+  }
+});
+
+// ── Challenge modals ─────────────────────────────────────────
+function openChallenge(type) {
+  currentChallenge = type;
+  const cfg = challengeConfig[type];
+  document.getElementById('challengeName').textContent    = cfg.title.replace(' Challenge','');
+  document.getElementById('inputModalTitle').textContent  = cfg.title;
+  document.getElementById('inputModalDesc').textContent   = cfg.desc;
+
+  let html = '';
+  cfg.fields.forEach(f => {
+    html += `<div class="input-group">
+      <label>${f.label}</label>
+      <input type="number" id="field_${f.id}" placeholder="Enter value" step="any">
+    </div>`;
+  });
+  document.getElementById('dynamicInputs').innerHTML = html;
+  openModal('inputModal');
+}
+
+function prepareAnswerStep() {
+  const cfg  = challengeConfig[currentChallenge];
+  const vals = {};
+  let   ok   = true;
+
+  cfg.fields.forEach(f => {
+    const v = parseFloat(document.getElementById(`field_${f.id}`).value);
+    if (isNaN(v)) ok = false;
+    vals[f.id] = v;
+  });
+
+  if (!ok) { alert('Please fill in all input values.'); return; }
+
+  correctAnswer = cfg.calc(vals);
+  closeModal('inputModal');
+
+  document.getElementById('studentAnswer').value    = '';
+  document.getElementById('resultBanner').style.display = 'none';
+  document.getElementById('answerLabel').textContent = `Your Answer (${cfg.unit})`;
+  document.getElementById('answerDesc').textContent  = `Apply the formula and enter your result in ${cfg.unit}.`;
+
+  openModal('answerModal');
+}
+
+function checkStudentAnswer() {
+  const val = parseFloat(document.getElementById('studentAnswer').value);
+  const banner = document.getElementById('resultBanner');
+
+  if (isNaN(val)) {
+    banner.style.display = 'block';
+    banner.className = 'result-banner result-error';
+    banner.textContent = 'Please enter a numeric answer.';
+    return;
+  }
+
+  const tol = Math.max(Math.abs(correctAnswer) * 0.01, 0.01);
+  const ok  = Math.abs(val - correctAnswer) <= tol;
+
+  if (ok) {
+    banner.style.display = 'block';
+    banner.className = 'result-banner result-success';
+    banner.textContent = `✔ Correct! Answer = ${correctAnswer.toFixed(3)} ${challengeConfig[currentChallenge].unit}`;
+
+    if (!completedChallenges.includes(currentChallenge)) {
+      completedChallenges.push(currentChallenge);
+      score += 10;
+      document.getElementById(`card-${currentChallenge}`).classList.add('done-card');
+    }
+
+    updateScoreBoard();
+    updateProfilePopup();
+
+    setTimeout(() => {
+      closeModal('answerModal');
+      if (completedChallenges.length === 4) {
+        setTimeout(() => alert('🎉 Excellent! You completed all 4 challenges. Proceed to the Posttest!'), 300);
+      }
+    }, 1600);
+
+  } else {
+    banner.style.display = 'block';
+    banner.className = 'result-banner result-error';
+    banner.textContent = `✗ Not correct. Expected ≈ ${correctAnswer.toFixed(3)} ${challengeConfig[currentChallenge].unit}. Try again!`;
+  }
+}
+
+function updateScoreBoard() {
+  document.getElementById('scoreValue').textContent    = score;
+  document.getElementById('completedValue').textContent = `${completedChallenges.length} / 4`;
+  document.getElementById('progressFill').style.width  = `${(completedChallenges.length/4)*100}%`;
+}
+
+// ── Modals ───────────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ── Tests ────────────────────────────────────────────────────
+function submitTest(type) {
+  if (type === 'Pretest')  { pretestDone  = true; }
+  if (type === 'Posttest') { posttestDone = true; }
+  updateProfilePopup();
+  alert(type + ' submitted successfully! ✔');
+}
+
+// ── Feedback ─────────────────────────────────────────────────
+function submitFeedback() {
+  const name = document.getElementById('fb-name').value.trim();
+  if (!name)           return alert('Please enter your name.');
+  if (!selectedRating) return alert('Please select a star rating.');
+  alert(`Thank you, ${name}! Your feedback has been recorded. ⭐`.repeat(selectedRating > 0 ? 1 : 0));
+  goBack();
+}
+
+// ── Star rating ──────────────────────────────────────────────
+const stars = document.querySelectorAll('#starRating .fa-star');
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    selectedRating = parseInt(this.getAttribute('data-val'));
+    stars.forEach((s,i) => s.classList.toggle('active', i < selectedRating));
+  });
+  star.addEventListener('mouseover', function() {
+    const v = parseInt(this.getAttribute('data-val'));
+    stars.forEach((s,i) => s.classList.toggle('active', i < v));
+  });
+  star.addEventListener('mouseout', function() {
+    stars.forEach((s,i) => s.classList.toggle('active', i < selectedRating));
+  });
+});
 </script>
 
 </body>
