@@ -20,13 +20,12 @@
     }
 
     /* College bar */
-    .college-bar {
-      background:linear-gradient(135deg,#0d1b2a,#162030);
-      padding:8px 24px;
-      display:flex; align-items:center; gap:14px;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
-
+     .college-bar {
+    background:linear-gradient(135deg,#0d1b2a,#162030);
+    padding:8px 24px;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
     .college-bar img {
       width:48px; height:48px; border-radius:10px;
       object-fit:contain; background:#fff; padding:4px;
@@ -43,9 +42,11 @@
 
     /* Main header row */
     .header-container {
-      display:flex; justify-content:center;
-      align-items:center; padding:12px 24px; gap:16px;
-    }
+     display:flex; justify-content:center;
+     align-items:center; padding:12px 24px; gap:16px;
+     flex-direction:column;
+     text-align:center;
+   }
 
     .logo-section { display:flex; align-items:center; gap:18px; }
 
@@ -410,8 +411,11 @@
   </div>
 
   <!-- Main header -->
-  <div class="container header-container">
-    <div class="logo-section">
+<div class="header-container">
+
+  <!-- Profile button top right fixed -->
+  <div style="position:fixed; top:16px; right:24px; z-index:999;">
+    <div class="user-btn" onclick="toggleProfile(event)">
       <div class="logo-box">🔥</div>
       <div class="title-group">
         <h1>Virtual Labs</h1>
