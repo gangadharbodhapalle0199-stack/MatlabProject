@@ -37,10 +37,6 @@
       min-height: 100vh;
     }
 
-    /* ──────────────────────────────────────
-       HEADER — three-zone layout
-       LEFT: (spacer) | CENTER: branding | RIGHT: auth
-    ────────────────────────────────────── */
     header {
       background: linear-gradient(135deg, var(--navy), var(--navy-mid));
       box-shadow: 0 4px 20px rgba(0,0,0,0.22);
@@ -49,7 +45,6 @@
       z-index: 200;
     }
 
-    /* College bar */
     .college-bar {
       background: linear-gradient(90deg, #0a1824, #0d1f35, #0a1824);
       border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -70,20 +65,9 @@
       flex-shrink: 0;
     }
 
-    .college-bar .clg-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: 0.2px;
-    }
+    .college-bar .clg-name { font-size: 14px; font-weight: 600; color: #fff; letter-spacing: 0.2px; }
+    .college-bar .clg-sub  { font-size: 11px; color: #7fa8c6; margin-top: 1px; }
 
-    .college-bar .clg-sub {
-      font-size: 11px;
-      color: #7fa8c6;
-      margin-top: 1px;
-    }
-
-    /* Main header row — three columns */
     .header-main {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -92,7 +76,6 @@
       gap: 12px;
     }
 
-    /* Center brand */
     .brand-center {
       display: flex;
       align-items: center;
@@ -111,22 +94,9 @@
       flex-shrink: 0;
     }
 
-    .brand-text h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      font-weight: 400;
-      color: #fff;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
+    .brand-text h1 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; color: #fff; line-height: 1.2; white-space: nowrap; }
+    .brand-text p  { font-size: 11px; color: #7ec8e8; white-space: nowrap; }
 
-    .brand-text p {
-      font-size: 11px;
-      color: #7ec8e8;
-      white-space: nowrap;
-    }
-
-    /* Right auth zone */
     .auth-zone {
       display: flex;
       align-items: center;
@@ -136,95 +106,60 @@
     }
 
     .btn-login {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
+      display: inline-flex; align-items: center; gap: 7px;
       border: 1.5px solid rgba(255,255,255,0.3);
       color: #e8f3fb;
       background: rgba(255,255,255,0.07);
       padding: 8px 18px;
       border-radius: 50px;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 13px; font-weight: 500;
       font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
     }
-
-    .btn-login:hover {
-      background: rgba(255,255,255,0.15);
-      border-color: rgba(255,255,255,0.5);
-    }
+    .btn-login:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5); }
 
     .btn-register {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
+      display: inline-flex; align-items: center; gap: 7px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      border: none;
+      color: #fff; border: none;
       padding: 9px 20px;
       border-radius: 50px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 13px; font-weight: 600;
       font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 14px rgba(59,158,221,0.4);
-      white-space: nowrap;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(59,158,221,0.4); white-space: nowrap;
     }
+    .btn-register:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(59,158,221,0.55); }
 
-    .btn-register:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(59,158,221,0.55);
-    }
-
-    /* Profile dropdown */
-    .profile-zone {
-      position: relative;
-    }
+    .profile-zone { position: relative; }
 
     .profile-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       background: rgba(255,255,255,0.1);
       border: 1.5px solid rgba(255,255,255,0.25);
-      color: #fff;
-      padding: 7px 14px;
+      color: #fff; padding: 7px 14px;
       border-radius: 50px;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 13px; font-weight: 500;
       font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.2s;
+      cursor: pointer; transition: all 0.2s;
     }
-
     .profile-btn:hover { background: rgba(255,255,255,0.18); }
 
     .profile-avatar-sm {
-      width: 28px; height: 28px;
-      border-radius: 50%;
+      width: 28px; height: 28px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: flex; align-items: center; justify-content: center;
       font-size: 13px;
     }
 
     .profile-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      background: #fff;
-      border-radius: var(--rad-lg);
+      display: none; position: absolute;
+      top: calc(100% + 10px); right: 0;
+      background: #fff; border-radius: var(--rad-lg);
       box-shadow: 0 16px 48px rgba(0,0,0,0.18);
-      width: 290px;
-      border: 1px solid var(--border);
-      animation: dropDown 0.2s ease;
-      z-index: 500;
+      width: 290px; border: 1px solid var(--border);
+      animation: dropDown 0.2s ease; z-index: 500;
     }
-
     .profile-dropdown.open { display: block; }
 
     @keyframes dropDown {
@@ -235,17 +170,14 @@
     .pd-head {
       background: linear-gradient(135deg, var(--navy), var(--navy-lit));
       border-radius: var(--rad-lg) var(--rad-lg) 0 0;
-      padding: 20px;
-      text-align: center;
+      padding: 20px; text-align: center;
     }
 
     .pd-avatar {
-      width: 58px; height: 58px;
-      border-radius: 50%;
+      width: 58px; height: 58px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 26px;
-      margin-bottom: 10px;
+      font-size: 26px; margin-bottom: 10px;
       box-shadow: 0 4px 14px rgba(59,158,221,0.4);
     }
 
@@ -256,20 +188,13 @@
 
     .pd-row {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 9px 0;
-      border-bottom: 1px solid #eef3f8;
-      font-size: 13px;
+      padding: 9px 0; border-bottom: 1px solid #eef3f8; font-size: 13px;
     }
-
     .pd-row:last-child { border: none; }
     .pd-label { color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
     .pd-val   { font-weight: 700; color: var(--text); font-size: 14px; }
 
-    .pd-badge {
-      display: inline-block; padding: 3px 10px;
-      border-radius: 20px; font-size: 11px; font-weight: 700;
-      background: #d4edda; color: #155724;
-    }
+    .pd-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #d4edda; color: #155724; }
 
     .pd-logout {
       width: 100%; margin-top: 10px;
@@ -280,12 +205,8 @@
       font-family: 'DM Sans', sans-serif;
       cursor: pointer; transition: background 0.2s;
     }
-
     .pd-logout:hover { background: #fce4e0; }
 
-    /* ──────────────────────────────────────
-       MAIN CONTENT
-    ────────────────────────────────────── */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
     main { padding-top: 28px; padding-bottom: 16px; }
@@ -304,15 +225,9 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .content-header h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 28px; font-weight: 400;
-      color: var(--text);
-    }
+    .content-header h2 { font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; color: var(--text); }
+    .content-header p  { color: var(--muted); margin-top: 5px; font-size: 14px; }
 
-    .content-header p { color: var(--muted); margin-top: 5px; font-size: 14px; }
-
-    /* Section cards grid */
     .aim-sections {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -329,18 +244,11 @@
       transition: all 0.28s ease;
       box-shadow: 0 4px 14px rgba(59,158,221,0.07);
     }
+    .section-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 14px 28px rgba(59,158,221,0.16); }
+    .section-card i  { font-size: 30px; color: var(--accent); margin-bottom: 12px; display: block; }
+    .section-card h3 { font-size: 16px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
+    .section-card p  { font-size: 12px; color: var(--muted); }
 
-    .section-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--accent);
-      box-shadow: 0 14px 28px rgba(59,158,221,0.16);
-    }
-
-    .section-card i   { font-size: 30px; color: var(--accent); margin-bottom: 12px; display: block; }
-    .section-card h3  { font-size: 16px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
-    .section-card p   { font-size: 12px; color: var(--muted); }
-
-    /* ── Pages ── */
     .card-page { display: none; animation: fadeUp 0.3s ease; }
     .card-page.active-page { display: block; }
     #main-dashboard.hidden { display: none; }
@@ -359,7 +267,6 @@
       border-radius: var(--rad-sm); cursor: pointer;
       margin-bottom: 22px; transition: all 0.22s;
     }
-
     .back-btn:hover { transform: translateX(-3px); box-shadow: 0 6px 14px rgba(13,31,53,0.22); }
 
     .card-page-header {
@@ -367,7 +274,6 @@
       padding-bottom: 14px; margin-bottom: 22px;
       border-bottom: 2px solid #deedf8;
     }
-
     .card-page-header i  { font-size: 30px; color: var(--accent); }
     .card-page-header h2 { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; color: var(--text); }
     .card-page-header p  { font-size: 13px; color: var(--muted); }
@@ -378,31 +284,452 @@
       border-radius: var(--rad-md);
       padding: 24px; line-height: 1.8;
     }
-
     .page-content-box h4 { color: var(--text); margin-bottom: 8px; font-size: 17px; margin-top: 20px; }
     .page-content-box h4:first-child { margin-top: 0; }
     .page-content-box p, .page-content-box li { color: #4e5d6c; font-size: 14px; }
     .page-content-box ul { margin-left: 22px; }
 
-    /* Video */
-    .video-wrap {
-      margin: 20px 0; border-radius: var(--rad-md); overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      position: relative; padding-top: 56.25%; background: #000;
+    /* ═══════════════════════════════════════════
+       QUIZ VIDEO PLAYER  
+    ═══════════════════════════════════════════ */
+    .qvp-wrapper {
+      margin: 24px 0;
+      border-radius: var(--rad-lg);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(13,31,53,0.18);
+      border: 2px solid var(--border);
+      background: #000;
     }
 
-    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .qvp-header {
+      background: linear-gradient(135deg, var(--navy), var(--navy-lit));
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-    .video-label { font-size: 12px; color: var(--muted); margin-top: 8px; display: flex; align-items: center; gap: 6px; }
-    .video-label i { color: #e74c3c; }
+    .qvp-header-left {
+      display: flex; align-items: center; gap: 10px;
+    }
 
-    /* MCQ */
+    .qvp-header-left .qvp-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+
+    .qvp-header-left h4 {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .qvp-header-left p {
+      color: #7ec8e8;
+      font-size: 11px;
+    }
+
+    .qvp-q-badge {
+      background: rgba(245,197,24,0.2);
+      border: 1px solid rgba(245,197,24,0.4);
+      color: #f5c518;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Video area */
+    .qvp-video-area {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+
+    .qvp-video-area iframe,
+    .qvp-video-area video {
+      width: 100%; height: 100%;
+      display: block;
+      border: none;
+    }
+
+    /* ── Quiz popup overlay ── */
+    .qvp-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 20, 36, 0.92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .qvp-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .qvp-popup {
+      background: #fff;
+      border-radius: var(--rad-lg);
+      width: 90%;
+      max-width: 520px;
+      overflow: hidden;
+      transform: scale(0.92) translateY(16px);
+      transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+
+    .qvp-overlay.active .qvp-popup {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Popup header bar */
+    .qvp-popup-head {
+      background: linear-gradient(135deg, var(--navy), var(--navy-lit));
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .qvp-popup-head-left {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .qvp-q-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(245,197,24,0.2);
+      border: 1.5px solid rgba(245,197,24,0.5);
+      display: flex; align-items: center; justify-content: center;
+      color: #f5c518;
+      font-size: 16px;
+    }
+
+    .qvp-popup-head h3 {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .qvp-popup-head p {
+      color: #7ec8e8;
+      font-size: 11px;
+      margin-top: 1px;
+    }
+
+    .qvp-status-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .qvp-status-pill.trying {
+      background: rgba(245,197,24,0.2);
+      color: #f5c518;
+      border: 1px solid rgba(245,197,24,0.4);
+    }
+
+    .qvp-status-pill.correct {
+      background: rgba(26,188,156,0.2);
+      color: #1abc9c;
+      border: 1px solid rgba(26,188,156,0.4);
+    }
+
+    /* Popup body */
+    .qvp-popup-body {
+      padding: 22px 20px 20px;
+    }
+
+    .qvp-question-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* Options */
+    .qvp-options {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .qvp-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--rad-md);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      text-align: left;
+      width: 100%;
+    }
+
+    .qvp-opt:hover:not(:disabled) {
+      background: #eef7ff;
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .qvp-opt-letter {
+      min-width: 30px; height: 30px;
+      border-radius: 8px;
+      background: #deedf8;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    .qvp-opt.correct-ans {
+      background: #eafaf1;
+      border-color: #1abc9c;
+    }
+    .qvp-opt.correct-ans .qvp-opt-letter {
+      background: #1abc9c;
+      color: #fff;
+    }
+
+    .qvp-opt.wrong-ans {
+      background: #fff3f1;
+      border-color: #e74c3c;
+      animation: shake 0.4s ease;
+    }
+    .qvp-opt.wrong-ans .qvp-opt-letter {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-5px); }
+      80%      { transform: translateX(5px); }
+    }
+
+    /* Feedback strip */
+    .qvp-feedback {
+      border-radius: var(--rad-sm);
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .qvp-feedback.show { display: block; }
+    .qvp-feedback.ok  { background: #eafaf1; border: 1px solid #a9dfbf; color: #1e8449; }
+    .qvp-feedback.err { background: #fff3f1; border: 1px solid #f5b7b1; color: #c0392b; }
+
+    /* Hint box */
+    .qvp-hint {
+      background: #fffbea;
+      border: 1px solid #f9e79f;
+      border-radius: var(--rad-sm);
+      padding: 11px 14px;
+      font-size: 13px;
+      color: #7d6608;
+      display: none;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+    .qvp-hint.show { display: flex; gap: 10px; align-items: flex-start; }
+    .qvp-hint i { color: #f39c12; flex-shrink: 0; margin-top: 2px; }
+
+    /* Attempt counter */
+    .qvp-attempts {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: none;
+    }
+    .qvp-attempts.show { display: block; }
+    .qvp-attempts span { color: #e74c3c; font-weight: 700; }
+
+    /* Continue button */
+    .qvp-continue {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      border: none;
+      border-radius: var(--rad-sm);
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      width: 100%;
+      display: none;
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+    .qvp-continue:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(59,158,221,0.35); }
+    .qvp-continue.show  { display: block; }
+
+    /* ── Timeline / progress bar ── */
+    .qvp-timeline {
+      background: var(--navy);
+      padding: 12px 18px 14px;
+    }
+
+    .qvp-prog-wrap {
+      position: relative;
+      height: 6px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .qvp-prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* Question dot markers */
+    .qvp-marker {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #f5c518;
+      border: 2px solid var(--navy);
+      cursor: pointer;
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+    .qvp-marker:hover { transform: translate(-50%, -50%) scale(1.5); }
+    .qvp-marker.done  { background: var(--accent2); }
+
+    .qvp-marker-tooltip {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .qvp-marker:hover .qvp-marker-tooltip { opacity: 1; }
+
+    /* Controls row */
+    .qvp-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qvp-ctrl {
+      background: none; border: none;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer; padding: 4px;
+      display: flex; align-items: center;
+      transition: color 0.2s;
+      font-size: 18px;
+    }
+    .qvp-ctrl:hover { color: #fff; }
+
+    .qvp-time {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      font-variant-numeric: tabular-nums;
+      margin-left: auto;
+    }
+
+    /* Question counter chips */
+    .qvp-q-chips {
+      display: flex;
+      gap: 6px;
+    }
+
+    .qvp-chip {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .qvp-chip.done {
+      background: rgba(26,188,156,0.3);
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .qvp-chip.current {
+      background: rgba(245,197,24,0.3);
+      border-color: #f5c518;
+      color: #f5c518;
+      animation: pulse-chip 1s ease infinite;
+    }
+
+    @keyframes pulse-chip {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245,197,24,0.4); }
+      50%       { box-shadow: 0 0 0 5px rgba(245,197,24,0); }
+    }
+
+    /* iframe click blocker (needed to detect timeupdate on YouTube) */
+    .qvp-click-shield {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: none;
+    }
+
+    /* Note about YouTube restriction */
+    .qvp-note {
+      background: #fffbea;
+      border: 1px solid #f9e79f;
+      border-radius: var(--rad-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #7d6608;
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .qvp-note i { color: #f39c12; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── MCQ styles ── */
     .mcq-question {
       background: #fff; border: 1px solid var(--border);
       border-radius: var(--rad-md); padding: 18px; margin-bottom: 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-
     .mcq-question p { font-weight: 600; margin-bottom: 12px; color: var(--text); font-size: 15px; }
     .mcq-option { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.18s; font-size: 14px; color: var(--text); }
     .mcq-option:hover { background: #eef7ff; }
@@ -415,19 +742,15 @@
       font-family: 'DM Sans', sans-serif;
       border-radius: var(--rad-sm); cursor: pointer; transition: all 0.22s;
     }
-
     .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(59,158,221,0.28); }
 
-    /* ── Simulation ── */
     .sim-topbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
 
     .top-stat {
       background: linear-gradient(180deg, var(--surface), #e9f4ff);
       border-radius: var(--rad-md); padding: 16px; text-align: center;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 12px rgba(59,158,221,0.07);
+      border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(59,158,221,0.07);
     }
-
     .top-stat h3 { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
     .top-stat p  { font-size: 26px; font-weight: 700; color: var(--text); font-family: 'DM Serif Display', serif; }
 
@@ -443,36 +766,29 @@
       border: 1px solid var(--border); box-shadow: 0 6px 18px rgba(0,0,0,0.04);
       transition: all 0.28s; position: relative; overflow: hidden;
     }
-
     .sim-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
     .sim-card:hover   { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(59,158,221,0.14); }
-    .sim-card i       { font-size: 28px; color: var(--accent); margin-bottom: 12px; display: block; }
-    .sim-card h3      { color: var(--text); font-size: 16px; margin-bottom: 6px; font-weight: 600; }
-    .sim-card p       { font-size: 13px; color: var(--muted); min-height: 48px; margin-bottom: 14px; }
-
+    .sim-card i  { font-size: 28px; color: var(--accent); margin-bottom: 12px; display: block; }
+    .sim-card h3 { color: var(--text); font-size: 16px; margin-bottom: 6px; font-weight: 600; }
+    .sim-card p  { font-size: 13px; color: var(--muted); min-height: 48px; margin-bottom: 14px; }
     .sim-card button {
       background: linear-gradient(to right, var(--accent), #2e86c1);
       color: #fff; border: none; padding: 9px 14px;
       border-radius: var(--rad-sm); cursor: pointer;
       font-weight: 600; width: 100%; font-size: 14px;
-      font-family: 'DM Sans', sans-serif;
-      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif; transition: all 0.2s;
     }
-
     .sim-card button:hover { opacity: 0.9; }
-
     .sim-card.done-card::after {
       content: "✔ Done"; position: absolute; top: 16px; right: 14px;
       background: #d4edda; color: #155724; font-size: 11px;
       font-weight: 700; padding: 2px 10px; border-radius: 20px;
     }
 
-    /* Live simulation */
     .live-sim-box {
       background: #f0f7ff; border: 1px solid #c2d8ef;
       border-radius: var(--rad-md); padding: 22px; margin-bottom: 22px;
     }
-
     .live-sim-box h4 { font-size: 16px; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
     .live-sim-box h4 i { color: var(--accent); }
 
@@ -500,7 +816,6 @@
     .formula-box h4 { color: var(--text); margin-bottom: 10px; font-size: 16px; font-weight: 600; }
     .formula-box p  { color: #5e6d7b; margin-bottom: 6px; font-size: 14px; }
 
-    /* Contributors */
     .contributors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 12px; }
 
     .contributor-card {
@@ -508,13 +823,11 @@
       padding: 24px 16px; text-align: center;
       border: 1px solid var(--border); transition: all 0.26s;
     }
-
     .contributor-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(59,158,221,0.14); border-color: var(--accent); }
     .con-avatar { width: 58px; height: 58px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .contributor-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
     .contributor-card p  { font-size: 12px; color: var(--muted); }
 
-    /* References */
     .ref-list { list-style: none; padding: 0; }
     .ref-list li { padding: 13px 0; border-bottom: 1px solid #e8edf3; color: #4e5d6c; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; }
     .ref-list li:last-child { border-bottom: none; }
@@ -522,18 +835,15 @@
     .ref-list a  { color: var(--accent); text-decoration: none; }
     .ref-list a:hover { text-decoration: underline; }
 
-    /* Feedback */
     .feedback-form label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--text); font-size: 14px; }
     .feedback-form input,
     .feedback-form select,
     .feedback-form textarea {
       width: 100%; padding: 10px 13px;
-      border: 1px solid var(--border);
-      border-radius: var(--rad-sm); margin-bottom: 16px;
+      border: 1px solid var(--border); border-radius: var(--rad-sm); margin-bottom: 16px;
       font-size: 14px; font-family: 'DM Sans', sans-serif;
       outline: none; transition: border 0.2s; color: var(--text);
     }
-
     .feedback-form input:focus,
     .feedback-form select:focus,
     .feedback-form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,158,221,0.12); }
@@ -544,16 +854,12 @@
 
     footer { margin-top: 34px; padding: 20px 0 36px; text-align: center; color: var(--muted); font-size: 13px; }
 
-    /* ──────────────────────────────────────
-       MODALS (generic)
-    ────────────────────────────────────── */
     .modal {
       display: none; position: fixed; inset: 0;
       background: rgba(10,24,40,0.6); z-index: 800;
       align-items: center; justify-content: center;
       padding: 20px; backdrop-filter: blur(2px);
     }
-
     .modal.show { display: flex; }
 
     .modal-box {
@@ -563,7 +869,6 @@
       animation: popIn 0.22s ease; position: relative;
       max-height: 90vh; overflow-y: auto;
     }
-
     .modal-box h3 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 6px; }
     .modal-box > p { color: var(--muted); margin-bottom: 18px; font-size: 14px; }
 
@@ -584,7 +889,6 @@
       font-size: 14px; font-family: 'DM Sans', sans-serif;
       outline: none; transition: border 0.2s; color: var(--text);
     }
-
     .input-group input:focus,
     .input-group select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,158,221,0.12); }
 
@@ -598,9 +902,6 @@
     .result-success { background: #eafaf1; color: #1e8449; border: 1px solid #b8e6ca; }
     .result-error   { background: #fff3f1; color: #c0392b; border: 1px solid #f2c3bc; }
 
-    /* ──────────────────────────────────────
-       REGISTRATION FORM MODAL
-    ────────────────────────────────────── */
     #registerModal .modal-box { max-width: 560px; }
 
     .reg-header {
@@ -610,51 +911,22 @@
       padding: 28px 28px 24px;
       text-align: center;
     }
-
-    .reg-logo {
-      width: 52px; height: 52px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 24px; margin-bottom: 12px;
-      box-shadow: 0 4px 14px rgba(59,158,221,0.4);
-    }
-
+    .reg-logo { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(59,158,221,0.4); }
     .reg-header h3 { font-family: 'DM Serif Display', serif; font-size: 21px; font-weight: 400; color: #fff; }
     .reg-header p  { font-size: 12px; color: #7ec8e8; margin-top: 3px; }
-
     .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
-
-    .reg-divider {
-      display: flex; align-items: center; gap: 10px;
-      margin: 6px 0 16px; color: var(--muted); font-size: 12px;
-    }
-
-    .reg-divider::before, .reg-divider::after {
-      content: ""; flex: 1; height: 1px; background: var(--border);
-    }
-
+    .reg-divider { display: flex; align-items: center; gap: 10px; margin: 6px 0 16px; color: var(--muted); font-size: 12px; }
+    .reg-divider::before, .reg-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
     .reg-terms { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
     .reg-terms a { color: var(--accent); text-decoration: none; }
-
     .reg-switch { text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
     .reg-switch a { color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: none; }
 
-    /* Login modal */
     #loginModal .modal-box { max-width: 420px; }
-    .login-header {
-      background: linear-gradient(135deg, var(--navy), var(--navy-lit));
-      border-radius: var(--rad-md) var(--rad-md) 0 0;
-      margin: -28px -28px 24px;
-      padding: 28px 28px 22px;
-      text-align: center;
-    }
-
-    .login-header .reg-logo { }
+    .login-header { background: linear-gradient(135deg, var(--navy), var(--navy-lit)); border-radius: var(--rad-md) var(--rad-md) 0 0; margin: -28px -28px 24px; padding: 28px 28px 22px; text-align: center; }
     .login-header h3 { font-family: 'DM Serif Display', serif; font-size: 21px; font-weight: 400; color: #fff; }
     .login-header p  { font-size: 12px; color: #7ec8e8; margin-top: 3px; }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 860px) {
       .header-main { grid-template-columns: 1fr; grid-template-rows: auto auto; padding: 12px 18px; gap: 10px; }
       .brand-center { grid-column: 1; }
@@ -664,7 +936,6 @@
       .live-result-row { grid-template-columns: 1fr 1fr; }
       .reg-grid     { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 600px) {
       .college-bar .clg-name { font-size: 12px; }
       .aim-sections, .sim-cards { grid-template-columns: 1fr 1fr; }
@@ -672,7 +943,6 @@
       .brand-text h1 { font-size: 18px; }
       .content { padding: 20px 16px; }
     }
-
     @media (max-width: 400px) {
       .aim-sections, .sim-cards, .contributors-grid { grid-template-columns: 1fr; }
       .live-result-row { grid-template-columns: 1fr; }
@@ -683,31 +953,17 @@
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════════
-     HEADER
-════════════════════════════════════════════════ -->
 <header>
-
-  <!-- College bar -->
   <div class="college-bar">
-    <img
-      src="https://raw.githubusercontent.com/dineshkute90/virtual_lab_LAUC/main/pccoe.png"
-      alt="PCCOE Logo"
-      onerror="this.style.display='none'"
-    />
+    <img src="https://raw.githubusercontent.com/dineshkute90/virtual_lab_LAUC/main/pccoe.png" alt="PCCOE Logo" onerror="this.style.display='none'"/>
     <div>
       <div class="clg-name">Pimpri Chinchwad College of Engineering, Pune</div>
       <div class="clg-sub">Department of Applied Sciences &amp; Humanities &nbsp;|&nbsp; Affiliated to SPPU</div>
     </div>
   </div>
 
-  <!-- Main header: left spacer | center brand | right auth -->
   <div class="header-main">
-
-    <!-- Left spacer (invisible, keeps center centered) -->
     <div></div>
-
-    <!-- CENTER — branding -->
     <div class="brand-center">
       <div class="brand-icon">🔥</div>
       <div class="brand-text">
@@ -715,27 +971,17 @@
         <p>One Dimensional Heat Conduction — Interactive Portal</p>
       </div>
     </div>
-
-    <!-- RIGHT — auth buttons / profile -->
     <div class="auth-zone" id="authZone">
-      <!-- Shown when logged out -->
       <div id="authButtons">
-        <button class="btn-login" onclick="openModal('loginModal')">
-          <i class="fas fa-sign-in-alt"></i> Login
-        </button>
-        <button class="btn-register" onclick="openModal('registerModal')">
-          <i class="fas fa-user-plus"></i> Register
-        </button>
+        <button class="btn-login" onclick="openModal('loginModal')"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button class="btn-register" onclick="openModal('registerModal')"><i class="fas fa-user-plus"></i> Register</button>
       </div>
-
-      <!-- Shown when logged in -->
       <div id="profileZone" class="profile-zone" style="display:none;">
         <button class="profile-btn" onclick="toggleProfile(event)">
           <div class="profile-avatar-sm">👨‍🎓</div>
           <span id="profileName">Student</span>
           <i class="fas fa-chevron-down" style="font-size:10px;color:#90c4e8;"></i>
         </button>
-
         <div class="profile-dropdown" id="profileDropdown">
           <div class="pd-head">
             <div class="pd-avatar">👨‍🎓</div>
@@ -743,42 +989,20 @@
             <p>Virtual Lab Portal</p>
           </div>
           <div class="pd-body">
-            <div class="pd-row">
-              <span class="pd-label">Status</span>
-              <span class="pd-badge">✔ Active Session</span>
-            </div>
-            <div class="pd-row">
-              <span class="pd-label">Score</span>
-              <span class="pd-val" id="pp-score">0 / 40</span>
-            </div>
-            <div class="pd-row">
-              <span class="pd-label">Completed</span>
-              <span class="pd-val" id="pp-completed">0 / 4 Challenges</span>
-            </div>
-            <div class="pd-row">
-              <span class="pd-label">Pretest</span>
-              <span class="pd-val" id="pp-pretest">Not taken</span>
-            </div>
-            <div class="pd-row">
-              <span class="pd-label">Posttest</span>
-              <span class="pd-val" id="pp-posttest">Not taken</span>
-            </div>
-            <div class="pd-row">
-              <span class="pd-label">Institute</span>
-              <span style="font-size:12px;color:var(--text);font-weight:600;">PCCOE, Pune</span>
-            </div>
+            <div class="pd-row"><span class="pd-label">Status</span><span class="pd-badge">✔ Active Session</span></div>
+            <div class="pd-row"><span class="pd-label">Score</span><span class="pd-val" id="pp-score">0 / 40</span></div>
+            <div class="pd-row"><span class="pd-label">Completed</span><span class="pd-val" id="pp-completed">0 / 4 Challenges</span></div>
+            <div class="pd-row"><span class="pd-label">Pretest</span><span class="pd-val" id="pp-pretest">Not taken</span></div>
+            <div class="pd-row"><span class="pd-label">Posttest</span><span class="pd-val" id="pp-posttest">Not taken</span></div>
+            <div class="pd-row"><span class="pd-label">Institute</span><span style="font-size:12px;color:var(--text);font-weight:600;">PCCOE, Pune</span></div>
             <button class="pd-logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
           </div>
         </div>
       </div>
     </div>
-
-  </div><!-- /header-main -->
+  </div>
 </header>
 
-<!-- ════════════════════════════════════════════════
-     MAIN CONTENT
-════════════════════════════════════════════════ -->
 <main class="container">
 
   <!-- DASHBOARD -->
@@ -801,7 +1025,7 @@
     </div>
   </div>
 
-  <!-- ── AIM ── -->
+  <!-- AIM -->
   <div id="page-aim" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
     <div class="card-page-header">
@@ -822,23 +1046,26 @@
     </div>
   </div>
 
-  <!-- ── THEORY ── -->
+  <!-- ═══════════════ THEORY — with Quiz Video Player ═══════════════ -->
   <div id="page-theory" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
     <div class="card-page-header">
       <i class="fas fa-book"></i>
-      <div><h2>Theory</h2><p>Background concepts, formulas and video</p></div>
+      <div><h2>Theory</h2><p>Background concepts, formulas and interactive quiz video</p></div>
     </div>
     <div class="page-content-box">
       <h4>One Dimensional Heat Conduction</h4>
       <p>When heat transfer takes place only in one direction, the process is called one dimensional heat conduction. It usually occurs through the thickness of a wall or along the length of a rod.</p>
+
       <h4>Fourier's Law</h4>
       <p>Fourier's law states that the rate of heat transfer is proportional to thermal conductivity, cross-sectional area, and temperature gradient.</p>
       <p><strong>Heat Flux:</strong> q = k (T₁ − T₂) / L</p>
       <p><strong>Rate of Heat Flow:</strong> Q = k A (T₁ − T₂) / L</p>
+
       <h4>Temperature Distribution</h4>
       <p>For a plane wall under steady-state conditions with constant thermal conductivity and no heat generation, temperature varies linearly with distance.</p>
       <p><strong>Temperature at a point x:</strong> T(x) = T₁ − [(T₁ − T₂) x / L]</p>
+
       <h4>Important Terms</h4>
       <ul>
         <li><strong>Thermal conductivity (k):</strong> ability of a material to conduct heat.</li>
@@ -846,21 +1073,128 @@
         <li><strong>Heat flow rate (Q):</strong> total heat transferred per second.</li>
         <li><strong>Steady-state conduction:</strong> temperature at each point does not change with time.</li>
       </ul>
-      <h4 style="margin-top:22px;"><i class="fas fa-play-circle" style="color:#e74c3c;"></i> Animated Explanation Video</h4>
-      <div class="video-wrap">
-       <iframe src="https://www.youtube.com/embed/QxOtVFDx0JE"
-          title="Heat Conduction Animation"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-      <div class="video-label">
-        <i class="fab fa-youtube"></i>
-        One Dimensional Heat Conduction — Animated explanation of Fourier's Law and temperature distribution
-      </div>
-    </div>
-  </div>
 
-  <!-- ── PRETEST ── -->
+      <!-- ═══════════════════════════════════════════
+           QUIZ VIDEO PLAYER
+      ═══════════════════════════════════════════ -->
+      <h4 style="margin-top:28px;"><i class="fas fa-play-circle" style="color:#e74c3c;"></i> Watch &amp; Answer — Interactive Quiz Video</h4>
+      <p style="margin-bottom:12px;">The video will <strong>auto-pause</strong> at key moments and ask you a question. Answer correctly to continue watching. Wrong answers give hints — keep trying until you get it right!</p>
+
+      <div class="qvp-wrapper" id="qvpWrapper">
+
+        <!-- Header bar -->
+        <div class="qvp-header">
+          <div class="qvp-header-left">
+            <div class="qvp-icon">🔥</div>
+            <div>
+              <h4>Heat Conduction — Quiz Video</h4>
+              <p>3 questions embedded · Must answer correctly to continue</p>
+            </div>
+          </div>
+          <div class="qvp-q-badge" id="qvpBadge">Q1 at 0:15 · Q2 at 0:35 · Q3 at 0:55</div>
+        </div>
+
+        <!-- Video area with overlay -->
+        <div class="qvp-video-area" id="qvpVideoArea">
+
+          <!-- The actual video (mp4) -->
+          <video id="qvpVideo" playsinline>
+            <!--
+              REPLACE src with your own video file.
+              Example: src="videos/heat-conduction.mp4"
+              The video below is a free sample from Wikimedia.
+            -->
+            <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.480p.vp9.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+
+          <!-- Quiz popup overlay -->
+          <div class="qvp-overlay" id="qvpOverlay">
+            <div class="qvp-popup" id="qvpPopup">
+
+              <!-- Popup header -->
+              <div class="qvp-popup-head">
+                <div class="qvp-popup-head-left">
+                  <div class="qvp-q-icon"><i class="fas fa-question"></i></div>
+                  <div>
+                    <h3 id="qvpQCounter">Question 1 of 3</h3>
+                    <p>Answer correctly to resume the video</p>
+                  </div>
+                </div>
+                <div class="qvp-status-pill trying" id="qvpStatusPill">⏸ Video Paused</div>
+              </div>
+
+              <!-- Popup body -->
+              <div class="qvp-popup-body">
+                <div class="qvp-question-text" id="qvpQText"></div>
+
+                <div class="qvp-options" id="qvpOptions"></div>
+
+                <!-- Attempt counter -->
+                <div class="qvp-attempts" id="qvpAttempts">
+                  Attempt <span id="qvpAttemptNum">1</span> — keep trying, you'll get it!
+                </div>
+
+                <!-- Hint box -->
+                <div class="qvp-hint" id="qvpHint">
+                  <i class="fas fa-lightbulb"></i>
+                  <span id="qvpHintText"></span>
+                </div>
+
+                <!-- Feedback strip -->
+                <div class="qvp-feedback" id="qvpFeedback"></div>
+
+                <!-- Continue button (shown after correct answer) -->
+                <button class="qvp-continue" id="qvpContinue" onclick="qvpResume()">
+                  <i class="fas fa-play"></i> &nbsp;Great job! Continue Watching
+                </button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /video-area -->
+
+        <!-- Timeline -->
+        <div class="qvp-timeline">
+          <div class="qvp-prog-wrap" id="qvpProgWrap">
+            <div class="qvp-prog-fill" id="qvpProgFill"></div>
+            <!-- markers injected by JS -->
+          </div>
+
+          <div class="qvp-controls">
+            <!-- Play/pause -->
+            <button class="qvp-ctrl" id="qvpPlayBtn" onclick="qvpTogglePlay()" title="Play / Pause">
+              <i class="fas fa-play" id="qvpPlayIcon"></i>
+            </button>
+
+            <!-- Volume -->
+            <button class="qvp-ctrl" id="qvpMuteBtn" onclick="qvpToggleMute()" title="Mute">
+              <i class="fas fa-volume-up" id="qvpVolIcon"></i>
+            </button>
+            <input type="range" id="qvpVolSlider" min="0" max="1" step="0.05" value="1"
+              oninput="qvpSetVol(this.value)"
+              style="width:70px;background:rgba(255,255,255,0.15);">
+
+            <!-- Question chips -->
+            <div class="qvp-q-chips" id="qvpChips"></div>
+
+            <!-- Time -->
+            <span class="qvp-time"><span id="qvpCurTime">0:00</span> / <span id="qvpDurTime">0:00</span></span>
+          </div>
+        </div>
+
+      </div><!-- /qvp-wrapper -->
+
+      <div class="qvp-note">
+        <i class="fas fa-info-circle"></i>
+        <span>
+          <strong>How to use your own video:</strong> In the HTML file, find the <code>&lt;source src="..."&gt;</code> tag inside the <code>&lt;video&gt;</code> element and replace it with the path to your <code>.mp4</code> video. Then update the <code>time</code> values in the <code>QVP_QUESTIONS</code> array to match your video's timestamps.
+        </span>
+      </div>
+
+    </div><!-- /page-content-box -->
+  </div><!-- /page-theory -->
+
+  <!-- PRETEST -->
   <div id="page-pretest" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
     <div class="card-page-header">
@@ -891,7 +1225,7 @@
     <button class="submit-btn" onclick="submitTest('Pretest')">Submit Pretest</button>
   </div>
 
-  <!-- ── SIMULATION ── -->
+  <!-- SIMULATION -->
   <div id="page-simulation" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
     <div class="card-page-header">
@@ -913,34 +1247,24 @@
     <div class="live-sim-box">
       <h4><i class="fas fa-temperature-high"></i> Live Rod Temperature Simulator</h4>
       <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Move the sliders to change temperatures and length. The rod colour and values update live in real time.</p>
-
       <div class="slider-row">
         <div class="slider-group">
           <label>Hot End Temperature T₁ <span id="lbl-t1">100 °C</span></label>
-          <input type="range" id="sl-t1" min="50" max="500" value="100"
-            style="background:linear-gradient(90deg,#e74c3c,#f39c12);"
-            oninput="updateLiveSim()">
+          <input type="range" id="sl-t1" min="50" max="500" value="100" style="background:linear-gradient(90deg,#e74c3c,#f39c12);" oninput="updateLiveSim()">
         </div>
         <div class="slider-group">
           <label>Cold End Temperature T₂ <span id="lbl-t2">30 °C</span></label>
-          <input type="range" id="sl-t2" min="0" max="100" value="30"
-            style="background:linear-gradient(90deg,#3b9edd,#1abc9c);"
-            oninput="updateLiveSim()">
+          <input type="range" id="sl-t2" min="0" max="100" value="30" style="background:linear-gradient(90deg,#3b9edd,#1abc9c);" oninput="updateLiveSim()">
         </div>
         <div class="slider-group">
           <label>Rod Length L <span id="lbl-L">1.0 m</span></label>
-          <input type="range" id="sl-L" min="1" max="10" value="10" step="1"
-            style="background:linear-gradient(90deg,#9b59b6,#8e44ad);"
-            oninput="updateLiveSim()">
+          <input type="range" id="sl-L" min="1" max="10" value="10" step="1" style="background:linear-gradient(90deg,#9b59b6,#8e44ad);" oninput="updateLiveSim()">
         </div>
         <div class="slider-group">
           <label>Thermal Conductivity k <span id="lbl-k">50 W/m·K</span></label>
-          <input type="range" id="sl-k" min="1" max="400" value="50"
-            style="background:linear-gradient(90deg,#27ae60,#1abc9c);"
-            oninput="updateLiveSim()">
+          <input type="range" id="sl-k" min="1" max="400" value="50" style="background:linear-gradient(90deg,#27ae60,#1abc9c);" oninput="updateLiveSim()">
         </div>
       </div>
-
       <div class="rod-section">
         <label>Temperature Distribution along Rod</label>
         <canvas id="rodCanvas" height="80"></canvas>
@@ -950,49 +1274,19 @@
           <span class="cold">❄ Cold End: <span id="re-t2">30°C</span></span>
         </div>
       </div>
-
       <div class="live-result-row">
-        <div class="live-result-item">
-          <div class="lri-val" id="lr-flux">—</div>
-          <div class="lri-lbl">Heat Flux q (W/m²)</div>
-        </div>
-        <div class="live-result-item">
-          <div class="lri-val" id="lr-rate">—</div>
-          <div class="lri-lbl">Heat Rate Q (W) at A=0.01 m²</div>
-        </div>
-        <div class="live-result-item">
-          <div class="lri-val" id="lr-tmid">—</div>
-          <div class="lri-lbl">Temp at Midpoint (°C)</div>
-        </div>
+        <div class="live-result-item"><div class="lri-val" id="lr-flux">—</div><div class="lri-lbl">Heat Flux q (W/m²)</div></div>
+        <div class="live-result-item"><div class="lri-val" id="lr-rate">—</div><div class="lri-lbl">Heat Rate Q (W) at A=0.01 m²</div></div>
+        <div class="live-result-item"><div class="lri-val" id="lr-tmid">—</div><div class="lri-lbl">Temp at Midpoint (°C)</div></div>
       </div>
     </div>
 
     <h4 style="font-size:17px;color:var(--text);margin-bottom:14px;font-weight:600;"><i class="fas fa-trophy" style="color:#f39c12;"></i> Calculation Challenges</h4>
     <div class="sim-cards">
-      <div class="sim-card" id="card-heatFlux">
-        <i class="fas fa-bolt"></i>
-        <h3>Heat Flux</h3>
-        <p>Calculate heat transferred per unit area using k, temperatures, and thickness.</p>
-        <button onclick="openChallenge('heatFlux')">Start Challenge</button>
-      </div>
-      <div class="sim-card" id="card-heatRate">
-        <i class="fas fa-fire"></i>
-        <h3>Rate of Heat Flow</h3>
-        <p>Find total heat transfer rate using area, k, and temperature difference.</p>
-        <button onclick="openChallenge('heatRate')">Start Challenge</button>
-      </div>
-      <div class="sim-card" id="card-conductivity">
-        <i class="fas fa-cubes"></i>
-        <h3>Thermal Conductivity</h3>
-        <p>Determine thermal conductivity from known heat transfer data and geometry.</p>
-        <button onclick="openChallenge('conductivity')">Start Challenge</button>
-      </div>
-      <div class="sim-card" id="card-tempPoint">
-        <i class="fas fa-map-marker-alt"></i>
-        <h3>Temperature at a Point</h3>
-        <p>Find temperature at a particular location along a wall under steady-state.</p>
-        <button onclick="openChallenge('tempPoint')">Start Challenge</button>
-      </div>
+      <div class="sim-card" id="card-heatFlux"><i class="fas fa-bolt"></i><h3>Heat Flux</h3><p>Calculate heat transferred per unit area using k, temperatures, and thickness.</p><button onclick="openChallenge('heatFlux')">Start Challenge</button></div>
+      <div class="sim-card" id="card-heatRate"><i class="fas fa-fire"></i><h3>Rate of Heat Flow</h3><p>Find total heat transfer rate using area, k, and temperature difference.</p><button onclick="openChallenge('heatRate')">Start Challenge</button></div>
+      <div class="sim-card" id="card-conductivity"><i class="fas fa-cubes"></i><h3>Thermal Conductivity</h3><p>Determine thermal conductivity from known heat transfer data and geometry.</p><button onclick="openChallenge('conductivity')">Start Challenge</button></div>
+      <div class="sim-card" id="card-tempPoint"><i class="fas fa-map-marker-alt"></i><h3>Temperature at a Point</h3><p>Find temperature at a particular location along a wall under steady-state.</p><button onclick="openChallenge('tempPoint')">Start Challenge</button></div>
     </div>
 
     <div class="formula-box">
@@ -1005,7 +1299,7 @@
     </div>
   </div>
 
-  <!-- ── POSTTEST ── -->
+  <!-- POSTTEST -->
   <div id="page-posttest" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
     <div class="card-page-header">
@@ -1036,13 +1330,10 @@
     <button class="submit-btn" onclick="submitTest('Posttest')">Submit Posttest</button>
   </div>
 
-  <!-- ── REFERENCES ── -->
+  <!-- REFERENCES -->
   <div id="page-references" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
-    <div class="card-page-header">
-      <i class="fas fa-book-open"></i>
-      <div><h2>References</h2><p>Books and online learning sources</p></div>
-    </div>
+    <div class="card-page-header"><i class="fas fa-book-open"></i><div><h2>References</h2><p>Books and online learning sources</p></div></div>
     <ul class="ref-list">
       <li><i class="fas fa-book"></i><div><strong>Heat and Mass Transfer</strong> — R.K. Rajput</div></li>
       <li><i class="fas fa-book"></i><div><strong>A Textbook of Heat Transfer</strong> — S.P. Sukhatme</div></li>
@@ -1052,51 +1343,25 @@
     </ul>
   </div>
 
-  <!-- ── CONTRIBUTORS ── -->
+  <!-- CONTRIBUTORS -->
   <div id="page-contributors" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
-    <div class="card-page-header">
-      <i class="fas fa-users"></i>
-      <div><h2>Contributors</h2><p>Project team members</p></div>
-    </div>
+    <div class="card-page-header"><i class="fas fa-users"></i><div><h2>Contributors</h2><p>Project team members</p></div></div>
     <div class="contributors-grid">
-      <div class="contributor-card">
-        <div class="con-avatar" style="background:linear-gradient(135deg,#3b9edd,#1abc9c);">👨‍🏫</div>
-        <h4>Prof. Guide Name</h4>
-        <p>Project Guide</p>
-      </div>
-      <div class="contributor-card">
-        <div class="con-avatar" style="background:linear-gradient(135deg,#e74c3c,#f39c12);">👨‍💻</div>
-        <h4>Your Name</h4>
-        <p>Lead Developer</p>
-      </div>
-      <div class="contributor-card">
-        <div class="con-avatar" style="background:linear-gradient(135deg,#9b59b6,#8e44ad);">👨‍🎨</div>
-        <h4>Team Member</h4>
-        <p>UI / Documentation</p>
-      </div>
-      <div class="contributor-card">
-        <div class="con-avatar" style="background:linear-gradient(135deg,#27ae60,#1abc9c);">👩‍💻</div>
-        <h4>Team Member</h4>
-        <p>Simulation &amp; Logic</p>
-      </div>
+      <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#3b9edd,#1abc9c);">👨‍🏫</div><h4>Prof. Ganesh Tarte</h4><p>Project Guide</p></div>
+      <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#e74c3c,#f39c12);">👨‍💻</div><h4>Gangadhar Bodhapalle</h4></h4><p>Lead Developer / UI / Documentation</p></div>
+      <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#9b59b6,#8e44ad);">👨‍🎨</div><h4>Sharvin Bhoje</h4><p>Simulation &amp; Logic</p></div>
+
     </div>
-    <p style="margin-top:22px;color:var(--muted);font-size:14px;">
-      <i class="fas fa-university" style="color:var(--accent);"></i>
-      &nbsp; Department of Applied Sciences &amp; Humanities, Pimpri Chinchwad College of Engineering, Pune.
-    </p>
+    <p style="margin-top:22px;color:var(--muted);font-size:14px;"><i class="fas fa-university" style="color:var(--accent);"></i> &nbsp; Department of Applied Sciences &amp; Humanities, Pimpri Chinchwad College of Engineering, Pune.</p>
   </div>
 
-  <!-- ── FEEDBACK ── -->
+  <!-- FEEDBACK -->
   <div id="page-feedback" class="content card-page">
     <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
-    <div class="card-page-header">
-      <i class="fas fa-comment-alt"></i>
-      <div><h2>Feedback</h2><p>Share your lab experience</p></div>
-    </div>
+    <div class="card-page-header"><i class="fas fa-comment-alt"></i><div><h2>Feedback</h2><p>Share your lab experience</p></div></div>
     <div class="feedback-form">
-      <label>Your Name</label>
-      <input type="text" id="fb-name" placeholder="Enter your name">
+      <label>Your Name</label><input type="text" id="fb-name" placeholder="Enter your name">
       <label>Your Rating</label>
       <div class="star-rating" id="starRating">
         <i class="fas fa-star" data-val="1"></i>
@@ -1106,13 +1371,7 @@
         <i class="fas fa-star" data-val="5"></i>
       </div>
       <label>How was the simulation?</label>
-      <select id="fb-sim">
-        <option>-- Select --</option>
-        <option>Excellent</option>
-        <option>Good</option>
-        <option>Average</option>
-        <option>Needs Improvement</option>
-      </select>
+      <select id="fb-sim"><option>-- Select --</option><option>Excellent</option><option>Good</option><option>Average</option><option>Needs Improvement</option></select>
       <label>Comments</label>
       <textarea id="fb-comments" rows="4" placeholder="Write your feedback..."></textarea>
       <button class="submit-btn" onclick="submitFeedback()">Submit Feedback</button>
@@ -1125,137 +1384,63 @@
   <p>Virtual Labs Project — One Dimensional Heat Conduction &nbsp;|&nbsp; PCCOE, Pune</p>
 </footer>
 
-<!-- ════════════════════════════════════════════════
-     LOGIN MODAL
-════════════════════════════════════════════════ -->
+<!-- LOGIN MODAL -->
 <div class="modal" id="loginModal">
   <div class="modal-box">
     <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
-
     <div class="login-header">
       <div class="reg-logo">🔥</div>
       <h3>Welcome Back</h3>
       <p>Login to your Virtual Labs account</p>
     </div>
-
-    <div class="input-group">
-      <label>Email Address</label>
-      <input type="email" id="login-email" placeholder="you@pccoepune.org">
-    </div>
-    <div class="input-group">
-      <label>Password</label>
-      <input type="password" id="login-password" placeholder="Enter your password">
-    </div>
-
+    <div class="input-group"><label>Email Address</label><input type="email" id="login-email" placeholder="you@pccoepune.org"></div>
+    <div class="input-group"><label>Password</label><input type="password" id="login-password" placeholder="Enter your password"></div>
     <div class="modal-actions">
       <button class="primary-btn" style="flex:1;" onclick="handleLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
       <button class="secondary-btn" onclick="closeModal('loginModal')">Cancel</button>
     </div>
-
     <div id="loginResult" class="result-banner"></div>
-
-    <div class="reg-switch" style="margin-top:14px;">
-      Don't have an account? <a onclick="switchToRegister()">Register here</a>
-    </div>
+    <div class="reg-switch" style="margin-top:14px;">Don't have an account? <a onclick="switchToRegister()">Register here</a></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
-     REGISTER MODAL
-════════════════════════════════════════════════ -->
+<!-- REGISTER MODAL -->
 <div class="modal" id="registerModal">
   <div class="modal-box">
     <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
-
     <div class="reg-header">
       <div class="reg-logo">🔥</div>
       <h3>Create Your Account</h3>
       <p>Join the Virtual Labs — PCCOE Portal</p>
     </div>
-
     <div class="reg-grid">
-      <div class="input-group">
-        <label>First Name <span style="color:#e74c3c;">*</span></label>
-        <input type="text" id="reg-fname" placeholder="Rahul">
-      </div>
-      <div class="input-group">
-        <label>Last Name <span style="color:#e74c3c;">*</span></label>
-        <input type="text" id="reg-lname" placeholder="Sharma">
-      </div>
+      <div class="input-group"><label>First Name <span style="color:#e74c3c;">*</span></label><input type="text" id="reg-fname" placeholder="Rahul"></div>
+      <div class="input-group"><label>Last Name <span style="color:#e74c3c;">*</span></label><input type="text" id="reg-lname" placeholder="Sharma"></div>
     </div>
-
-    <div class="input-group">
-      <label>Email Address <span style="color:#e74c3c;">*</span></label>
-      <input type="email" id="reg-email" placeholder="you@pccoepune.org">
-    </div>
-
+    <div class="input-group"><label>Email Address <span style="color:#e74c3c;">*</span></label><input type="email" id="reg-email" placeholder="you@pccoepune.org"></div>
     <div class="reg-grid">
-      <div class="input-group">
-        <label>PRN Number <span style="color:#e74c3c;">*</span></label>
-        <input type="text" id="reg-roll" placeholder="e.g. 125B1E080">
-      </div>
-      <div class="input-group">
-        <label>Academic Year</label>
-        <select id="reg-year">
-          <option value="">-- Select --</option>
-          <option>First Year</option>
-          <option>Second Year</option>
-          <option>Third Year</option>
-          <option>Final Year</option>
-        </select>
-      </div>
+      <div class="input-group"><label>PRN Number <span style="color:#e74c3c;">*</span></label><input type="text" id="reg-roll" placeholder="e.g. 125B1E080"></div>
+      <div class="input-group"><label>Academic Year</label><select id="reg-year"><option value="">-- Select --</option><option>First Year</option><option>Second Year</option><option>Third Year</option><option>Final Year</option></select></div>
     </div>
-
-    <div class="input-group">
-      <label>Department <span style="color:#e74c3c;">*</span></label>
-      <select id="reg-dept">
-        <option value="">-- Select Department --</option>
-        <option>Computer Engineering</option>
-        <option>Mechanical Engineering</option>
-        <option>Civil Engineering</option>
-        <option>Electronics &amp; Telecom</option>
-        <option>Electrical Engineering</option>
-        <option>Information Technology</option>
-        <option>Applied Sciences</option>
-        <option>Other</option>
-      </select>
+    <div class="input-group"><label>Department <span style="color:#e74c3c;">*</span></label>
+      <select id="reg-dept"><option value="">-- Select Department --</option><option>Computer Engineering</option><option>Mechanical Engineering</option><option>Civil Engineering</option><option>Electronics &amp; Telecom</option><option>Electrical Engineering</option><option>Information Technology</option><option>Applied Sciences</option><option>Other</option></select>
     </div>
-
     <div class="reg-divider">Password</div>
-
     <div class="reg-grid">
-      <div class="input-group">
-        <label>Password <span style="color:#e74c3c;">*</span></label>
-        <input type="password" id="reg-pwd" placeholder="Min. 8 characters">
-      </div>
-      <div class="input-group">
-        <label>Confirm Password <span style="color:#e74c3c;">*</span></label>
-        <input type="password" id="reg-cpwd" placeholder="Repeat password">
-      </div>
+      <div class="input-group"><label>Password <span style="color:#e74c3c;">*</span></label><input type="password" id="reg-pwd" placeholder="Min. 8 characters"></div>
+      <div class="input-group"><label>Confirm Password <span style="color:#e74c3c;">*</span></label><input type="password" id="reg-cpwd" placeholder="Repeat password"></div>
     </div>
-
-    <p class="reg-terms">
-      By registering you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a> of the PCCOE Virtual Labs Portal.
-    </p>
-
+    <p class="reg-terms">By registering you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a> of the PCCOE Virtual Labs Portal.</p>
     <div class="modal-actions" style="margin-top:16px;">
-      <button class="primary-btn" style="flex:1;" onclick="handleRegister()">
-        <i class="fas fa-user-plus"></i> Create Account
-      </button>
+      <button class="primary-btn" style="flex:1;" onclick="handleRegister()"><i class="fas fa-user-plus"></i> Create Account</button>
       <button class="secondary-btn" onclick="closeModal('registerModal')">Cancel</button>
     </div>
-
     <div id="registerResult" class="result-banner"></div>
-
-    <div class="reg-switch">
-      Already have an account? <a onclick="switchToLogin()">Login here</a>
-    </div>
+    <div class="reg-switch">Already have an account? <a onclick="switchToLogin()">Login here</a></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
-     CHALLENGE INPUT MODAL
-════════════════════════════════════════════════ -->
+<!-- CHALLENGE INPUT MODAL -->
 <div class="modal" id="inputModal">
   <div class="modal-box">
     <button class="close-btn" onclick="closeModal('inputModal')">&times;</button>
@@ -1269,9 +1454,7 @@
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
-     CHALLENGE ANSWER MODAL
-════════════════════════════════════════════════ -->
+<!-- CHALLENGE ANSWER MODAL -->
 <div class="modal" id="answerModal">
   <div class="modal-box">
     <button class="close-btn" onclick="closeModal('answerModal')">&times;</button>
@@ -1289,90 +1472,299 @@
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════ -->
 <script>
-// ── State ────────────────────────────────────────────────────
-let selectedRating      = 0;
-let score               = 0;
-let completedChallenges = [];
-let currentChallenge    = '';
-let correctAnswer       = 0;
-let pretestDone         = false;
-let posttestDone        = false;
-let isLoggedIn          = false;
-let currentUser         = null;
+/* ════════════════════════════════════════════════════════════
+   QUIZ VIDEO PLAYER ENGINE
+   ────────────────────────────────────────────────────────────
+   HOW TO CUSTOMISE:
+   1. Replace the <source src="..."> in the <video> tag with your .mp4 path
+   2. Edit QVP_QUESTIONS below — set time (seconds), question, options,
+      correct answer index (0=A,1=B,2=C,3=D), hint, and explanation.
+════════════════════════════════════════════════════════════ */
 
-// ── Challenge config ─────────────────────────────────────────
-const challengeConfig = {
-  heatFlux: {
-    title:'Heat Flux Challenge', desc:'Use: q = k(T₁ − T₂) / L',
-    fields:[
-      {id:'k',  label:'Thermal Conductivity k (W/m·K)'},
-      {id:'t1', label:'Hot Side Temperature T₁ (°C)'},
-      {id:'t2', label:'Cold Side Temperature T₂ (°C)'},
-      {id:'L',  label:'Thickness L (m)'},
+const QVP_QUESTIONS = [
+  {
+    time: 15,   // ← pause at 15 seconds into the video
+    question: "According to Fourier's Law, if the temperature difference across a wall doubles (and all else stays the same), what happens to the heat flux?",
+    options: [
+      "It stays the same",
+      "It doubles",
+      "It becomes four times",
+      "It is halved"
     ],
-    calc: v => (v.k * (v.t1 - v.t2)) / v.L,
-    unit: 'W/m²'
+    correct: 1,
+    hint: "Fourier's Law: q = k(T₁ − T₂)/L. Heat flux is directly proportional to the temperature difference.",
+    explanation: "✅ Correct! Since q = k(T₁ − T₂)/L, doubling (T₁ − T₂) directly doubles the heat flux q."
   },
-  heatRate: {
-    title:'Rate of Heat Flow Challenge', desc:'Use: Q = kA(T₁ − T₂) / L',
-    fields:[
-      {id:'k',  label:'Thermal Conductivity k (W/m·K)'},
-      {id:'A',  label:'Area A (m²)'},
-      {id:'t1', label:'Hot Side Temperature T₁ (°C)'},
-      {id:'t2', label:'Cold Side Temperature T₂ (°C)'},
-      {id:'L',  label:'Thickness L (m)'},
+  {
+    time: 35,   // ← pause at 35 seconds
+    question: "In steady-state one-dimensional heat conduction through a wall with no heat generation, how does temperature vary with distance?",
+    options: [
+      "Exponentially",
+      "Sinusoidally",
+      "Linearly",
+      "It does not vary"
     ],
-    calc: v => (v.k * v.A * (v.t1 - v.t2)) / v.L,
-    unit: 'W'
+    correct: 2,
+    hint: "Use T(x) = T₁ − [(T₁ − T₂)x/L]. What type of equation is this?",
+    explanation: "✅ Correct! T(x) = T₁ − [(T₁ − T₂)x/L] is a linear equation — temperature varies linearly with position x."
   },
-  conductivity: {
-    title:'Thermal Conductivity Challenge', desc:'Use: k = QL / A(T₁ − T₂)',
-    fields:[
-      {id:'Q',  label:'Heat Flow Rate Q (W)'},
-      {id:'A',  label:'Area A (m²)'},
-      {id:'t1', label:'Hot Side Temperature T₁ (°C)'},
-      {id:'t2', label:'Cold Side Temperature T₂ (°C)'},
-      {id:'L',  label:'Thickness L (m)'},
+  {
+    time: 55,   // ← pause at 55 seconds
+    question: "A copper rod (k = 385 W/m·K) and a glass rod (k = 1 W/m·K) have the same dimensions and temperature boundary conditions. Which conducts more heat?",
+    options: [
+      "Glass — because it is thicker",
+      "Both conduct equally",
+      "Copper — because it has higher thermal conductivity",
+      "Glass — because it is an insulator"
     ],
-    calc: v => (v.Q * v.L) / (v.A * (v.t1 - v.t2)),
-    unit: 'W/m·K'
-  },
-  tempPoint: {
-    title:'Temperature at a Point Challenge', desc:'Use: T(x) = T₁ − [(T₁ − T₂)x/L]',
-    fields:[
-      {id:'t1', label:'Left Temperature T₁ (°C)'},
-      {id:'t2', label:'Right Temperature T₂ (°C)'},
-      {id:'x',  label:'Distance x from hot end (m)'},
-      {id:'L',  label:'Total Length L (m)'},
-    ],
-    calc: v => v.t1 - ((v.t1 - v.t2) * v.x / v.L),
-    unit: '°C'
-  },
-};
+    correct: 2,
+    hint: "Q = kA(T₁ − T₂)/L — a higher k means a higher heat transfer rate, given the same A, ΔT, and L.",
+    explanation: "✅ Correct! Copper's thermal conductivity (385 W/m·K) is far higher than glass (1 W/m·K), so copper transfers heat much faster under the same conditions."
+  }
+];
 
-// ── Page navigation ───────────────────────────────────────────
+// ── State ──
+let qvpVid          = null;
+let qvpCurrentQ     = -1;
+let qvpAnswered     = {};   // index → true
+let qvpAttempts     = 0;
+let qvpInitDone     = false;
+
+// ── Init (called when Theory page opens) ──
+function qvpInit() {
+  if (qvpInitDone) return;
+  qvpInitDone = true;
+
+  qvpVid = document.getElementById('qvpVideo');
+
+  qvpVid.addEventListener('loadedmetadata', qvpBuildMarkers);
+  qvpVid.addEventListener('timeupdate',     qvpOnTimeUpdate);
+  qvpVid.addEventListener('play',  () => qvpUpdatePlayIcon(true));
+  qvpVid.addEventListener('pause', () => qvpUpdatePlayIcon(false));
+
+  // Build question chips
+  const chips = document.getElementById('qvpChips');
+  chips.innerHTML = '';
+  QVP_QUESTIONS.forEach((_, i) => {
+    const c = document.createElement('div');
+    c.className = 'qvp-chip';
+    c.id = `qvpChip${i}`;
+    c.textContent = i + 1;
+    chips.appendChild(c);
+  });
+}
+
+function qvpBuildMarkers() {
+  const dur  = qvpVid.duration;
+  if (!dur || isNaN(dur)) return;
+  document.getElementById('qvpDurTime').textContent = qvpFmt(dur);
+
+  const wrap = document.getElementById('qvpProgWrap');
+  // Remove old markers
+  wrap.querySelectorAll('.qvp-marker').forEach(m => m.remove());
+
+  QVP_QUESTIONS.forEach((q, i) => {
+    const pct = Math.min((q.time / dur) * 100, 99);
+    const dot = document.createElement('div');
+    dot.className = 'qvp-marker';
+    dot.id = `qvpMark${i}`;
+    dot.style.left = pct + '%';
+
+    const tip = document.createElement('div');
+    tip.className = 'qvp-marker-tooltip';
+    tip.textContent = `Q${i+1} — ${qvpFmt(q.time)}`;
+    dot.appendChild(tip);
+    wrap.appendChild(dot);
+  });
+}
+
+function qvpOnTimeUpdate() {
+  if (!qvpVid || !qvpVid.duration) return;
+
+  const pct = (qvpVid.currentTime / qvpVid.duration) * 100;
+  document.getElementById('qvpProgFill').style.width = pct + '%';
+  document.getElementById('qvpCurTime').textContent  = qvpFmt(qvpVid.currentTime);
+
+  // Check for question triggers
+  QVP_QUESTIONS.forEach((q, i) => {
+    if (!qvpAnswered[i] && qvpCurrentQ !== i && qvpVid.currentTime >= q.time) {
+      qvpShowQuestion(i);
+    }
+  });
+}
+
+function qvpShowQuestion(idx) {
+  if (qvpAnswered[idx]) return;
+
+  qvpCurrentQ = idx;
+  qvpAttempts = 0;
+  qvpVid.pause();
+
+  const q = QVP_QUESTIONS[idx];
+
+  // Update header
+  document.getElementById('qvpQCounter').textContent = `Question ${idx+1} of ${QVP_QUESTIONS.length}`;
+  document.getElementById('qvpQText').textContent    = q.question;
+
+  const pill = document.getElementById('qvpStatusPill');
+  pill.textContent = '⏸ Video Paused';
+  pill.className   = 'qvp-status-pill trying';
+
+  // Build options
+  const optWrap = document.getElementById('qvpOptions');
+  optWrap.innerHTML = '';
+  const letters = ['A','B','C','D'];
+
+  q.options.forEach((opt, oi) => {
+    const btn = document.createElement('button');
+    btn.className = 'qvp-opt';
+    btn.innerHTML = `<span class="qvp-opt-letter">${letters[oi]}</span>${opt}`;
+    btn.onclick = () => qvpSelectAnswer(oi);
+    optWrap.appendChild(btn);
+  });
+
+  // Reset state UI
+  document.getElementById('qvpFeedback').className  = 'qvp-feedback';
+  document.getElementById('qvpFeedback').textContent = '';
+  document.getElementById('qvpHint').className      = 'qvp-hint';
+  document.getElementById('qvpAttempts').className  = 'qvp-attempts';
+  document.getElementById('qvpContinue').className  = 'qvp-continue';
+
+  // Mark chip as current
+  document.querySelectorAll('.qvp-chip').forEach((c,i) => {
+    c.classList.toggle('current', i === idx);
+  });
+
+  // Show overlay
+  document.getElementById('qvpOverlay').classList.add('active');
+}
+
+function qvpSelectAnswer(chosen) {
+  const q   = QVP_QUESTIONS[qvpCurrentQ];
+  const ok  = chosen === q.correct;
+  const btns = document.querySelectorAll('.qvp-opt');
+  qvpAttempts++;
+
+  if (ok) {
+    // ── Correct ──
+    btns.forEach((b,i) => {
+      b.disabled = true;
+      if (i === q.correct) b.classList.add('correct-ans');
+    });
+
+    const fb = document.getElementById('qvpFeedback');
+    fb.className   = 'qvp-feedback show ok';
+    fb.textContent = q.explanation;
+
+    const pill = document.getElementById('qvpStatusPill');
+    pill.textContent = '✅ Correct!';
+    pill.className   = 'qvp-status-pill correct';
+
+    document.getElementById('qvpHint').className     = 'qvp-hint';
+    document.getElementById('qvpAttempts').className = 'qvp-attempts';
+    document.getElementById('qvpContinue').className = 'qvp-continue show';
+
+    // Mark as answered
+    qvpAnswered[qvpCurrentQ] = true;
+    document.getElementById(`qvpMark${qvpCurrentQ}`).classList.add('done');
+    document.getElementById(`qvpChip${qvpCurrentQ}`).classList.remove('current');
+    document.getElementById(`qvpChip${qvpCurrentQ}`).classList.add('done');
+
+  } else {
+    // ── Wrong — shake the wrong button, show hint ──
+    btns[chosen].classList.add('wrong-ans');
+    btns[chosen].disabled = true;
+
+    // Reset wrong class after shake
+    setTimeout(() => {
+      btns[chosen].classList.remove('wrong-ans');
+      btns[chosen].disabled = false;
+    }, 800);
+
+    const fb = document.getElementById('qvpFeedback');
+    fb.className   = 'qvp-feedback show err';
+    fb.textContent = `❌ Not quite! Try again — read the hint below.`;
+
+    // Show hint
+    document.getElementById('qvpHintText').textContent = q.hint;
+    document.getElementById('qvpHint').className = 'qvp-hint show';
+
+    // Show attempt counter
+    const att = document.getElementById('qvpAttempts');
+    att.className = 'qvp-attempts show';
+    document.getElementById('qvpAttemptNum').textContent = qvpAttempts + 1;
+  }
+}
+
+function qvpResume() {
+  document.getElementById('qvpOverlay').classList.remove('active');
+  qvpCurrentQ = -1;
+
+  // Small buffer so it doesn't re-trigger the same second
+  qvpVid.currentTime += 0.5;
+  qvpVid.play();
+}
+
+// Controls
+function qvpTogglePlay() {
+  if (qvpVid.paused) qvpVid.play();
+  else qvpVid.pause();
+}
+
+function qvpUpdatePlayIcon(playing) {
+  const icon = document.getElementById('qvpPlayIcon');
+  icon.className = playing ? 'fas fa-pause' : 'fas fa-play';
+}
+
+function qvpToggleMute() {
+  qvpVid.muted = !qvpVid.muted;
+  document.getElementById('qvpVolIcon').className = qvpVid.muted
+    ? 'fas fa-volume-mute'
+    : 'fas fa-volume-up';
+}
+
+function qvpSetVol(v) {
+  qvpVid.volume = v;
+  if (v > 0) qvpVid.muted = false;
+}
+
+function qvpFmt(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+/* ════════════════════════════════════════════════════════════
+   PAGE NAVIGATION
+════════════════════════════════════════════════════════════ */
 function openPage(id) {
   document.getElementById('main-dashboard').classList.add('hidden');
   document.querySelectorAll('.card-page').forEach(p => p.classList.remove('active-page'));
   const pg = document.getElementById(id);
-  if (pg) { pg.classList.add('active-page'); window.scrollTo({top:0, behavior:'smooth'}); }
+  if (pg) {
+    pg.classList.add('active-page');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (id === 'page-theory') qvpInit();
+    if (id === 'page-simulation') { setTimeout(updateLiveSim, 60); }
+  }
 }
 
 function goBack() {
+  // Pause video when leaving theory page
+  if (qvpVid && !qvpVid.paused) qvpVid.pause();
   document.querySelectorAll('.card-page').forEach(p => p.classList.remove('active-page'));
   document.getElementById('main-dashboard').classList.remove('hidden');
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 document.querySelectorAll('.section-card').forEach(card => {
   card.addEventListener('click', () => openPage(card.getAttribute('data-target')));
 });
 
-// ── Profile dropdown ──────────────────────────────────────────
+/* ════════════════════════════════════════════════════════════
+   PROFILE DROPDOWN
+════════════════════════════════════════════════════════════ */
 function toggleProfile(e) {
   e.stopPropagation();
   document.getElementById('profileDropdown').classList.toggle('open');
@@ -1390,32 +1782,20 @@ function updateProfileUI() {
   document.getElementById('pp-posttest').textContent  = posttestDone ? 'Submitted ✔' : 'Not taken';
 }
 
-// ── Auth handlers ─────────────────────────────────────────────
+/* ════════════════════════════════════════════════════════════
+   AUTH
+════════════════════════════════════════════════════════════ */
+let isLoggedIn = false, currentUser = null;
+
 function handleLogin() {
   const email = document.getElementById('login-email').value.trim();
   const pwd   = document.getElementById('login-password').value;
-  const banner = document.getElementById('loginResult');
-
-  if (!email || !pwd) {
-    showBanner('loginResult', 'error', 'Please enter both email and password.');
-    return;
-  }
-
-  if (!email.includes('@')) {
-    showBanner('loginResult', 'error', 'Please enter a valid email address.');
-    return;
-  }
-
-  // Simulate login success
-  isLoggedIn  = true;
+  if (!email || !pwd) { showBanner('loginResult','error','Please enter both email and password.'); return; }
+  if (!email.includes('@')) { showBanner('loginResult','error','Please enter a valid email address.'); return; }
+  isLoggedIn = true;
   currentUser = { name: email.split('@')[0], email };
-
-  showBanner('loginResult', 'success', `Welcome back, ${currentUser.name}! Logging you in…`);
-
-  setTimeout(() => {
-    closeModal('loginModal');
-    activateProfile(currentUser.name);
-  }, 1200);
+  showBanner('loginResult','success',`Welcome back, ${currentUser.name}! Logging you in…`);
+  setTimeout(() => { closeModal('loginModal'); activateProfile(currentUser.name); }, 1200);
 }
 
 function handleRegister() {
@@ -1426,36 +1806,14 @@ function handleRegister() {
   const dept  = document.getElementById('reg-dept').value;
   const pwd   = document.getElementById('reg-pwd').value;
   const cpwd  = document.getElementById('reg-cpwd').value;
-
-  if (!fname || !lname || !email || !roll || !dept || !pwd || !cpwd) {
-    showBanner('registerResult', 'error', 'Please fill in all required fields.');
-    return;
-  }
-
-  if (!email.includes('@')) {
-    showBanner('registerResult', 'error', 'Please enter a valid email address.');
-    return;
-  }
-
-  if (pwd.length < 8) {
-    showBanner('registerResult', 'error', 'Password must be at least 8 characters.');
-    return;
-  }
-
-  if (pwd !== cpwd) {
-    showBanner('registerResult', 'error', 'Passwords do not match. Please try again.');
-    return;
-  }
-
-  isLoggedIn  = true;
+  if (!fname||!lname||!email||!roll||!dept||!pwd||!cpwd) { showBanner('registerResult','error','Please fill in all required fields.'); return; }
+  if (!email.includes('@')) { showBanner('registerResult','error','Please enter a valid email address.'); return; }
+  if (pwd.length < 8) { showBanner('registerResult','error','Password must be at least 8 characters.'); return; }
+  if (pwd !== cpwd) { showBanner('registerResult','error','Passwords do not match. Please try again.'); return; }
+  isLoggedIn = true;
   currentUser = { name: `${fname} ${lname}`, email, roll, dept };
-
-  showBanner('registerResult', 'success', `Account created successfully! Welcome, ${fname}!`);
-
-  setTimeout(() => {
-    closeModal('registerModal');
-    activateProfile(currentUser.name);
-  }, 1400);
+  showBanner('registerResult','success',`Account created successfully! Welcome, ${fname}!`);
+  setTimeout(() => { closeModal('registerModal'); activateProfile(currentUser.name); }, 1400);
 }
 
 function activateProfile(name) {
@@ -1467,22 +1825,14 @@ function activateProfile(name) {
 }
 
 function handleLogout() {
-  isLoggedIn  = false;
-  currentUser = null;
+  isLoggedIn = false; currentUser = null;
   document.getElementById('profileZone').style.display  = 'none';
   document.getElementById('authButtons').style.display  = '';
   document.getElementById('profileDropdown').classList.remove('open');
 }
 
-function switchToRegister() {
-  closeModal('loginModal');
-  setTimeout(() => openModal('registerModal'), 80);
-}
-
-function switchToLogin() {
-  closeModal('registerModal');
-  setTimeout(() => openModal('loginModal'), 80);
-}
+function switchToRegister() { closeModal('loginModal');    setTimeout(() => openModal('registerModal'), 80); }
+function switchToLogin()    { closeModal('registerModal'); setTimeout(() => openModal('loginModal'),    80); }
 
 function showBanner(id, type, msg) {
   const el = document.getElementById(id);
@@ -1491,12 +1841,12 @@ function showBanner(id, type, msg) {
   el.textContent = type === 'error' ? `✗ ${msg}` : `✔ ${msg}`;
 }
 
-// ── Live rod simulation ───────────────────────────────────────
+/* ════════════════════════════════════════════════════════════
+   LIVE ROD SIMULATION
+════════════════════════════════════════════════════════════ */
 function tempToColor(t, tMin, tMax) {
-  const n = Math.max(0, Math.min(1, (t - tMin) / (tMax - tMin || 1)));
-  const r = Math.round(220 * n + 30);
-  const g = Math.round(80 * (1 - Math.abs(n - 0.5) * 2));
-  const b = Math.round(220 * (1 - n) + 20);
+  const n = Math.max(0, Math.min(1, (t-tMin)/(tMax-tMin||1)));
+  const r = Math.round(220*n+30), g = Math.round(80*(1-Math.abs(n-0.5)*2)), b = Math.round(220*(1-n)+20);
   return `rgb(${r},${g},${b})`;
 }
 
@@ -1513,15 +1863,10 @@ function updateLiveSim() {
   document.getElementById('re-t1').textContent  = `${t1}°C`;
   document.getElementById('re-t2').textContent  = `${t2}°C`;
 
-  const A    = 0.01;
-  const flux = (k * (t1 - t2)) / L;
-  const rate = flux * A;
-  const tmid = t1 - ((t1 - t2) * 0.5);
-
+  const A = 0.01, flux = (k*(t1-t2))/L, rate = flux*A, tmid = t1-((t1-t2)*0.5);
   document.getElementById('lr-flux').textContent = flux.toFixed(1);
   document.getElementById('lr-rate').textContent = rate.toFixed(2);
   document.getElementById('lr-tmid').textContent = tmid.toFixed(1);
-
   drawRod(t1, t2);
 }
 
@@ -1529,191 +1874,129 @@ function drawRod(t1, t2) {
   const canvas = document.getElementById('rodCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W   = canvas.offsetWidth;
-  const H   = canvas.height;
+  const W = canvas.offsetWidth, H = canvas.height;
   canvas.width = W;
-
-  const segments = 120;
-  const sw   = W / segments;
-  const tMin = Math.min(t1, t2);
-  const tMax = Math.max(t1, t2);
-
-  for (let i = 0; i < segments; i++) {
-    const t = t1 + (t2 - t1) * (i / (segments - 1));
-    ctx.fillStyle = tempToColor(t, tMin, tMax);
-    ctx.fillRect(i * sw, 0, sw + 1, H);
+  const segments = 120, sw = W/segments, tMin = Math.min(t1,t2), tMax = Math.max(t1,t2);
+  for (let i=0;i<segments;i++) {
+    const t = t1+(t2-t1)*(i/(segments-1));
+    ctx.fillStyle = tempToColor(t,tMin,tMax);
+    ctx.fillRect(i*sw,0,sw+1,H);
   }
-
-  ctx.font = 'bold 12px DM Sans, Segoe UI, sans-serif';
+  ctx.font = 'bold 12px DM Sans, sans-serif';
   ctx.textAlign = 'center';
-  for (let i = 0; i <= 4; i++) {
-    const x = (W / 4) * i;
-    const t = t1 + (t2 - t1) * (i / 4);
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
-    ctx.fillRect(x - 23, H / 2 - 11, 46, 22);
-    ctx.fillStyle = '#1a2e45';
-    ctx.fillText(`${t.toFixed(0)}°C`, x, H / 2 + 4);
+  for (let i=0;i<=4;i++) {
+    const x = (W/4)*i, t = t1+(t2-t1)*(i/4);
+    ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.fillRect(x-23,H/2-11,46,22);
+    ctx.fillStyle='#1a2e45'; ctx.fillText(`${t.toFixed(0)}°C`,x,H/2+4);
   }
 }
 
 window.addEventListener('load', () => {
-  updateLiveSim();
   const obs = new MutationObserver(() => {
-    if (document.getElementById('page-simulation').classList.contains('active-page')) {
-      setTimeout(updateLiveSim, 60);
-    }
+    if (document.getElementById('page-simulation').classList.contains('active-page')) setTimeout(updateLiveSim,60);
   });
-  obs.observe(document.getElementById('page-simulation'), {attributes: true});
+  obs.observe(document.getElementById('page-simulation'),{attributes:true});
 });
-
 window.addEventListener('resize', () => {
-  if (document.getElementById('page-simulation').classList.contains('active-page')) {
-    updateLiveSim();
-  }
+  if (document.getElementById('page-simulation').classList.contains('active-page')) updateLiveSim();
 });
 
-// ── Challenge modals ──────────────────────────────────────────
+/* ════════════════════════════════════════════════════════════
+   SIMULATION CHALLENGES
+════════════════════════════════════════════════════════════ */
+let selectedRating=0, score=0, completedChallenges=[], currentChallenge='', correctAnswer=0, pretestDone=false, posttestDone=false;
+
+const challengeConfig = {
+  heatFlux:     { title:'Heat Flux Challenge',            desc:'Use: q = k(T₁ − T₂) / L',         fields:[{id:'k',label:'Thermal Conductivity k (W/m·K)'},{id:'t1',label:'Hot Side Temperature T₁ (°C)'},{id:'t2',label:'Cold Side Temperature T₂ (°C)'},{id:'L',label:'Thickness L (m)'}],              calc:v=>(v.k*(v.t1-v.t2))/v.L,        unit:'W/m²' },
+  heatRate:     { title:'Rate of Heat Flow Challenge',    desc:'Use: Q = kA(T₁ − T₂) / L',        fields:[{id:'k',label:'Thermal Conductivity k (W/m·K)'},{id:'A',label:'Area A (m²)'},{id:'t1',label:'Hot Side Temperature T₁ (°C)'},{id:'t2',label:'Cold Side Temperature T₂ (°C)'},{id:'L',label:'Thickness L (m)'}], calc:v=>(v.k*v.A*(v.t1-v.t2))/v.L,    unit:'W' },
+  conductivity: { title:'Thermal Conductivity Challenge', desc:'Use: k = QL / A(T₁ − T₂)',         fields:[{id:'Q',label:'Heat Flow Rate Q (W)'},{id:'A',label:'Area A (m²)'},{id:'t1',label:'Hot Side Temperature T₁ (°C)'},{id:'t2',label:'Cold Side Temperature T₂ (°C)'},{id:'L',label:'Thickness L (m)'}],          calc:v=>(v.Q*v.L)/(v.A*(v.t1-v.t2)),  unit:'W/m·K' },
+  tempPoint:    { title:'Temperature at a Point Challenge',desc:'Use: T(x) = T₁ − [(T₁ − T₂)x/L]',fields:[{id:'t1',label:'Left Temperature T₁ (°C)'},{id:'t2',label:'Right Temperature T₂ (°C)'},{id:'x',label:'Distance x from hot end (m)'},{id:'L',label:'Total Length L (m)'}],                               calc:v=>v.t1-((v.t1-v.t2)*v.x/v.L),   unit:'°C' },
+};
+
 function openChallenge(type) {
   currentChallenge = type;
   const cfg = challengeConfig[type];
-  document.getElementById('challengeName').textContent   = cfg.title.replace(' Challenge', '');
+  document.getElementById('challengeName').textContent   = cfg.title.replace(' Challenge','');
   document.getElementById('inputModalTitle').textContent = cfg.title;
   document.getElementById('inputModalDesc').textContent  = cfg.desc;
-
   let html = '';
-  cfg.fields.forEach(f => {
-    html += `<div class="input-group">
-      <label>${f.label}</label>
-      <input type="number" id="field_${f.id}" placeholder="Enter value" step="any">
-    </div>`;
-  });
-
+  cfg.fields.forEach(f => { html += `<div class="input-group"><label>${f.label}</label><input type="number" id="field_${f.id}" placeholder="Enter value" step="any"></div>`; });
   document.getElementById('dynamicInputs').innerHTML = html;
   openModal('inputModal');
 }
 
 function prepareAnswerStep() {
-  const cfg  = challengeConfig[currentChallenge];
-  const vals = {};
-  let   ok   = true;
-
-  cfg.fields.forEach(f => {
-    const v = parseFloat(document.getElementById(`field_${f.id}`).value);
-    if (isNaN(v)) ok = false;
-    vals[f.id] = v;
-  });
-
-  if (!ok) { alert('Please fill in all input values.'); return; }
-
+  const cfg = challengeConfig[currentChallenge], vals = {}; let ok = true;
+  cfg.fields.forEach(f => { const v=parseFloat(document.getElementById(`field_${f.id}`).value); if(isNaN(v))ok=false; vals[f.id]=v; });
+  if(!ok){alert('Please fill in all input values.');return;}
   correctAnswer = cfg.calc(vals);
   closeModal('inputModal');
-
-  document.getElementById('studentAnswer').value        = '';
-  document.getElementById('resultBanner').style.display = 'none';
-  document.getElementById('answerLabel').textContent    = `Your Answer (${cfg.unit})`;
-  document.getElementById('answerDesc').textContent     = `Apply the formula and enter your result in ${cfg.unit}.`;
-
+  document.getElementById('studentAnswer').value='';
+  document.getElementById('resultBanner').style.display='none';
+  document.getElementById('answerLabel').textContent=`Your Answer (${cfg.unit})`;
+  document.getElementById('answerDesc').textContent=`Apply the formula and enter your result in ${cfg.unit}.`;
   openModal('answerModal');
 }
 
 function checkStudentAnswer() {
-  const val    = parseFloat(document.getElementById('studentAnswer').value);
-  const banner = document.getElementById('resultBanner');
-
-  if (isNaN(val)) {
-    banner.style.display = 'block';
-    banner.className = 'result-banner result-error';
-    banner.textContent = 'Please enter a numeric answer.';
-    return;
-  }
-
-  const tol = Math.max(Math.abs(correctAnswer) * 0.01, 0.01);
-  const ok  = Math.abs(val - correctAnswer) <= tol;
-
-  if (ok) {
-    banner.style.display = 'block';
-    banner.className = 'result-banner result-success';
-    banner.textContent = `✔ Correct! Answer = ${correctAnswer.toFixed(3)} ${challengeConfig[currentChallenge].unit}`;
-
-    if (!completedChallenges.includes(currentChallenge)) {
-      completedChallenges.push(currentChallenge);
-      score += 10;
-      document.getElementById(`card-${currentChallenge}`).classList.add('done-card');
-    }
-
-    updateScoreBoard();
-    updateProfileUI();
-
-    setTimeout(() => {
-      closeModal('answerModal');
-      if (completedChallenges.length === 4) {
-        setTimeout(() => alert('🎉 Excellent! You completed all 4 challenges. Proceed to the Posttest!'), 300);
-      }
-    }, 1600);
-
+  const val=parseFloat(document.getElementById('studentAnswer').value), banner=document.getElementById('resultBanner');
+  if(isNaN(val)){banner.style.display='block';banner.className='result-banner result-error';banner.textContent='Please enter a numeric answer.';return;}
+  const tol=Math.max(Math.abs(correctAnswer)*0.01,0.01), ok=Math.abs(val-correctAnswer)<=tol;
+  if(ok){
+    banner.style.display='block'; banner.className='result-banner result-success';
+    banner.textContent=`✔ Correct! Answer = ${correctAnswer.toFixed(3)} ${challengeConfig[currentChallenge].unit}`;
+    if(!completedChallenges.includes(currentChallenge)){completedChallenges.push(currentChallenge);score+=10;document.getElementById(`card-${currentChallenge}`).classList.add('done-card');}
+    updateScoreBoard(); updateProfileUI();
+    setTimeout(()=>{closeModal('answerModal');if(completedChallenges.length===4)setTimeout(()=>alert('🎉 Excellent! You completed all 4 challenges. Proceed to the Posttest!'),300);},1600);
   } else {
-    banner.style.display = 'block';
-    banner.className = 'result-banner result-error';
-    banner.textContent = `✗ Not correct. Expected ≈ ${correctAnswer.toFixed(3)} ${challengeConfig[currentChallenge].unit}. Try again!`;
+    banner.style.display='block'; banner.className='result-banner result-error';
+    banner.textContent=`✗ Not correct. Expected ≈ ${correctAnswer.toFixed(3)} ${challengeConfig[currentChallenge].unit}. Try again!`;
   }
 }
 
 function updateScoreBoard() {
   document.getElementById('scoreValue').textContent     = score;
   document.getElementById('completedValue').textContent = `${completedChallenges.length} / 4`;
-  document.getElementById('progressFill').style.width   = `${(completedChallenges.length / 4) * 100}%`;
+  document.getElementById('progressFill').style.width   = `${(completedChallenges.length/4)*100}%`;
 }
 
-// ── Modals ────────────────────────────────────────────────────
+/* ════════════════════════════════════════════════════════════
+   MODALS
+════════════════════════════════════════════════════════════ */
 function openModal(id)  { document.getElementById(id).classList.add('show'); }
-function closeModal(id) {
-  document.getElementById(id).classList.remove('show');
-  // Clear result banners on close
-  const b = document.getElementById(id.replace('Modal','') + 'Result') ||
-            document.getElementById('loginResult') ||
-            document.getElementById('registerResult');
-}
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-// Close modals on backdrop click
 document.querySelectorAll('.modal').forEach(m => {
-  m.addEventListener('click', e => {
-    if (e.target === m) m.classList.remove('show');
-  });
+  m.addEventListener('click', e => { if(e.target===m) m.classList.remove('show'); });
 });
 
-// ── Tests ─────────────────────────────────────────────────────
+/* ════════════════════════════════════════════════════════════
+   TESTS & FEEDBACK
+════════════════════════════════════════════════════════════ */
 function submitTest(type) {
-  if (type === 'Pretest')  { pretestDone  = true; }
-  if (type === 'Posttest') { posttestDone = true; }
+  if(type==='Pretest') pretestDone=true;
+  if(type==='Posttest') posttestDone=true;
   updateProfileUI();
   alert(`${type} submitted successfully! ✔`);
 }
 
-// ── Feedback ──────────────────────────────────────────────────
 function submitFeedback() {
-  const name = document.getElementById('fb-name').value.trim();
-  if (!name)           return alert('Please enter your name.');
-  if (!selectedRating) return alert('Please select a star rating.');
+  const name=document.getElementById('fb-name').value.trim();
+  if(!name) return alert('Please enter your name.');
+  if(!selectedRating) return alert('Please select a star rating.');
   alert(`Thank you, ${name}! Your feedback has been recorded. ${'⭐'.repeat(selectedRating)}`);
   goBack();
 }
 
-// ── Star rating ───────────────────────────────────────────────
 const stars = document.querySelectorAll('#starRating .fa-star');
 stars.forEach(star => {
-  star.addEventListener('click', function () {
-    selectedRating = parseInt(this.getAttribute('data-val'));
-    stars.forEach((s, i) => s.classList.toggle('active', i < selectedRating));
+  star.addEventListener('click', function(){
+    selectedRating=parseInt(this.getAttribute('data-val'));
+    stars.forEach((s,i)=>s.classList.toggle('active',i<selectedRating));
   });
-  star.addEventListener('mouseover', function () {
-    const v = parseInt(this.getAttribute('data-val'));
-    stars.forEach((s, i) => s.classList.toggle('active', i < v));
-  });
-  star.addEventListener('mouseout', function () {
-    stars.forEach((s, i) => s.classList.toggle('active', i < selectedRating));
-  });
+  star.addEventListener('mouseover',function(){const v=parseInt(this.getAttribute('data-val'));stars.forEach((s,i)=>s.classList.toggle('active',i<v));});
+  star.addEventListener('mouseout', function(){stars.forEach((s,i)=>s.classList.toggle('active',i<selectedRating));});
 });
 </script>
-
 </body>
 </html>
