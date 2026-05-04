@@ -3,391 +3,682 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virtual Labs - One Dimensional Heat Conduction</title>
+  <title>Virtual Labs — One Dimensional Heat Conduction | PCCOE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body { background:linear-gradient(135deg,#eef5ff,#f9fbff); color:#333; line-height:1.6; }
+    :root {
+      --navy:     #0d1f35;
+      --navy-mid: #162a42;
+      --navy-lit: #1e3a56;
+      --accent:   #3b9edd;
+      --accent2:  #1abc9c;
+      --warm:     #e07b39;
+      --text:     #1a2e45;
+      --muted:    #5e7a93;
+      --border:   #d4e3ef;
+      --surface:  #f5f8fc;
+      --white:    #ffffff;
+      --rad-sm:   8px;
+      --rad-md:   12px;
+      --rad-lg:   18px;
+    }
 
-    .container { max-width:1200px; margin:0 auto; padding:0 20px; }
+    html { scroll-behavior: smooth; }
 
-    /* ── HEADER ── */
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #eef5ff 0%, #f9fbff 60%, #edf8f4 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ──────────────────────────────────────
+       HEADER — three-zone layout
+       LEFT: (spacer) | CENTER: branding | RIGHT: auth
+    ────────────────────────────────────── */
     header {
-      background:linear-gradient(135deg,#1f2d3d,#14202c);
-      color:white; padding:0;
-      box-shadow:0 4px 16px rgba(0,0,0,0.15);
+      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+      position: sticky;
+      top: 0;
+      z-index: 200;
     }
 
     /* College bar */
-     .college-bar {
-    background:linear-gradient(135deg,#0d1b2a,#162030);
-    padding:8px 24px;
-    display:flex; align-items:center; justify-content:center; gap:14px;
-    border-bottom:1px solid rgba(255,255,255,0.08);
-  }
+    .college-bar {
+      background: linear-gradient(90deg, #0a1824, #0d1f35, #0a1824);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 7px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
     .college-bar img {
-      width:48px; height:48px; border-radius:10px;
-      object-fit:contain; background:#fff; padding:4px;
-      box-shadow:0 3px 8px rgba(0,0,0,0.3);
+      width: 42px; height: 42px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #fff;
+      padding: 3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      flex-shrink: 0;
     }
 
-    .college-bar .clg-text .clg-name {
-      font-size:15px; font-weight:700; color:#fff; letter-spacing:0.3px;
+    .college-bar .clg-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.2px;
     }
 
-    .college-bar .clg-text .clg-sub {
-      font-size:11px; color:#90aec6;
+    .college-bar .clg-sub {
+      font-size: 11px;
+      color: #7fa8c6;
+      margin-top: 1px;
     }
 
-    /* Main header row */
-    .header-container {
-     display:flex; justify-content:center;
-     align-items:center; padding:12px 24px; gap:16px;
-     flex-direction:column;
-     text-align:center;
-   }
-
-    .logo-section { display:flex; align-items:center; gap:18px; }
-
-    .logo-box {
-      width:50px; height:50px; border-radius:12px;
-      background:linear-gradient(135deg,#3498db,#1abc9c);
-      display:flex; align-items:center; justify-content:center;
-      box-shadow:0 4px 14px rgba(52,152,219,0.4); font-size:24px;
+    /* Main header row — three columns */
+    .header-main {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 14px 28px;
+      gap: 12px;
     }
 
-    .title-group h1 { font-size:24px; font-weight:700; }
-    .title-group p  { font-size:12px; color:#d8e7f5; }
-
-    /* Profile button */
-    .user-section { display:flex; align-items:center; gap:12px; }
-
-    .user-btn {
-      display:flex; align-items:center; gap:10px;
-      background:rgba(255,255,255,0.1);
-      border:1.5px solid rgba(255,255,255,0.2);
-      color:#fff; padding:8px 16px; border-radius:50px;
-      cursor:pointer; transition:0.25s; font-size:14px;
-      position:relative;
-    }
-    .user-btn:hover { background:rgba(255,255,255,0.2); }
-    .user-btn i { font-size:22px; color:#5dade2; }
-
-    /* Profile popup */
-    .profile-popup {
-      display:none; position:absolute;
-      top:calc(100% + 12px); right:0;
-      background:#fff; border-radius:16px;
-      box-shadow:0 12px 40px rgba(0,0,0,0.18);
-      width:300px; z-index:500;
-      animation:popIn 0.22s ease;
-      border:1px solid #e0eaf5;
+    /* Center brand */
+    .brand-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      grid-column: 2;
     }
 
-    .profile-popup.open { display:block; }
-
-    @keyframes popIn {
-      from { opacity:0; transform:scale(0.93) translateY(-6px); }
-      to   { opacity:1; transform:scale(1)    translateY(0); }
+    .brand-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 14px rgba(59,158,221,0.45);
+      flex-shrink: 0;
     }
 
-    .profile-popup .pp-head {
-      background:linear-gradient(135deg,#1f2d3d,#2c4060);
-      color:#fff; padding:20px; border-radius:16px 16px 0 0;
-      text-align:center;
+    .brand-text h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
-    .pp-avatar {
-      width:64px; height:64px; border-radius:50%;
-      background:linear-gradient(135deg,#3498db,#1abc9c);
-      display:inline-flex; align-items:center; justify-content:center;
-      font-size:28px; margin-bottom:10px;
-      box-shadow:0 4px 12px rgba(52,152,219,0.4);
+    .brand-text p {
+      font-size: 11px;
+      color: #7ec8e8;
+      white-space: nowrap;
     }
 
-    .pp-head h3 { font-size:17px; font-weight:700; }
-    .pp-head p  { font-size:12px; color:#90c4e8; margin-top:2px; }
-
-    .pp-body { padding:16px; }
-
-    .pp-row {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:10px 0; border-bottom:1px solid #eef3f8; font-size:14px;
-    }
-    .pp-row:last-child { border:none; }
-    .pp-row .pp-label { color:#7f8c8d; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; }
-    .pp-row .pp-val   { font-weight:700; color:#1f2d3d; font-size:15px; }
-
-    .pp-badge {
-      display:inline-block; padding:3px 10px; border-radius:20px;
-      font-size:12px; font-weight:700;
-      background:#d4edda; color:#155724;
+    /* Right auth zone */
+    .auth-zone {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      grid-column: 3;
     }
 
-    /* ── CONTENT ── */
+    .btn-login {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: #e8f3fb;
+      background: rgba(255,255,255,0.07);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-login:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    .btn-register {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(59,158,221,0.4);
+      white-space: nowrap;
+    }
+
+    .btn-register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(59,158,221,0.55);
+    }
+
+    /* Profile dropdown */
+    .profile-zone {
+      position: relative;
+    }
+
+    .profile-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .profile-btn:hover { background: rgba(255,255,255,0.18); }
+
+    .profile-avatar-sm {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #fff;
+      border-radius: var(--rad-lg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+      width: 290px;
+      border: 1px solid var(--border);
+      animation: dropDown 0.2s ease;
+      z-index: 500;
+    }
+
+    .profile-dropdown.open { display: block; }
+
+    @keyframes dropDown {
+      from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .pd-head {
+      background: linear-gradient(135deg, var(--navy), var(--navy-lit));
+      border-radius: var(--rad-lg) var(--rad-lg) 0 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .pd-avatar {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 14px rgba(59,158,221,0.4);
+    }
+
+    .pd-head h3 { font-size: 16px; font-weight: 600; color: #fff; }
+    .pd-head p  { font-size: 11px; color: #7ec8e8; margin-top: 2px; }
+
+    .pd-body { padding: 14px 16px; }
+
+    .pd-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid #eef3f8;
+      font-size: 13px;
+    }
+
+    .pd-row:last-child { border: none; }
+    .pd-label { color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .pd-val   { font-weight: 700; color: var(--text); font-size: 14px; }
+
+    .pd-badge {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 20px; font-size: 11px; font-weight: 700;
+      background: #d4edda; color: #155724;
+    }
+
+    .pd-logout {
+      width: 100%; margin-top: 10px;
+      background: #fff3f0; color: #c0392b;
+      border: 1px solid #f5c6bc;
+      padding: 9px; border-radius: var(--rad-sm);
+      font-size: 13px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer; transition: background 0.2s;
+    }
+
+    .pd-logout:hover { background: #fce4e0; }
+
+    /* ──────────────────────────────────────
+       MAIN CONTENT
+    ────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    main { padding-top: 28px; padding-bottom: 16px; }
+
     .content {
-      background:#fff; border-radius:16px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.06);
-      padding:28px; min-height:500px; margin-top:26px;
+      background: #fff;
+      border-radius: var(--rad-lg);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+      padding: 30px;
+      min-height: 400px;
     }
 
-    .content-header { margin-bottom:26px; padding-bottom:14px; border-bottom:1px solid #e5edf5; }
-    .content-header h2 { font-size:28px; color:#1f2d3d; }
-    .content-header p  { color:#6c7a89; margin-top:6px; }
+    .content-header {
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
 
-    /* ── SECTION CARDS ── */
-    .aim-sections { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:18px; }
+    .content-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px; font-weight: 400;
+      color: var(--text);
+    }
+
+    .content-header p { color: var(--muted); margin-top: 5px; font-size: 14px; }
+
+    /* Section cards grid */
+    .aim-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 18px;
+    }
 
     .section-card {
-      background:linear-gradient(180deg,#f8fbff,#eef6ff);
-      border-radius:16px; padding:22px 16px;
-      text-align:center; cursor:pointer;
-      border:2px solid transparent; transition:0.3s ease;
-      box-shadow:0 6px 16px rgba(52,152,219,0.07);
+      background: linear-gradient(180deg, var(--surface), #e9f4ff);
+      border-radius: var(--rad-md);
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.28s ease;
+      box-shadow: 0 4px 14px rgba(59,158,221,0.07);
     }
-    .section-card:hover { transform:translateY(-6px); border-color:#3498db; box-shadow:0 12px 24px rgba(52,152,219,0.15); }
-    .section-card i    { font-size:32px; color:#3498db; margin-bottom:12px; }
-    .section-card h3   { font-size:17px; color:#1f2d3d; margin-bottom:5px; }
-    .section-card p    { font-size:13px; color:#6c7a89; }
 
-    footer { margin-top:32px; padding:20px 0 36px; text-align:center; color:#6c7a89; font-size:14px; }
+    .section-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 14px 28px rgba(59,158,221,0.16);
+    }
 
-    /* ── PAGES ── */
-    .card-page { display:none; animation:fadeInPage 0.3s ease; }
-    .card-page.active-page { display:block; }
-    #main-dashboard.hidden { display:none; }
+    .section-card i   { font-size: 30px; color: var(--accent); margin-bottom: 12px; display: block; }
+    .section-card h3  { font-size: 16px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
+    .section-card p   { font-size: 12px; color: var(--muted); }
 
-    @keyframes fadeInPage {
-      from { opacity:0; transform:translateY(10px); }
-      to   { opacity:1; transform:translateY(0); }
+    /* ── Pages ── */
+    .card-page { display: none; animation: fadeUp 0.3s ease; }
+    .card-page.active-page { display: block; }
+    #main-dashboard.hidden { display: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .back-btn {
-      display:inline-flex; align-items:center; gap:8px;
-      background:linear-gradient(to right,#1f2d3d,#2f4157);
-      color:#fff; border:none; padding:10px 20px;
-      font-size:14px; font-weight:600; border-radius:8px;
-      cursor:pointer; margin-bottom:22px; transition:0.25s;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(to right, var(--navy), var(--navy-lit));
+      color: #fff; border: none; padding: 10px 20px;
+      font-size: 13px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      border-radius: var(--rad-sm); cursor: pointer;
+      margin-bottom: 22px; transition: all 0.22s;
     }
-    .back-btn:hover { transform:translateX(-3px); box-shadow:0 6px 14px rgba(31,45,61,0.2); }
+
+    .back-btn:hover { transform: translateX(-3px); box-shadow: 0 6px 14px rgba(13,31,53,0.22); }
 
     .card-page-header {
-      display:flex; align-items:center; gap:14px;
-      padding-bottom:14px; margin-bottom:20px;
-      border-bottom:2px solid #eaf3fb;
+      display: flex; align-items: center; gap: 14px;
+      padding-bottom: 14px; margin-bottom: 22px;
+      border-bottom: 2px solid #deedf8;
     }
-    .card-page-header i  { font-size:32px; color:#3498db; }
-    .card-page-header h2 { font-size:24px; color:#1f2d3d; }
-    .card-page-header p  { font-size:13px; color:#6c7a89; }
+
+    .card-page-header i  { font-size: 30px; color: var(--accent); }
+    .card-page-header h2 { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; color: var(--text); }
+    .card-page-header p  { font-size: 13px; color: var(--muted); }
 
     .page-content-box {
-      background:#f9fbfe; border-left:5px solid #3498db;
-      border-radius:12px; padding:22px; line-height:1.8;
+      background: var(--surface);
+      border-left: 5px solid var(--accent);
+      border-radius: var(--rad-md);
+      padding: 24px; line-height: 1.8;
     }
-    .page-content-box h4 { color:#1f2d3d; margin-bottom:8px; font-size:18px; margin-top:18px; }
-    .page-content-box h4:first-child { margin-top:0; }
-    .page-content-box p, .page-content-box li { color:#4e5d6c; font-size:14px; }
-    .page-content-box ul { margin-left:20px; }
 
-    /* ── VIDEO ── */
+    .page-content-box h4 { color: var(--text); margin-bottom: 8px; font-size: 17px; margin-top: 20px; }
+    .page-content-box h4:first-child { margin-top: 0; }
+    .page-content-box p, .page-content-box li { color: #4e5d6c; font-size: 14px; }
+    .page-content-box ul { margin-left: 22px; }
+
+    /* Video */
     .video-wrap {
-      margin:20px 0; border-radius:12px; overflow:hidden;
-      box-shadow:0 8px 24px rgba(0,0,0,0.12);
-      position:relative; padding-top:56.25%;
-      background:#000;
+      margin: 20px 0; border-radius: var(--rad-md); overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      position: relative; padding-top: 56.25%; background: #000;
     }
-    .video-wrap iframe {
-      position:absolute; inset:0; width:100%; height:100%; border:0;
-    }
-    .video-label {
-      font-size:13px; color:#6c7a89; margin-top:8px;
-      display:flex; align-items:center; gap:6px;
-    }
-    .video-label i { color:#e74c3c; }
 
-    /* ── MCQ ── */
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    .video-label { font-size: 12px; color: var(--muted); margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+    .video-label i { color: #e74c3c; }
+
+    /* MCQ */
     .mcq-question {
-      background:#fff; border:1px solid #dce8f5;
-      border-radius:12px; padding:18px; margin-bottom:16px;
-      box-shadow:0 3px 8px rgba(0,0,0,0.03);
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--rad-md); padding: 18px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-    .mcq-question p { font-weight:600; margin-bottom:10px; color:#1f2d3d; }
-    .mcq-option { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:0.2s; font-size:14px; }
-    .mcq-option:hover { background:#eef7ff; }
-    .mcq-option input { accent-color:#3498db; }
+
+    .mcq-question p { font-weight: 600; margin-bottom: 12px; color: var(--text); font-size: 15px; }
+    .mcq-option { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.18s; font-size: 14px; color: var(--text); }
+    .mcq-option:hover { background: #eef7ff; }
+    .mcq-option input { accent-color: var(--accent); width: 16px; height: 16px; }
 
     .submit-btn {
-      background:linear-gradient(to right,#3498db,#2e86c1);
-      color:#fff; border:none; padding:12px 26px;
-      font-size:15px; font-weight:600; border-radius:8px;
-      cursor:pointer; transition:0.25s;
+      background: linear-gradient(to right, var(--accent), #2e86c1);
+      color: #fff; border: none; padding: 12px 28px;
+      font-size: 15px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      border-radius: var(--rad-sm); cursor: pointer; transition: all 0.22s;
     }
-    .submit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(52,152,219,0.25); }
 
-    /* ── SIMULATION ── */
-    .sim-topbar { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(59,158,221,0.28); }
+
+    /* ── Simulation ── */
+    .sim-topbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
 
     .top-stat {
-      background:linear-gradient(180deg,#f5fbff,#edf7ff);
-      border-radius:14px; padding:16px; text-align:center;
-      border:1px solid #d7e8f7; box-shadow:0 6px 16px rgba(52,152,219,0.07);
+      background: linear-gradient(180deg, var(--surface), #e9f4ff);
+      border-radius: var(--rad-md); padding: 16px; text-align: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(59,158,221,0.07);
     }
-    .top-stat h3 { font-size:13px; color:#6c7a89; margin-bottom:6px; }
-    .top-stat p  { font-size:26px; font-weight:700; color:#1f2d3d; }
 
-    .progress-wrap { margin-bottom:22px; }
-    .progress-wrap label { font-weight:600; color:#1f2d3d; display:block; margin-bottom:8px; }
-    .progress-bar { width:100%; height:16px; background:#e6eff7; border-radius:999px; overflow:hidden; }
-    .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#3498db,#1abc9c); transition:width 0.4s ease; border-radius:999px; }
+    .top-stat h3 { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .top-stat p  { font-size: 26px; font-weight: 700; color: var(--text); font-family: 'DM Serif Display', serif; }
 
-    .sim-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; margin-bottom:20px; }
+    .progress-wrap { margin-bottom: 22px; }
+    .progress-wrap label { font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; font-size: 14px; }
+    .progress-bar { width: 100%; height: 14px; background: #d4e3ef; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.4s ease; border-radius: 99px; }
+
+    .sim-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin-bottom: 22px; }
 
     .sim-card {
-      background:#fff; border-radius:16px; padding:20px;
-      border:1px solid #dbe9f5; box-shadow:0 8px 20px rgba(0,0,0,0.04);
-      transition:0.3s ease; position:relative; overflow:hidden;
+      background: #fff; border-radius: var(--rad-lg); padding: 22px;
+      border: 1px solid var(--border); box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      transition: all 0.28s; position: relative; overflow: hidden;
     }
-    .sim-card::before { content:""; position:absolute; top:0; left:0; width:100%; height:5px; background:linear-gradient(90deg,#3498db,#1abc9c); }
-    .sim-card:hover   { transform:translateY(-5px); box-shadow:0 14px 26px rgba(52,152,219,0.13); }
-    .sim-card i       { font-size:30px; color:#3498db; margin-bottom:12px; }
-    .sim-card h3      { color:#1f2d3d; font-size:17px; margin-bottom:6px; }
-    .sim-card p       { font-size:13px; color:#6c7a89; min-height:52px; margin-bottom:14px; }
-    .sim-card button  { background:linear-gradient(to right,#3498db,#2e86c1); color:#fff; border:none; padding:9px 14px; border-radius:8px; cursor:pointer; font-weight:600; width:100%; font-size:14px; }
-    .sim-card.done-card::after { content:"✔ Done"; position:absolute; top:14px; right:14px; background:#d4edda; color:#155724; font-size:11px; font-weight:700; padding:2px 10px; border-radius:20px; }
 
-    /* ── LIVE SIMULATION ── */
+    .sim-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .sim-card:hover   { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(59,158,221,0.14); }
+    .sim-card i       { font-size: 28px; color: var(--accent); margin-bottom: 12px; display: block; }
+    .sim-card h3      { color: var(--text); font-size: 16px; margin-bottom: 6px; font-weight: 600; }
+    .sim-card p       { font-size: 13px; color: var(--muted); min-height: 48px; margin-bottom: 14px; }
+
+    .sim-card button {
+      background: linear-gradient(to right, var(--accent), #2e86c1);
+      color: #fff; border: none; padding: 9px 14px;
+      border-radius: var(--rad-sm); cursor: pointer;
+      font-weight: 600; width: 100%; font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .sim-card button:hover { opacity: 0.9; }
+
+    .sim-card.done-card::after {
+      content: "✔ Done"; position: absolute; top: 16px; right: 14px;
+      background: #d4edda; color: #155724; font-size: 11px;
+      font-weight: 700; padding: 2px 10px; border-radius: 20px;
+    }
+
+    /* Live simulation */
     .live-sim-box {
-      background:#f0f7ff; border:1px solid #c8dff5;
-      border-radius:14px; padding:22px; margin-bottom:20px;
-    }
-    .live-sim-box h4 { font-size:17px; color:#1f2d3d; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-    .live-sim-box h4 i { color:#3498db; }
-
-    .slider-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-
-    .slider-group label {
-      display:flex; justify-content:space-between;
-      font-size:13px; font-weight:600; color:#1f2d3d;
-      margin-bottom:6px;
-    }
-    .slider-group label span { color:#3498db; font-family:monospace; }
-
-    input[type=range] {
-      width:100%; -webkit-appearance:none;
-      height:6px; border-radius:3px; outline:none; cursor:pointer;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance:none; width:18px; height:18px;
-      border-radius:50%; background:#3498db;
-      box-shadow:0 2px 6px rgba(52,152,219,0.4); cursor:pointer;
+      background: #f0f7ff; border: 1px solid #c2d8ef;
+      border-radius: var(--rad-md); padding: 22px; margin-bottom: 22px;
     }
 
-    /* Rod canvas */
-    .rod-section { margin-top:14px; }
-    .rod-section label { font-size:13px; font-weight:600; color:#1f2d3d; display:block; margin-bottom:8px; }
+    .live-sim-box h4 { font-size: 16px; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+    .live-sim-box h4 i { color: var(--accent); }
 
-    #rodCanvas {
-      width:100%; height:80px; border-radius:12px;
-      display:block; box-shadow:0 4px 14px rgba(0,0,0,0.1);
-    }
+    .slider-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 
-    .rod-ends { display:flex; justify-content:space-between; margin-top:4px; font-size:12px; font-weight:600; }
-    .rod-ends .hot  { color:#e74c3c; }
-    .rod-ends .cold { color:#3498db; }
+    .slider-group label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .slider-group label span { color: var(--accent); font-family: monospace; }
 
-    .live-result-row {
-      display:grid; grid-template-columns:repeat(3,1fr);
-      gap:12px; margin-top:16px;
-    }
-    .live-result-item {
-      background:#fff; border-radius:10px; padding:12px;
-      text-align:center; border:1px solid #d0e8f5;
-    }
-    .live-result-item .lri-val { font-size:20px; font-weight:800; color:#1f2d3d; font-family:monospace; }
-    .live-result-item .lri-lbl { font-size:11px; color:#7f8c8d; margin-top:3px; }
+    input[type=range] { width: 100%; -webkit-appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); box-shadow: 0 2px 6px rgba(59,158,221,0.4); cursor: pointer; }
 
-    .formula-box {
-      margin-top:18px; background:#f9fbff;
-      border:1px dashed #bcd7ec; border-radius:12px; padding:16px;
-    }
-    .formula-box h4 { color:#1f2d3d; margin-bottom:8px; }
-    .formula-box p  { color:#5e6d7b; margin-bottom:6px; font-size:14px; }
+    .rod-section { margin-top: 14px; }
+    .rod-section > label { font-size: 13px; font-weight: 600; color: var(--text); display: block; margin-bottom: 8px; }
+    #rodCanvas { width: 100%; height: 80px; border-radius: 10px; display: block; box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+    .rod-ends { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; font-weight: 600; }
+    .rod-ends .hot  { color: #e74c3c; }
+    .rod-ends .cold { color: var(--accent); }
 
-    /* ── CONTRIBUTORS ── */
-    .contributors-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:16px; margin-top:8px; }
+    .live-result-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .live-result-item { background: #fff; border-radius: 10px; padding: 14px; text-align: center; border: 1px solid var(--border); }
+    .lri-val { font-size: 22px; font-weight: 800; color: var(--text); font-family: monospace; }
+    .lri-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    .formula-box { background: var(--surface); border: 1px dashed #b2ccdf; border-radius: var(--rad-md); padding: 18px; margin-top: 4px; }
+    .formula-box h4 { color: var(--text); margin-bottom: 10px; font-size: 16px; font-weight: 600; }
+    .formula-box p  { color: #5e6d7b; margin-bottom: 6px; font-size: 14px; }
+
+    /* Contributors */
+    .contributors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 12px; }
 
     .contributor-card {
-      background:linear-gradient(180deg,#f8fbff,#eef6ff);
-      border-radius:14px; padding:24px 16px; text-align:center;
-      border:1px solid #d7e8f7; transition:0.3s;
+      background: var(--surface); border-radius: var(--rad-md);
+      padding: 24px 16px; text-align: center;
+      border: 1px solid var(--border); transition: all 0.26s;
     }
-    .contributor-card:hover { transform:translateY(-4px); box-shadow:0 10px 22px rgba(52,152,219,0.13); border-color:#3498db; }
 
-    .con-avatar {
-      width:60px; height:60px; border-radius:50%;
-      display:inline-flex; align-items:center; justify-content:center;
-      font-size:26px; margin-bottom:12px;
-      box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    }
-    .contributor-card h4 { font-size:15px; color:#1f2d3d; margin-bottom:4px; font-weight:700; }
-    .contributor-card p  { font-size:12px; color:#6c7a89; }
+    .contributor-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(59,158,221,0.14); border-color: var(--accent); }
+    .con-avatar { width: 58px; height: 58px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .contributor-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
+    .contributor-card p  { font-size: 12px; color: var(--muted); }
 
-    /* ── REFERENCES ── */
-    .ref-list { list-style:none; padding:0; }
-    .ref-list li { padding:13px 0; border-bottom:1px solid #e8edf3; color:#4e5d6c; display:flex; gap:12px; align-items:flex-start; }
-    .ref-list i  { color:#3498db; margin-top:3px; }
+    /* References */
+    .ref-list { list-style: none; padding: 0; }
+    .ref-list li { padding: 13px 0; border-bottom: 1px solid #e8edf3; color: #4e5d6c; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; }
+    .ref-list li:last-child { border-bottom: none; }
+    .ref-list i  { color: var(--accent); margin-top: 3px; }
+    .ref-list a  { color: var(--accent); text-decoration: none; }
+    .ref-list a:hover { text-decoration: underline; }
 
-    /* ── FEEDBACK ── */
-    .feedback-form label { display:block; font-weight:600; margin-bottom:6px; color:#1f2d3d; }
+    /* Feedback */
+    .feedback-form label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--text); font-size: 14px; }
     .feedback-form input,
     .feedback-form select,
     .feedback-form textarea {
-      width:100%; padding:10px 12px; border:1px solid #cad9e6;
-      border-radius:8px; margin-bottom:14px; font-size:14px;
-      font-family:inherit; outline:none; transition:border 0.2s;
+      width: 100%; padding: 10px 13px;
+      border: 1px solid var(--border);
+      border-radius: var(--rad-sm); margin-bottom: 16px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      outline: none; transition: border 0.2s; color: var(--text);
     }
+
     .feedback-form input:focus,
     .feedback-form select:focus,
-    .feedback-form textarea:focus { border-color:#3498db; box-shadow:0 0 0 3px rgba(52,152,219,0.12); }
+    .feedback-form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,158,221,0.12); }
 
-    .star-rating { display:flex; gap:8px; margin-bottom:14px; }
-    .star-rating i { font-size:28px; color:#c8c8c8; cursor:pointer; transition:0.2s; }
-    .star-rating i.active { color:#f39c12; }
+    .star-rating { display: flex; gap: 8px; margin-bottom: 16px; }
+    .star-rating i { font-size: 26px; color: #ccc; cursor: pointer; transition: color 0.16s; }
+    .star-rating i.active { color: #f39c12; }
 
-    /* ── MODALS ── */
-    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:999; align-items:center; justify-content:center; padding:20px; }
-    .modal.show { display:flex; }
+    footer { margin-top: 34px; padding: 20px 0 36px; text-align: center; color: var(--muted); font-size: 13px; }
+
+    /* ──────────────────────────────────────
+       MODALS (generic)
+    ────────────────────────────────────── */
+    .modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(10,24,40,0.6); z-index: 800;
+      align-items: center; justify-content: center;
+      padding: 20px; backdrop-filter: blur(2px);
+    }
+
+    .modal.show { display: flex; }
 
     .modal-box {
-      width:100%; max-width:520px; background:#fff;
-      border-radius:18px; padding:26px;
-      box-shadow:0 18px 40px rgba(0,0,0,0.22);
-      animation:popIn 0.25s ease; position:relative;
+      width: 100%; max-width: 500px; background: #fff;
+      border-radius: var(--rad-lg); padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+      animation: popIn 0.22s ease; position: relative;
+      max-height: 90vh; overflow-y: auto;
     }
-    .modal-box h3 { color:#1f2d3d; margin-bottom:8px; font-size:22px; }
-    .modal-box p  { color:#627180; margin-bottom:14px; font-size:14px; }
 
-    .close-btn { position:absolute; top:13px; right:15px; background:none; border:none; font-size:22px; cursor:pointer; color:#7d8b99; }
-    .close-btn:hover { color:#e74c3c; }
+    .modal-box h3 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 6px; }
+    .modal-box > p { color: var(--muted); margin-bottom: 18px; font-size: 14px; }
 
-    .input-group { margin-bottom:13px; }
-    .input-group label { display:block; font-weight:600; color:#1f2d3d; margin-bottom:5px; font-size:14px; }
-    .input-group input { width:100%; padding:10px 12px; border:1px solid #cad9e6; border-radius:8px; font-size:14px; outline:none; }
-    .input-group input:focus { border-color:#3498db; box-shadow:0 0 0 3px rgba(52,152,219,0.12); }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.94) translateY(-8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
 
-    .modal-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
-    .primary-btn   { background:linear-gradient(to right,#3498db,#2e86c1); color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
-    .secondary-btn { background:#eef4f8; color:#1f2d3d; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px; }
+    .close-btn { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; }
+    .close-btn:hover { color: #e74c3c; }
 
-    .result-banner { margin-top:14px; padding:12px 14px; border-radius:10px; font-weight:600; display:none; font-size:14px; }
-    .result-success { background:#eafaf1; color:#1e8449; border:1px solid #b8e6ca; }
-    .result-error   { background:#fff3f1; color:#c0392b; border:1px solid #f2c3bc; }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-weight: 600; color: var(--text); margin-bottom: 5px; font-size: 13px; }
+    .input-group input,
+    .input-group select {
+      width: 100%; padding: 10px 13px;
+      border: 1px solid var(--border); border-radius: var(--rad-sm);
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      outline: none; transition: border 0.2s; color: var(--text);
+    }
+
+    .input-group input:focus,
+    .input-group select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,158,221,0.12); }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .primary-btn   { background: linear-gradient(to right, var(--accent), #2e86c1); color: #fff; border: none; padding: 10px 20px; border-radius: var(--rad-sm); cursor: pointer; font-weight: 600; font-size: 14px; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+    .primary-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(59,158,221,0.3); }
+    .secondary-btn { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 10px 20px; border-radius: var(--rad-sm); cursor: pointer; font-weight: 600; font-size: 14px; font-family: 'DM Sans', sans-serif; }
+    .secondary-btn:hover { background: #e4edf8; }
+
+    .result-banner { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-weight: 600; display: none; font-size: 14px; }
+    .result-success { background: #eafaf1; color: #1e8449; border: 1px solid #b8e6ca; }
+    .result-error   { background: #fff3f1; color: #c0392b; border: 1px solid #f2c3bc; }
+
+    /* ──────────────────────────────────────
+       REGISTRATION FORM MODAL
+    ────────────────────────────────────── */
+    #registerModal .modal-box { max-width: 560px; }
+
+    .reg-header {
+      background: linear-gradient(135deg, var(--navy), var(--navy-lit));
+      border-radius: var(--rad-md) var(--rad-md) 0 0;
+      margin: -28px -28px 24px;
+      padding: 28px 28px 24px;
+      text-align: center;
+    }
+
+    .reg-logo {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 12px;
+      box-shadow: 0 4px 14px rgba(59,158,221,0.4);
+    }
+
+    .reg-header h3 { font-family: 'DM Serif Display', serif; font-size: 21px; font-weight: 400; color: #fff; }
+    .reg-header p  { font-size: 12px; color: #7ec8e8; margin-top: 3px; }
+
+    .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+
+    .reg-divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 6px 0 16px; color: var(--muted); font-size: 12px;
+    }
+
+    .reg-divider::before, .reg-divider::after {
+      content: ""; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .reg-terms { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+    .reg-terms a { color: var(--accent); text-decoration: none; }
+
+    .reg-switch { text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
+    .reg-switch a { color: var(--accent); font-weight: 600; cursor: pointer; text-decoration: none; }
+
+    /* Login modal */
+    #loginModal .modal-box { max-width: 420px; }
+    .login-header {
+      background: linear-gradient(135deg, var(--navy), var(--navy-lit));
+      border-radius: var(--rad-md) var(--rad-md) 0 0;
+      margin: -28px -28px 24px;
+      padding: 28px 28px 22px;
+      text-align: center;
+    }
+
+    .login-header .reg-logo { }
+    .login-header h3 { font-family: 'DM Serif Display', serif; font-size: 21px; font-weight: 400; color: #fff; }
+    .login-header p  { font-size: 12px; color: #7ec8e8; margin-top: 3px; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width:900px) { .sim-topbar { grid-template-columns:1fr; } .slider-row { grid-template-columns:1fr; } .live-result-row { grid-template-columns:1fr 1fr; } }
-    @media (max-width:768px) { .header-container { flex-direction:column; gap:14px; text-align:center; } .logo-section { flex-direction:column; } .aim-sections,.sim-cards { grid-template-columns:1fr 1fr; } .contributors-grid { grid-template-columns:1fr 1fr; } }
-    @media (max-width:500px) { .aim-sections,.sim-cards,.contributors-grid { grid-template-columns:1fr; } .live-result-row { grid-template-columns:1fr; } }
+    @media (max-width: 860px) {
+      .header-main { grid-template-columns: 1fr; grid-template-rows: auto auto; padding: 12px 18px; gap: 10px; }
+      .brand-center { grid-column: 1; }
+      .auth-zone    { grid-column: 1; justify-content: center; }
+      .sim-topbar   { grid-template-columns: 1fr; }
+      .slider-row   { grid-template-columns: 1fr; }
+      .live-result-row { grid-template-columns: 1fr 1fr; }
+      .reg-grid     { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .college-bar .clg-name { font-size: 12px; }
+      .aim-sections, .sim-cards { grid-template-columns: 1fr 1fr; }
+      .contributors-grid { grid-template-columns: 1fr 1fr; }
+      .brand-text h1 { font-size: 18px; }
+      .content { padding: 20px 16px; }
+    }
+
+    @media (max-width: 400px) {
+      .aim-sections, .sim-cards, .contributors-grid { grid-template-columns: 1fr; }
+      .live-result-row { grid-template-columns: 1fr; }
+      .btn-login { padding: 7px 12px; font-size: 12px; }
+      .btn-register { padding: 8px 14px; font-size: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -402,94 +693,110 @@
     <img
       src="https://raw.githubusercontent.com/dineshkute90/virtual_lab_LAUC/main/pccoe.png"
       alt="PCCOE Logo"
-      onerror="this.src='https://via.placeholder.com/48x48/3498db/ffffff?text=P'"
+      onerror="this.style.display='none'"
     />
-    <div class="clg-text">
+    <div>
       <div class="clg-name">Pimpri Chinchwad College of Engineering, Pune</div>
       <div class="clg-sub">Department of Applied Sciences &amp; Humanities &nbsp;|&nbsp; Affiliated to SPPU</div>
     </div>
   </div>
 
-  <!-- Main header -->
-<div class="header-container">
+  <!-- Main header: left spacer | center brand | right auth -->
+  <div class="header-main">
 
-  <!-- Profile button top right fixed -->
-  <div style="position:fixed; top:16px; right:24px; z-index:999;">
-    <div class="user-btn" onclick="toggleProfile(event)">
-      <div class="logo-box">🔥</div>
-      <div class="title-group">
+    <!-- Left spacer (invisible, keeps center centered) -->
+    <div></div>
+
+    <!-- CENTER — branding -->
+    <div class="brand-center">
+      <div class="brand-icon">🔥</div>
+      <div class="brand-text">
         <h1>Virtual Labs</h1>
-        <p>One Dimensional Heat Conduction Interactive Project</p>
+        <p>One Dimensional Heat Conduction — Interactive Portal</p>
       </div>
     </div>
 
-    <!-- Profile button -->
-    <div class="user-section" style="position:relative;">
-      <div class="user-btn" onclick="toggleProfile(event)">
-        <i class="fas fa-user-circle"></i>
-        <span>Welcome, Student</span>
-        <i class="fas fa-chevron-down" style="font-size:12px;color:#90c4e8;"></i>
+    <!-- RIGHT — auth buttons / profile -->
+    <div class="auth-zone" id="authZone">
+      <!-- Shown when logged out -->
+      <div id="authButtons">
+        <button class="btn-login" onclick="openModal('loginModal')">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        <button class="btn-register" onclick="openModal('registerModal')">
+          <i class="fas fa-user-plus"></i> Register
+        </button>
       </div>
 
-      <!-- Profile popup -->
-      <div class="profile-popup" id="profilePopup">
-        <div class="pp-head">
-          <div class="pp-avatar">👨‍🎓</div>
-          <h3>Student Profile</h3>
-          <p>Virtual Lab Portal</p>
-        </div>
-        <div class="pp-body">
-          <div class="pp-row">
-            <span class="pp-label">Status</span>
-            <span class="pp-badge">✔ Active Session</span>
+      <!-- Shown when logged in -->
+      <div id="profileZone" class="profile-zone" style="display:none;">
+        <button class="profile-btn" onclick="toggleProfile(event)">
+          <div class="profile-avatar-sm">👨‍🎓</div>
+          <span id="profileName">Student</span>
+          <i class="fas fa-chevron-down" style="font-size:10px;color:#90c4e8;"></i>
+        </button>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="pd-head">
+            <div class="pd-avatar">👨‍🎓</div>
+            <h3 id="pdName">Student</h3>
+            <p>Virtual Lab Portal</p>
           </div>
-          <div class="pp-row">
-            <span class="pp-label">Score</span>
-            <span class="pp-val" id="pp-score">0 / 40</span>
-          </div>
-          <div class="pp-row">
-            <span class="pp-label">Completed</span>
-            <span class="pp-val" id="pp-completed">0 / 4 Challenges</span>
-          </div>
-          <div class="pp-row">
-            <span class="pp-label">Pretest</span>
-            <span class="pp-val" id="pp-pretest">Not taken</span>
-          </div>
-          <div class="pp-row">
-            <span class="pp-label">Posttest</span>
-            <span class="pp-val" id="pp-posttest">Not taken</span>
-          </div>
-          <div class="pp-row">
-            <span class="pp-label">Institute</span>
-            <span style="font-size:12px;color:#1f2d3d;font-weight:600;">PCCOE, Pune</span>
+          <div class="pd-body">
+            <div class="pd-row">
+              <span class="pd-label">Status</span>
+              <span class="pd-badge">✔ Active Session</span>
+            </div>
+            <div class="pd-row">
+              <span class="pd-label">Score</span>
+              <span class="pd-val" id="pp-score">0 / 40</span>
+            </div>
+            <div class="pd-row">
+              <span class="pd-label">Completed</span>
+              <span class="pd-val" id="pp-completed">0 / 4 Challenges</span>
+            </div>
+            <div class="pd-row">
+              <span class="pd-label">Pretest</span>
+              <span class="pd-val" id="pp-pretest">Not taken</span>
+            </div>
+            <div class="pd-row">
+              <span class="pd-label">Posttest</span>
+              <span class="pd-val" id="pp-posttest">Not taken</span>
+            </div>
+            <div class="pd-row">
+              <span class="pd-label">Institute</span>
+              <span style="font-size:12px;color:var(--text);font-weight:600;">PCCOE, Pune</span>
+            </div>
+            <button class="pd-logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
+
+  </div><!-- /header-main -->
 </header>
 
 <!-- ════════════════════════════════════════════════
      MAIN CONTENT
 ════════════════════════════════════════════════ -->
-<main class="container" style="padding-top:26px;padding-bottom:10px;">
+<main class="container">
 
   <!-- DASHBOARD -->
   <div id="main-dashboard">
     <div class="content">
       <div class="content-header">
         <h2>A Virtual Lab on One Dimensional Heat Conduction</h2>
-        <p>Interactive simulation with calculation challenge, scoring, and learning flow</p>
+        <p>Interactive simulation with calculation challenges, scoring, and structured learning flow</p>
       </div>
       <div class="aim-sections">
-        <div class="section-card" data-target="page-aim">        <i class="fas fa-bullseye"></i>       <h3>Aim</h3>        <p>Objective of the experiment</p>    </div>
-        <div class="section-card" data-target="page-theory">     <i class="fas fa-book"></i>            <h3>Theory</h3>      <p>Heat conduction concepts</p>       </div>
-        <div class="section-card" data-target="page-pretest">    <i class="fas fa-question-circle"></i> <h3>Pretest</h3>     <p>Before starting the lab</p>        </div>
-        <div class="section-card" data-target="page-simulation"> <i class="fas fa-flask"></i>           <h3>Simulation</h3>  <p>Interactive heat challenge</p>      </div>
-        <div class="section-card" data-target="page-posttest">   <i class="fas fa-clipboard-check"></i> <h3>Posttest</h3>    <p>After completing the lab</p>       </div>
-        <div class="section-card" data-target="page-references"> <i class="fas fa-book-open"></i>       <h3>References</h3>  <p>Books and online resources</p>      </div>
-        <div class="section-card" data-target="page-contributors"><i class="fas fa-users"></i>          <h3>Contributors</h3><p>Project team members</p>            </div>
-        <div class="section-card" data-target="page-feedback">   <i class="fas fa-comment-alt"></i>    <h3>Feedback</h3>    <p>Share your experience</p>          </div>
+        <div class="section-card" data-target="page-aim">        <i class="fas fa-bullseye"></i>        <h3>Aim</h3>        <p>Objective of the experiment</p></div>
+        <div class="section-card" data-target="page-theory">     <i class="fas fa-book"></i>             <h3>Theory</h3>      <p>Heat conduction concepts</p></div>
+        <div class="section-card" data-target="page-pretest">    <i class="fas fa-question-circle"></i>  <h3>Pretest</h3>     <p>Before starting the lab</p></div>
+        <div class="section-card" data-target="page-simulation"> <i class="fas fa-flask"></i>            <h3>Simulation</h3>  <p>Interactive heat challenge</p></div>
+        <div class="section-card" data-target="page-posttest">   <i class="fas fa-clipboard-check"></i>  <h3>Posttest</h3>    <p>After completing the lab</p></div>
+        <div class="section-card" data-target="page-references"> <i class="fas fa-book-open"></i>        <h3>References</h3>  <p>Books and online resources</p></div>
+        <div class="section-card" data-target="page-contributors"><i class="fas fa-users"></i>           <h3>Contributors</h3><p>Project team members</p></div>
+        <div class="section-card" data-target="page-feedback">   <i class="fas fa-comment-alt"></i>     <h3>Feedback</h3>    <p>Share your experience</p></div>
       </div>
     </div>
   </div>
@@ -525,16 +832,13 @@
     <div class="page-content-box">
       <h4>One Dimensional Heat Conduction</h4>
       <p>When heat transfer takes place only in one direction, the process is called one dimensional heat conduction. It usually occurs through the thickness of a wall or along the length of a rod.</p>
-
       <h4>Fourier's Law</h4>
       <p>Fourier's law states that the rate of heat transfer is proportional to thermal conductivity, cross-sectional area, and temperature gradient.</p>
       <p><strong>Heat Flux:</strong> q = k (T₁ − T₂) / L</p>
       <p><strong>Rate of Heat Flow:</strong> Q = k A (T₁ − T₂) / L</p>
-
       <h4>Temperature Distribution</h4>
       <p>For a plane wall under steady-state conditions with constant thermal conductivity and no heat generation, temperature varies linearly with distance.</p>
       <p><strong>Temperature at a point x:</strong> T(x) = T₁ − [(T₁ − T₂) x / L]</p>
-
       <h4>Important Terms</h4>
       <ul>
         <li><strong>Thermal conductivity (k):</strong> ability of a material to conduct heat.</li>
@@ -542,16 +846,12 @@
         <li><strong>Heat flow rate (Q):</strong> total heat transferred per second.</li>
         <li><strong>Steady-state conduction:</strong> temperature at each point does not change with time.</li>
       </ul>
-
-      <!-- Animated YouTube video -->
       <h4 style="margin-top:22px;"><i class="fas fa-play-circle" style="color:#e74c3c;"></i> Animated Explanation Video</h4>
       <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/iShMoxFEPSk?rel=0&modestbranding=1"
+        <iframe src="https://www.youtube.com/embed/iShMoxFEPSk?rel=0&modestbranding=1"
           title="Heat Conduction Animation"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+          allowfullscreen></iframe>
       </div>
       <div class="video-label">
         <i class="fab fa-youtube"></i>
@@ -567,7 +867,6 @@
       <i class="fas fa-question-circle"></i>
       <div><h2>Pretest</h2><p>Answer before starting the simulation</p></div>
     </div>
-
     <div class="mcq-question">
       <p>Q1. Heat conduction through a wall mainly occurs due to:</p>
       <label class="mcq-option"><input type="radio" name="q1"> Temperature difference</label>
@@ -589,7 +888,6 @@
       <label class="mcq-option"><input type="radio" name="q3"> Circular direction</label>
       <label class="mcq-option"><input type="radio" name="q3"> No direction</label>
     </div>
-
     <button class="submit-btn" onclick="submitTest('Pretest')">Submit Pretest</button>
   </div>
 
@@ -601,7 +899,6 @@
       <div><h2>Interactive Heat Conduction Challenge</h2><p>Live rod simulation + calculation challenges</p></div>
     </div>
 
-    <!-- Score bar -->
     <div class="sim-topbar">
       <div class="top-stat"><h3>Score</h3><p id="scoreValue">0</p></div>
       <div class="top-stat"><h3>Completed</h3><p id="completedValue">0 / 4</p></div>
@@ -613,52 +910,47 @@
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
 
-    <!-- ── LIVE INTERACTIVE SIMULATION ── -->
     <div class="live-sim-box">
       <h4><i class="fas fa-temperature-high"></i> Live Rod Temperature Simulator</h4>
-      <p style="font-size:13px;color:#6c7a89;margin-bottom:14px;">
-        Move the sliders to change temperatures and length. The rod colour and values update live in real time.
-      </p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Move the sliders to change temperatures and length. The rod colour and values update live in real time.</p>
 
       <div class="slider-row">
         <div class="slider-group">
           <label>Hot End Temperature T₁ <span id="lbl-t1">100 °C</span></label>
           <input type="range" id="sl-t1" min="50" max="500" value="100"
-                 style="background:linear-gradient(90deg,#e74c3c 0%,#f39c12 100%);"
-                 oninput="updateLiveSim()">
+            style="background:linear-gradient(90deg,#e74c3c,#f39c12);"
+            oninput="updateLiveSim()">
         </div>
         <div class="slider-group">
           <label>Cold End Temperature T₂ <span id="lbl-t2">30 °C</span></label>
           <input type="range" id="sl-t2" min="0" max="100" value="30"
-                 style="background:linear-gradient(90deg,#3498db 0%,#1abc9c 100%);"
-                 oninput="updateLiveSim()">
+            style="background:linear-gradient(90deg,#3b9edd,#1abc9c);"
+            oninput="updateLiveSim()">
         </div>
         <div class="slider-group">
           <label>Rod Length L <span id="lbl-L">1.0 m</span></label>
           <input type="range" id="sl-L" min="1" max="10" value="10" step="1"
-                 style="background:linear-gradient(90deg,#9b59b6 0%,#8e44ad 100%);"
-                 oninput="updateLiveSim()">
+            style="background:linear-gradient(90deg,#9b59b6,#8e44ad);"
+            oninput="updateLiveSim()">
         </div>
         <div class="slider-group">
           <label>Thermal Conductivity k <span id="lbl-k">50 W/m·K</span></label>
           <input type="range" id="sl-k" min="1" max="400" value="50"
-                 style="background:linear-gradient(90deg,#27ae60 0%,#1abc9c 100%);"
-                 oninput="updateLiveSim()">
+            style="background:linear-gradient(90deg,#27ae60,#1abc9c);"
+            oninput="updateLiveSim()">
         </div>
       </div>
 
-      <!-- Rod canvas -->
       <div class="rod-section">
         <label>Temperature Distribution along Rod</label>
         <canvas id="rodCanvas" height="80"></canvas>
         <div class="rod-ends">
           <span class="hot">🔥 Hot End: <span id="re-t1">100°C</span></span>
-          <span style="color:#888;font-size:11px;">← Heat flows this way →</span>
+          <span style="color:#aaa;font-size:11px;">← Heat flows this way →</span>
           <span class="cold">❄ Cold End: <span id="re-t2">30°C</span></span>
         </div>
       </div>
 
-      <!-- Live results -->
       <div class="live-result-row">
         <div class="live-result-item">
           <div class="lri-val" id="lr-flux">—</div>
@@ -666,7 +958,7 @@
         </div>
         <div class="live-result-item">
           <div class="lri-val" id="lr-rate">—</div>
-          <div class="lri-lbl">Heat Rate Q (W) at A=0.01m²</div>
+          <div class="lri-lbl">Heat Rate Q (W) at A=0.01 m²</div>
         </div>
         <div class="live-result-item">
           <div class="lri-val" id="lr-tmid">—</div>
@@ -675,8 +967,7 @@
       </div>
     </div>
 
-    <!-- Challenge cards -->
-    <h4 style="font-size:17px;color:#1f2d3d;margin-bottom:14px;"><i class="fas fa-trophy" style="color:#f39c12;"></i> Calculation Challenges</h4>
+    <h4 style="font-size:17px;color:var(--text);margin-bottom:14px;font-weight:600;"><i class="fas fa-trophy" style="color:#f39c12;"></i> Calculation Challenges</h4>
     <div class="sim-cards">
       <div class="sim-card" id="card-heatFlux">
         <i class="fas fa-bolt"></i>
@@ -710,7 +1001,7 @@
       <p><strong>Heat Flow Rate:</strong> Q = kA(T₁ − T₂)/L</p>
       <p><strong>Thermal Conductivity:</strong> k = QL / A(T₁ − T₂)</p>
       <p><strong>Temperature at point x:</strong> T(x) = T₁ − [(T₁ − T₂)x/L]</p>
-      <p style="color:#888;font-size:12px;margin-top:8px;">Tip: your answer is accepted within 1% tolerance to allow for rounding.</p>
+      <p style="color:#999;font-size:12px;margin-top:10px;">Tip: answers are accepted within 1% tolerance to allow for rounding.</p>
     </div>
   </div>
 
@@ -721,7 +1012,6 @@
       <i class="fas fa-clipboard-check"></i>
       <div><h2>Posttest</h2><p>Answer after completing the simulation</p></div>
     </div>
-
     <div class="mcq-question">
       <p>Q1. Heat flow rate depends on:</p>
       <label class="mcq-option"><input type="radio" name="pq1"> Area and temperature gradient</label>
@@ -743,7 +1033,6 @@
       <label class="mcq-option"><input type="radio" name="pq3"> Remains exactly same</label>
       <label class="mcq-option"><input type="radio" name="pq3"> Becomes infinite</label>
     </div>
-
     <button class="submit-btn" onclick="submitTest('Posttest')">Submit Posttest</button>
   </div>
 
@@ -758,8 +1047,8 @@
       <li><i class="fas fa-book"></i><div><strong>Heat and Mass Transfer</strong> — R.K. Rajput</div></li>
       <li><i class="fas fa-book"></i><div><strong>A Textbook of Heat Transfer</strong> — S.P. Sukhatme</div></li>
       <li><i class="fas fa-book"></i><div><strong>Fundamentals of Heat and Mass Transfer</strong> — Incropera and DeWitt</div></li>
-      <li><i class="fas fa-globe"></i><div><strong>NPTEL</strong> — <a href="https://nptel.ac.in/" target="_blank">nptel.ac.in</a></div></li>
-      <li><i class="fas fa-globe"></i><div><strong>MIT OpenCourseWare</strong> — <a href="https://ocw.mit.edu/" target="_blank">ocw.mit.edu</a></div></li>
+      <li><i class="fas fa-globe"></i><div><strong>NPTEL</strong> — <a href="https://nptel.ac.in/" target="_blank" rel="noopener">nptel.ac.in</a></div></li>
+      <li><i class="fas fa-globe"></i><div><strong>MIT OpenCourseWare</strong> — <a href="https://ocw.mit.edu/" target="_blank" rel="noopener">ocw.mit.edu</a></div></li>
     </ul>
   </div>
 
@@ -770,10 +1059,9 @@
       <i class="fas fa-users"></i>
       <div><h2>Contributors</h2><p>Project team members</p></div>
     </div>
-
     <div class="contributors-grid">
       <div class="contributor-card">
-        <div class="con-avatar" style="background:linear-gradient(135deg,#3498db,#1abc9c);">👨‍🏫</div>
+        <div class="con-avatar" style="background:linear-gradient(135deg,#3b9edd,#1abc9c);">👨‍🏫</div>
         <h4>Prof. Guide Name</h4>
         <p>Project Guide</p>
       </div>
@@ -793,11 +1081,9 @@
         <p>Simulation &amp; Logic</p>
       </div>
     </div>
-
-    <p style="margin-top:22px;color:#6c7a89;font-size:14px;">
-      <i class="fas fa-university" style="color:#3498db;"></i>
-      &nbsp; Department of Applied Sciences &amp; Humanities,
-      Pimpri Chinchwad College of Engineering, Pune.
+    <p style="margin-top:22px;color:var(--muted);font-size:14px;">
+      <i class="fas fa-university" style="color:var(--accent);"></i>
+      &nbsp; Department of Applied Sciences &amp; Humanities, Pimpri Chinchwad College of Engineering, Pune.
     </p>
   </div>
 
@@ -811,7 +1097,6 @@
     <div class="feedback-form">
       <label>Your Name</label>
       <input type="text" id="fb-name" placeholder="Enter your name">
-
       <label>Your Rating</label>
       <div class="star-rating" id="starRating">
         <i class="fas fa-star" data-val="1"></i>
@@ -820,7 +1105,6 @@
         <i class="fas fa-star" data-val="4"></i>
         <i class="fas fa-star" data-val="5"></i>
       </div>
-
       <label>How was the simulation?</label>
       <select id="fb-sim">
         <option>-- Select --</option>
@@ -829,10 +1113,8 @@
         <option>Average</option>
         <option>Needs Improvement</option>
       </select>
-
       <label>Comments</label>
       <textarea id="fb-comments" rows="4" placeholder="Write your feedback..."></textarea>
-
       <button class="submit-btn" onclick="submitFeedback()">Submit Feedback</button>
     </div>
   </div>
@@ -844,7 +1126,135 @@
 </footer>
 
 <!-- ════════════════════════════════════════════════
-     INPUT MODAL
+     LOGIN MODAL
+════════════════════════════════════════════════ -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+
+    <div class="login-header">
+      <div class="reg-logo">🔥</div>
+      <h3>Welcome Back</h3>
+      <p>Login to your Virtual Labs account</p>
+    </div>
+
+    <div class="input-group">
+      <label>Email Address</label>
+      <input type="email" id="login-email" placeholder="you@pccoe.edu.in">
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Enter your password">
+    </div>
+
+    <div class="modal-actions">
+      <button class="primary-btn" style="flex:1;" onclick="handleLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button class="secondary-btn" onclick="closeModal('loginModal')">Cancel</button>
+    </div>
+
+    <div id="loginResult" class="result-banner"></div>
+
+    <div class="reg-switch" style="margin-top:14px;">
+      Don't have an account? <a onclick="switchToRegister()">Register here</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     REGISTER MODAL
+════════════════════════════════════════════════ -->
+<div class="modal" id="registerModal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
+
+    <div class="reg-header">
+      <div class="reg-logo">🔥</div>
+      <h3>Create Your Account</h3>
+      <p>Join the Virtual Labs — PCCOE Portal</p>
+    </div>
+
+    <div class="reg-grid">
+      <div class="input-group">
+        <label>First Name <span style="color:#e74c3c;">*</span></label>
+        <input type="text" id="reg-fname" placeholder="Rahul">
+      </div>
+      <div class="input-group">
+        <label>Last Name <span style="color:#e74c3c;">*</span></label>
+        <input type="text" id="reg-lname" placeholder="Sharma">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Email Address <span style="color:#e74c3c;">*</span></label>
+      <input type="email" id="reg-email" placeholder="you@pccoe.edu.in">
+    </div>
+
+    <div class="reg-grid">
+      <div class="input-group">
+        <label>Roll Number <span style="color:#e74c3c;">*</span></label>
+        <input type="text" id="reg-roll" placeholder="e.g. 21CO001">
+      </div>
+      <div class="input-group">
+        <label>Academic Year</label>
+        <select id="reg-year">
+          <option value="">-- Select --</option>
+          <option>First Year</option>
+          <option>Second Year</option>
+          <option>Third Year</option>
+          <option>Final Year</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Department <span style="color:#e74c3c;">*</span></label>
+      <select id="reg-dept">
+        <option value="">-- Select Department --</option>
+        <option>Computer Engineering</option>
+        <option>Mechanical Engineering</option>
+        <option>Civil Engineering</option>
+        <option>Electronics &amp; Telecom</option>
+        <option>Electrical Engineering</option>
+        <option>Information Technology</option>
+        <option>Applied Sciences</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="reg-divider">Password</div>
+
+    <div class="reg-grid">
+      <div class="input-group">
+        <label>Password <span style="color:#e74c3c;">*</span></label>
+        <input type="password" id="reg-pwd" placeholder="Min. 8 characters">
+      </div>
+      <div class="input-group">
+        <label>Confirm Password <span style="color:#e74c3c;">*</span></label>
+        <input type="password" id="reg-cpwd" placeholder="Repeat password">
+      </div>
+    </div>
+
+    <p class="reg-terms">
+      By registering you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a> of the PCCOE Virtual Labs Portal.
+    </p>
+
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="primary-btn" style="flex:1;" onclick="handleRegister()">
+        <i class="fas fa-user-plus"></i> Create Account
+      </button>
+      <button class="secondary-btn" onclick="closeModal('registerModal')">Cancel</button>
+    </div>
+
+    <div id="registerResult" class="result-banner"></div>
+
+    <div class="reg-switch">
+      Already have an account? <a onclick="switchToLogin()">Login here</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     CHALLENGE INPUT MODAL
 ════════════════════════════════════════════════ -->
 <div class="modal" id="inputModal">
   <div class="modal-box">
@@ -860,7 +1270,7 @@
 </div>
 
 <!-- ════════════════════════════════════════════════
-     ANSWER MODAL
+     CHALLENGE ANSWER MODAL
 ════════════════════════════════════════════════ -->
 <div class="modal" id="answerModal">
   <div class="modal-box">
@@ -883,106 +1293,210 @@
      JAVASCRIPT
 ════════════════════════════════════════════════ -->
 <script>
-// ── State ───────────────────────────────────────────────────
-let selectedRating  = 0;
-let score           = 0;
+// ── State ────────────────────────────────────────────────────
+let selectedRating      = 0;
+let score               = 0;
 let completedChallenges = [];
 let currentChallenge    = '';
 let correctAnswer       = 0;
-let pretestDone = false;
-let posttestDone = false;
+let pretestDone         = false;
+let posttestDone        = false;
+let isLoggedIn          = false;
+let currentUser         = null;
 
-// ── Challenge config ────────────────────────────────────────
+// ── Challenge config ─────────────────────────────────────────
 const challengeConfig = {
   heatFlux: {
     title:'Heat Flux Challenge', desc:'Use: q = k(T₁ − T₂) / L',
     fields:[
-      {id:'k', label:'Thermal Conductivity k (W/m·K)'},
-      {id:'t1',label:'Hot Side Temperature T₁ (°C)'},
-      {id:'t2',label:'Cold Side Temperature T₂ (°C)'},
-      {id:'L', label:'Thickness L (m)'},
+      {id:'k',  label:'Thermal Conductivity k (W/m·K)'},
+      {id:'t1', label:'Hot Side Temperature T₁ (°C)'},
+      {id:'t2', label:'Cold Side Temperature T₂ (°C)'},
+      {id:'L',  label:'Thickness L (m)'},
     ],
-    calc: v => (v.k*(v.t1-v.t2))/v.L,
-    unit:'W/m²'
+    calc: v => (v.k * (v.t1 - v.t2)) / v.L,
+    unit: 'W/m²'
   },
   heatRate: {
     title:'Rate of Heat Flow Challenge', desc:'Use: Q = kA(T₁ − T₂) / L',
     fields:[
-      {id:'k', label:'Thermal Conductivity k (W/m·K)'},
-      {id:'A', label:'Area A (m²)'},
-      {id:'t1',label:'Hot Side Temperature T₁ (°C)'},
-      {id:'t2',label:'Cold Side Temperature T₂ (°C)'},
-      {id:'L', label:'Thickness L (m)'},
+      {id:'k',  label:'Thermal Conductivity k (W/m·K)'},
+      {id:'A',  label:'Area A (m²)'},
+      {id:'t1', label:'Hot Side Temperature T₁ (°C)'},
+      {id:'t2', label:'Cold Side Temperature T₂ (°C)'},
+      {id:'L',  label:'Thickness L (m)'},
     ],
-    calc: v => (v.k*v.A*(v.t1-v.t2))/v.L,
-    unit:'W'
+    calc: v => (v.k * v.A * (v.t1 - v.t2)) / v.L,
+    unit: 'W'
   },
   conductivity: {
     title:'Thermal Conductivity Challenge', desc:'Use: k = QL / A(T₁ − T₂)',
     fields:[
-      {id:'Q', label:'Heat Flow Rate Q (W)'},
-      {id:'A', label:'Area A (m²)'},
-      {id:'t1',label:'Hot Side Temperature T₁ (°C)'},
-      {id:'t2',label:'Cold Side Temperature T₂ (°C)'},
-      {id:'L', label:'Thickness L (m)'},
+      {id:'Q',  label:'Heat Flow Rate Q (W)'},
+      {id:'A',  label:'Area A (m²)'},
+      {id:'t1', label:'Hot Side Temperature T₁ (°C)'},
+      {id:'t2', label:'Cold Side Temperature T₂ (°C)'},
+      {id:'L',  label:'Thickness L (m)'},
     ],
-    calc: v => (v.Q*v.L)/(v.A*(v.t1-v.t2)),
-    unit:'W/m·K'
+    calc: v => (v.Q * v.L) / (v.A * (v.t1 - v.t2)),
+    unit: 'W/m·K'
   },
   tempPoint: {
     title:'Temperature at a Point Challenge', desc:'Use: T(x) = T₁ − [(T₁ − T₂)x/L]',
     fields:[
-      {id:'t1',label:'Left Temperature T₁ (°C)'},
-      {id:'t2',label:'Right Temperature T₂ (°C)'},
-      {id:'x', label:'Distance x from hot end (m)'},
-      {id:'L', label:'Total Length L (m)'},
+      {id:'t1', label:'Left Temperature T₁ (°C)'},
+      {id:'t2', label:'Right Temperature T₂ (°C)'},
+      {id:'x',  label:'Distance x from hot end (m)'},
+      {id:'L',  label:'Total Length L (m)'},
     ],
-    calc: v => v.t1 - ((v.t1-v.t2)*v.x/v.L),
-    unit:'°C'
+    calc: v => v.t1 - ((v.t1 - v.t2) * v.x / v.L),
+    unit: '°C'
   },
 };
 
-// ── Page navigation ─────────────────────────────────────────
+// ── Page navigation ───────────────────────────────────────────
 function openPage(id) {
   document.getElementById('main-dashboard').classList.add('hidden');
   document.querySelectorAll('.card-page').forEach(p => p.classList.remove('active-page'));
   const pg = document.getElementById(id);
-  if (pg) { pg.classList.add('active-page'); window.scrollTo({top:0,behavior:'smooth'}); }
+  if (pg) { pg.classList.add('active-page'); window.scrollTo({top:0, behavior:'smooth'}); }
 }
 
 function goBack() {
   document.querySelectorAll('.card-page').forEach(p => p.classList.remove('active-page'));
   document.getElementById('main-dashboard').classList.remove('hidden');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 document.querySelectorAll('.section-card').forEach(card => {
   card.addEventListener('click', () => openPage(card.getAttribute('data-target')));
 });
 
-// ── Profile popup ───────────────────────────────────────────
+// ── Profile dropdown ──────────────────────────────────────────
 function toggleProfile(e) {
   e.stopPropagation();
-  document.getElementById('profilePopup').classList.toggle('open');
+  document.getElementById('profileDropdown').classList.toggle('open');
 }
 
 document.addEventListener('click', () => {
-  document.getElementById('profilePopup').classList.remove('open');
+  const dd = document.getElementById('profileDropdown');
+  if (dd) dd.classList.remove('open');
 });
 
-function updateProfilePopup() {
+function updateProfileUI() {
   document.getElementById('pp-score').textContent     = `${score} / 40`;
   document.getElementById('pp-completed').textContent = `${completedChallenges.length} / 4 Challenges`;
   document.getElementById('pp-pretest').textContent   = pretestDone  ? 'Submitted ✔' : 'Not taken';
   document.getElementById('pp-posttest').textContent  = posttestDone ? 'Submitted ✔' : 'Not taken';
 }
 
-// ── Live rod simulation ─────────────────────────────────────
+// ── Auth handlers ─────────────────────────────────────────────
+function handleLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pwd   = document.getElementById('login-password').value;
+  const banner = document.getElementById('loginResult');
+
+  if (!email || !pwd) {
+    showBanner('loginResult', 'error', 'Please enter both email and password.');
+    return;
+  }
+
+  if (!email.includes('@')) {
+    showBanner('loginResult', 'error', 'Please enter a valid email address.');
+    return;
+  }
+
+  // Simulate login success
+  isLoggedIn  = true;
+  currentUser = { name: email.split('@')[0], email };
+
+  showBanner('loginResult', 'success', `Welcome back, ${currentUser.name}! Logging you in…`);
+
+  setTimeout(() => {
+    closeModal('loginModal');
+    activateProfile(currentUser.name);
+  }, 1200);
+}
+
+function handleRegister() {
+  const fname = document.getElementById('reg-fname').value.trim();
+  const lname = document.getElementById('reg-lname').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const roll  = document.getElementById('reg-roll').value.trim();
+  const dept  = document.getElementById('reg-dept').value;
+  const pwd   = document.getElementById('reg-pwd').value;
+  const cpwd  = document.getElementById('reg-cpwd').value;
+
+  if (!fname || !lname || !email || !roll || !dept || !pwd || !cpwd) {
+    showBanner('registerResult', 'error', 'Please fill in all required fields.');
+    return;
+  }
+
+  if (!email.includes('@')) {
+    showBanner('registerResult', 'error', 'Please enter a valid email address.');
+    return;
+  }
+
+  if (pwd.length < 8) {
+    showBanner('registerResult', 'error', 'Password must be at least 8 characters.');
+    return;
+  }
+
+  if (pwd !== cpwd) {
+    showBanner('registerResult', 'error', 'Passwords do not match. Please try again.');
+    return;
+  }
+
+  isLoggedIn  = true;
+  currentUser = { name: `${fname} ${lname}`, email, roll, dept };
+
+  showBanner('registerResult', 'success', `Account created successfully! Welcome, ${fname}!`);
+
+  setTimeout(() => {
+    closeModal('registerModal');
+    activateProfile(currentUser.name);
+  }, 1400);
+}
+
+function activateProfile(name) {
+  document.getElementById('authButtons').style.display = 'none';
+  document.getElementById('profileZone').style.display = 'block';
+  document.getElementById('profileName').textContent   = name.split(' ')[0];
+  document.getElementById('pdName').textContent        = name;
+  updateProfileUI();
+}
+
+function handleLogout() {
+  isLoggedIn  = false;
+  currentUser = null;
+  document.getElementById('profileZone').style.display  = 'none';
+  document.getElementById('authButtons').style.display  = '';
+  document.getElementById('profileDropdown').classList.remove('open');
+}
+
+function switchToRegister() {
+  closeModal('loginModal');
+  setTimeout(() => openModal('registerModal'), 80);
+}
+
+function switchToLogin() {
+  closeModal('registerModal');
+  setTimeout(() => openModal('loginModal'), 80);
+}
+
+function showBanner(id, type, msg) {
+  const el = document.getElementById(id);
+  el.style.display = 'block';
+  el.className = `result-banner result-${type === 'error' ? 'error' : 'success'}`;
+  el.textContent = type === 'error' ? `✗ ${msg}` : `✔ ${msg}`;
+}
+
+// ── Live rod simulation ───────────────────────────────────────
 function tempToColor(t, tMin, tMax) {
   const n = Math.max(0, Math.min(1, (t - tMin) / (tMax - tMin || 1)));
-  const r = Math.round(220*n + 30);
-  const g = Math.round(80*(1-Math.abs(n-0.5)*2));
-  const b = Math.round(220*(1-n) + 20);
+  const r = Math.round(220 * n + 30);
+  const g = Math.round(80 * (1 - Math.abs(n - 0.5) * 2));
+  const b = Math.round(220 * (1 - n) + 20);
   return `rgb(${r},${g},${b})`;
 }
 
@@ -999,7 +1513,6 @@ function updateLiveSim() {
   document.getElementById('re-t1').textContent  = `${t1}°C`;
   document.getElementById('re-t2').textContent  = `${t2}°C`;
 
-  // Calculations
   const A    = 0.01;
   const flux = (k * (t1 - t2)) / L;
   const rate = flux * A;
@@ -1009,20 +1522,19 @@ function updateLiveSim() {
   document.getElementById('lr-rate').textContent = rate.toFixed(2);
   document.getElementById('lr-tmid').textContent = tmid.toFixed(1);
 
-  // Draw rod on canvas
   drawRod(t1, t2);
 }
 
 function drawRod(t1, t2) {
   const canvas = document.getElementById('rodCanvas');
   if (!canvas) return;
-  const ctx    = canvas.getContext('2d');
-  const W      = canvas.offsetWidth;
-  const H      = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const W   = canvas.offsetWidth;
+  const H   = canvas.height;
   canvas.width = W;
 
   const segments = 120;
-  const sw = W / segments;
+  const sw   = W / segments;
   const tMin = Math.min(t1, t2);
   const tMax = Math.max(t1, t2);
 
@@ -1032,29 +1544,26 @@ function drawRod(t1, t2) {
     ctx.fillRect(i * sw, 0, sw + 1, H);
   }
 
-  // Temperature labels on rod
-  ctx.font = 'bold 12px Segoe UI';
+  ctx.font = 'bold 12px DM Sans, Segoe UI, sans-serif';
   ctx.textAlign = 'center';
   for (let i = 0; i <= 4; i++) {
     const x = (W / 4) * i;
     const t = t1 + (t2 - t1) * (i / 4);
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.fillRect(x - 22, H/2 - 10, 44, 20);
-    ctx.fillStyle = '#1f2d3d';
-    ctx.fillText(`${t.toFixed(0)}°C`, x, H/2 + 4);
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.fillRect(x - 23, H / 2 - 11, 46, 22);
+    ctx.fillStyle = '#1a2e45';
+    ctx.fillText(`${t.toFixed(0)}°C`, x, H / 2 + 4);
   }
 }
 
-// Init live simulation on page load
 window.addEventListener('load', () => {
   updateLiveSim();
-  // redraw rod if simulation page is opened
   const obs = new MutationObserver(() => {
     if (document.getElementById('page-simulation').classList.contains('active-page')) {
-      setTimeout(updateLiveSim, 50);
+      setTimeout(updateLiveSim, 60);
     }
   });
-  obs.observe(document.getElementById('page-simulation'), {attributes:true});
+  obs.observe(document.getElementById('page-simulation'), {attributes: true});
 });
 
 window.addEventListener('resize', () => {
@@ -1063,13 +1572,13 @@ window.addEventListener('resize', () => {
   }
 });
 
-// ── Challenge modals ─────────────────────────────────────────
+// ── Challenge modals ──────────────────────────────────────────
 function openChallenge(type) {
   currentChallenge = type;
   const cfg = challengeConfig[type];
-  document.getElementById('challengeName').textContent    = cfg.title.replace(' Challenge','');
-  document.getElementById('inputModalTitle').textContent  = cfg.title;
-  document.getElementById('inputModalDesc').textContent   = cfg.desc;
+  document.getElementById('challengeName').textContent   = cfg.title.replace(' Challenge', '');
+  document.getElementById('inputModalTitle').textContent = cfg.title;
+  document.getElementById('inputModalDesc').textContent  = cfg.desc;
 
   let html = '';
   cfg.fields.forEach(f => {
@@ -1078,6 +1587,7 @@ function openChallenge(type) {
       <input type="number" id="field_${f.id}" placeholder="Enter value" step="any">
     </div>`;
   });
+
   document.getElementById('dynamicInputs').innerHTML = html;
   openModal('inputModal');
 }
@@ -1098,16 +1608,16 @@ function prepareAnswerStep() {
   correctAnswer = cfg.calc(vals);
   closeModal('inputModal');
 
-  document.getElementById('studentAnswer').value    = '';
+  document.getElementById('studentAnswer').value        = '';
   document.getElementById('resultBanner').style.display = 'none';
-  document.getElementById('answerLabel').textContent = `Your Answer (${cfg.unit})`;
-  document.getElementById('answerDesc').textContent  = `Apply the formula and enter your result in ${cfg.unit}.`;
+  document.getElementById('answerLabel').textContent    = `Your Answer (${cfg.unit})`;
+  document.getElementById('answerDesc').textContent     = `Apply the formula and enter your result in ${cfg.unit}.`;
 
   openModal('answerModal');
 }
 
 function checkStudentAnswer() {
-  const val = parseFloat(document.getElementById('studentAnswer').value);
+  const val    = parseFloat(document.getElementById('studentAnswer').value);
   const banner = document.getElementById('resultBanner');
 
   if (isNaN(val)) {
@@ -1132,7 +1642,7 @@ function checkStudentAnswer() {
     }
 
     updateScoreBoard();
-    updateProfilePopup();
+    updateProfileUI();
 
     setTimeout(() => {
       closeModal('answerModal');
@@ -1149,45 +1659,58 @@ function checkStudentAnswer() {
 }
 
 function updateScoreBoard() {
-  document.getElementById('scoreValue').textContent    = score;
+  document.getElementById('scoreValue').textContent     = score;
   document.getElementById('completedValue').textContent = `${completedChallenges.length} / 4`;
-  document.getElementById('progressFill').style.width  = `${(completedChallenges.length/4)*100}%`;
+  document.getElementById('progressFill').style.width   = `${(completedChallenges.length / 4) * 100}%`;
 }
 
-// ── Modals ───────────────────────────────────────────────────
+// ── Modals ────────────────────────────────────────────────────
 function openModal(id)  { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+  // Clear result banners on close
+  const b = document.getElementById(id.replace('Modal','') + 'Result') ||
+            document.getElementById('loginResult') ||
+            document.getElementById('registerResult');
+}
 
-// ── Tests ────────────────────────────────────────────────────
+// Close modals on backdrop click
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.classList.remove('show');
+  });
+});
+
+// ── Tests ─────────────────────────────────────────────────────
 function submitTest(type) {
   if (type === 'Pretest')  { pretestDone  = true; }
   if (type === 'Posttest') { posttestDone = true; }
-  updateProfilePopup();
-  alert(type + ' submitted successfully! ✔');
+  updateProfileUI();
+  alert(`${type} submitted successfully! ✔`);
 }
 
-// ── Feedback ─────────────────────────────────────────────────
+// ── Feedback ──────────────────────────────────────────────────
 function submitFeedback() {
   const name = document.getElementById('fb-name').value.trim();
   if (!name)           return alert('Please enter your name.');
   if (!selectedRating) return alert('Please select a star rating.');
-  alert(`Thank you, ${name}! Your feedback has been recorded. ⭐`.repeat(selectedRating > 0 ? 1 : 0));
+  alert(`Thank you, ${name}! Your feedback has been recorded. ${'⭐'.repeat(selectedRating)}`);
   goBack();
 }
 
-// ── Star rating ──────────────────────────────────────────────
+// ── Star rating ───────────────────────────────────────────────
 const stars = document.querySelectorAll('#starRating .fa-star');
 stars.forEach(star => {
-  star.addEventListener('click', function() {
+  star.addEventListener('click', function () {
     selectedRating = parseInt(this.getAttribute('data-val'));
-    stars.forEach((s,i) => s.classList.toggle('active', i < selectedRating));
+    stars.forEach((s, i) => s.classList.toggle('active', i < selectedRating));
   });
-  star.addEventListener('mouseover', function() {
+  star.addEventListener('mouseover', function () {
     const v = parseInt(this.getAttribute('data-val'));
-    stars.forEach((s,i) => s.classList.toggle('active', i < v));
+    stars.forEach((s, i) => s.classList.toggle('active', i < v));
   });
-  star.addEventListener('mouseout', function() {
-    stars.forEach((s,i) => s.classList.toggle('active', i < selectedRating));
+  star.addEventListener('mouseout', function () {
+    stars.forEach((s, i) => s.classList.toggle('active', i < selectedRating));
   });
 });
 </script>
