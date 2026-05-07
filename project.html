@@ -108,12 +108,35 @@
   .qvp-q-badge { background:rgba(245,197,24,0.2); border:1px solid rgba(245,197,24,0.4); color:#f5c518; font-size:11px; font-weight:700; padding:4px 12px; border-radius:999px; }
 
   .qvp-video-area {
-    position:relative;
-    width:100%;
-    aspect-ratio:16 / 9;
-    min-height:240px;
-    background:#000;
-  }
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  min-height:240px;
+  background:#000;
+}
+
+/* Fake fullscreen — keeps popup inside same layer */
+.qvp-wrapper.qvp-fake-fs {
+  position:fixed;
+  top:0; left:0;
+  width:100vw;
+  height:100vh;
+  z-index:9000;
+  border-radius:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.qvp-wrapper.qvp-fake-fs .qvp-video-area {
+  flex:1;
+  aspect-ratio:unset;
+  min-height:unset;
+}
+
+.qvp-wrapper.qvp-fake-fs .qvp-overlay {
+  z-index:9100;
+}
   .qvp-video-area > div,
   .qvp-video-area iframe {
     position:absolute;
@@ -484,11 +507,14 @@
           <div class="qvp-prog-wrap" id="qvpProgWrap">
             <div class="qvp-prog-fill" id="qvpProgFill"></div>
           </div>
-          <div class="qvp-controls">
-            <button class="qvp-ctrl" onclick="qvpTogglePlay()" title="Play/Pause"><i class="fas fa-play" id="qvpPlayIcon"></i></button>
-            <div class="qvp-q-chips" id="qvpChips"></div>
-            <span class="qvp-time"><span id="qvpCurTime">0:00</span> / <span id="qvpDurTime">0:00</span></span>
-          </div>
+         <div class="qvp-controls">
+          <button class="qvp-ctrl" onclick="qvpTogglePlay()" title="Play/Pause"><i class="fas fa-play" id="qvpPlayIcon"></i></button>
+          <div class="qvp-q-chips" id="qvpChips"></div>
+          <span class="qvp-time"><span id="qvpCurTime">0:00</span> / <span id="qvpDurTime">0:00</span></span>
+          <button class="qvp-ctrl" onclick="qvpToggleFullscreen()" title="Fullscreen" id="qvpFsBtn">
+            <i class="fas fa-expand" id="qvpFsIcon"></i>
+          </button>
+        </div>
         </div>
       </div>
 
@@ -616,7 +642,7 @@
     <div class="contributors-grid">
       <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#3b9edd,#1abc9c);">👨‍🏫</div><h4>Prof. Guide Name</h4><p>Project Guide</p></div>
       <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#e74c3c,#f39c12);">👨‍💻</div><h4>Gangadhar Bodhapalle</h4><p>Lead Developer & UI Design<p></div>
-      <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#9b59b6,#8e44ad);">👨‍🎨</div><h4>Team Member</h4><p>Simulation &amp; Logic & Theory</p></div>
+      <div class="contributor-card"><div class="con-avatar" style="background:linear-gradient(135deg,#9b59b6,#8e44ad);">👨‍🎨</div><h4>Sharvin Bhoje</h4><p>Simulation &amp; Logic & Theory</p></div>
     </div>
     <p style="margin-top:22px;color:var(--muted);font-size:14px;"><i class="fas fa-university" style="color:var(--accent);"></i> &nbsp; Department of Applied Sciences &amp; Humanities, Pimpri Chinchwad College of Engineering, Pune.</p>
   </div>
@@ -800,12 +826,7 @@
       height: '100%',
       width: '100%',
       videoId: 'zMKZ0dyBNkg',
-      playerVars: {
-        rel: 0,
-        modestbranding: 1,
-        fs: 1,
-        enablejsapi: 1
-      },
+v
       events: {
         onReady: onPlayerReady,
         onStateChange: onPlayerStateChange
@@ -1000,6 +1021,32 @@
     if (!s || isNaN(s)) return '0:00';
     return `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, '0')}`;
   }
+  let qvpIsFullscreen = false;
+
+function qvpToggleFullscreen() {
+  const wrapper = document.querySelector('.qvp-wrapper');
+  const icon = document.getElementById('qvpFsIcon');
+
+  if (!qvpIsFullscreen) {
+    wrapper.classList.add('qvp-fake-fs');
+    icon.className = 'fas fa-compress';
+    qvpIsFullscreen = true;
+    document.body.style.overflow = 'hidden';
+  } else {
+    wrapper.classList.remove('qvp-fake-fs');
+    icon.className = 'fas fa-expand';
+    qvpIsFullscreen = false;
+    document.body.style.overflow = '';
+  }
+
+  // Force YouTube iframe to re-fit
+  setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+}
+
+// Allow Escape key to exit fake fullscreen
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && qvpIsFullscreen) qvpToggleFullscreen();
+});
 
   /* =========================
      PAGE NAVIGATION
@@ -1199,9 +1246,9 @@
     }
 
     if (
-      EMAILJS_PUBLIC_KEY === "YOUR_REAL_PUBLIC_KEY" ||
-      EMAILJS_SERVICE_ID === "YOUR_REAL_SERVICE_ID" ||
-      EMAILJS_TEMPLATE_ID === "YOUR_REAL_TEMPLATE_ID"
+      EMAILJS_PUBLIC_KEY === "89koaI8ca8R3YQQMj" ||
+      EMAILJS_SERVICE_ID === "service_ce7uenq" ||
+      EMAILJS_TEMPLATE_ID === "template_xd03wqc"
     ) {
       showBanner('fb-result', 'error', 'Add your real EmailJS Public Key, Service ID, and Template ID first.');
       return;
