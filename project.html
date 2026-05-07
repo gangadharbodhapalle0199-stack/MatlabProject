@@ -822,11 +822,16 @@
 
     qvpInitDone = true;
 
-    ytPlayer = new YT.Player('ytPlayerDiv', {
+ ytPlayer = new YT.Player('ytPlayerDiv', {
       height: '100%',
       width: '100%',
       videoId: 'zMKZ0dyBNkg',
-v
+      playerVars: {
+        rel: 0,
+        modestbranding: 1,
+        fs: 0,
+        enablejsapi: 1
+      },
       events: {
         onReady: onPlayerReady,
         onStateChange: onPlayerStateChange
