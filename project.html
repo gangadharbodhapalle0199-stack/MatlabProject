@@ -1257,16 +1257,16 @@ document.addEventListener('keydown', e => {
     btn.disabled = true;
     btn.innerHTML = '<span class="sending-spinner"></span> Sending...';
 
-    const templateParams = {
-      fromname: name,
-      fromemail: email || 'Not provided',
-      rating: `${selectedRating}/5 ${'⭐'.repeat(selectedRating)}`,
-      simulation: sim,
-      comments: comments || 'No comments provided',
-      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-      toemail: 'gbodhapalle0199@gmail.com, sharvin.bhoje25@pccoepune.org'
-    };
-
+  const templateParams = {
+  fromname: name,
+  fromemail: email || 'Not provided',
+  rating: `${selectedRating}/5 ${'⭐'.repeat(selectedRating)}`,
+  simulation: sim,
+  comments: comments || 'No comments provided',
+  timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+  name: name,
+  message: `Rating: ${selectedRating}/5\nSimulation: ${sim}\nComments: ${comments || 'None'}\nEmail: ${email || 'Not provided'}`
+};
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
