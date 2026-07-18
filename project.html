@@ -767,10 +767,11 @@
   const EMAILJS_SERVICE_ID = "service_ce7uenq";
   const EMAILJS_TEMPLATE_ID = "template_xd03wqc"; 
 
-  if (window.emailjs && EMAILJS_PUBLIC_KEY !== "89koaI8ca8R3YQQMj") {
-    emailjs.init({
-      publicKey: EMAILJS_PUBLIC_KEY
-    });
+  if (window.emailjs) {
+  emailjs.init({
+    publicKey: EMAILJS_PUBLIC_KEY
+  });
+
   }
 
   /* =========================
@@ -1249,16 +1250,6 @@ document.addEventListener('keydown', e => {
       showBanner('fb-result', 'error', 'Please select how the simulation was.');
       return;
     }
-
-    if (
-      EMAILJS_PUBLIC_KEY === "89koaI8ca8R3YQQMj" ||
-      EMAILJS_SERVICE_ID === "service_ce7uenq" ||
-      EMAILJS_TEMPLATE_ID === "template_xd03wqc"
-    ) {
-      showBanner('fb-result', 'error', 'Add your real EmailJS Public Key, Service ID, and Template ID first.');
-      return;
-    }
-
     btn.disabled = true;
     btn.innerHTML = '<span class="sending-spinner"></span> Sending...';
 
